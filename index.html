@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -108,23 +108,27 @@ button:disabled{opacity:.4;cursor:not-allowed}
   <div class="seat seat-top" id="seat-1">
     <div class="name">北 · 上家</div>
     <div class="hand-back top"></div>
+    <div class="hand-me"></div>
     <div class="meld-row"></div>
     <div class="discard-row"></div>
   </div>
   <div class="seat seat-left" id="seat-2">
     <div class="name">东 · 庄家</div>
     <div class="hand-back side"></div>
+    <div class="hand-me"></div>
     <div class="meld-row"></div>
     <div class="discard-row"></div>
   </div>
   <div class="seat seat-right" id="seat-3">
     <div class="name">西 · 对家</div>
     <div class="hand-back side"></div>
+    <div class="hand-me"></div>
     <div class="meld-row"></div>
     <div class="discard-row"></div>
   </div>
   <div class="seat seat-me" id="seat-0">
     <div class="name">南 · 你</div>
+    <div class="hand-back"></div>
     <div class="hand-me"></div>
     <div class="meld-row"></div>
     <div class="discard-row"></div>
@@ -145,6 +149,10 @@ button:disabled{opacity:.4;cursor:not-allowed}
   </div>
 </div>
 
+<script>
+window.__errs=[];
+window.onerror=function(msg,src,line,col,err){window.__errs.push({msg:String(msg),line:line,col:col});var d=document.getElementById('__errbox');if(!d){d=document.createElement('div');d.id='__errbox';d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#e63946;color:#fff;padding:8px;font-size:12px;white-space:pre-wrap;font-family:monospace';document.body&&document.body.appendChild(d)}d.textContent='JS错误 line '+line+':'+col+'  '+msg;return false};
+</script>
 <script src="https://cdn.jsdelivr.net/npm/mqtt@5.3.4/dist/mqtt.min.js" onerror="alert('MQTT.js 加载失败，联机功能不可用，但单机模式正常')"></script>
 <script>
 /* ===== mahjong.js ===== */
@@ -172,7 +180,7 @@ function canPongOrKong(tile,wanTile){if(!wanTile)return true;return!isSameTile(t
 /* ===== game.js ===== */
 const SEATS=['北','东','南','西'];
 class QHDMahjongGame{constructor(){this.players=[0,1,2,3].map(i=>({seat:i,name:'玩家'+(i+1),hand:[],melds:[],isGongzhu:false,scores:0}));this.deck=[];this.drawCursor=0;this.wanTile=null;this.wanKey=null;this.bankerSeat=1;this.currentSeat=1;this.phase='waiting';this.lastDiscard=null;this.gangCount=0;this.handStartSeat=1;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false}
-newRound(banker){if(banker!=null)this.bankerSeat=banker;this.handStartSeat=this.bankerSeat;for(const p of this.players){p.hand=[];p.melds=[];p.isGongzhu=false}this.gangCount=0;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false;this.lastDiscard=null;const full=shuffle(buildFullDeck());this.deck=full.slice(0,68);this.drawCursor=0;this.phase='dealing'}
+newRound(banker){if(banker!=null)this.bankerSeat=banker;this.handStartSeat=this.bankerSeat;for(const p of this.players){p.hand=[];p.melds=[];p.isGongzhu=false}this.gangCount=0;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false;this.lastDiscard=null;const full=shuffle(buildFullDeck());this.deck=full;this.drawCursor=0;this.phase='dealing'}
 dealTiles(wallStartIndex,wanTile){const start=wallStartIndex*2;const before=this.deck.slice(0,start);const after=this.deck.slice(start);this.deck=[...after,...before];this.wanTile=wanTile;this.wanKey=tileKey(wanTile);const order=[0,1,2,3].map(i=>(this.handStartSeat+i)%4);let cursor=0;for(let round=0;round<3;round++)for(const seat of order)for(let k=0;k<4;k++){this.players[seat].hand.push(this.deck[cursor++])}for(let i=0;i<4;i++){const seat=order[i];const extra=i===0?2:1;for(let k=0;k<extra;k++)this.players[seat].hand.push(this.deck[cursor++])}this.drawCursor=cursor;for(let i=0;i<4;i++)this.players[i].hand=sortHand(this.players[i].hand);this.currentSeat=this.handStartSeat;this.phase='draw'}
 findStartDarkGang(){const r=[];for(let i=0;i<4;i++){const fk=findDarkGangFeng(this.players[i].hand);if(fk.length>0)r.push({seat:i,fengKeys:fk})}return r}
 executeStartDarkGang(seat,fengKey){const p=this.players[seat];const removed=[],remaining=[];for(const t of p.hand){if(tileKey(t)===fengKey&&removed.length<4)removed.push(t);else remaining.push(t)}p.hand=remaining;p.melds.push({type:'darkKong',tiles:removed,isAnGang:true});this.gangCount++;this.drawCursor++;if(this.drawCursor<this.deck.length){p.hand.push(this.deck[this.drawCursor++]);p.hand=sortHand(p.hand)}}
@@ -220,10 +228,11 @@ function enterTable(){document.getElementById('lobby').style.display='none';docu
 function renderAll(){if(!game)return;for(let i=0;i<4;i++)renderSeat(i);renderCenter();renderActions()}
 function renderSeat(seat){const el=document.getElementById('seat-'+seat);const p=game.players[seat];const isMe=mode==='single'||seat===mySeat;const isBanker=game.bankerSeat===seat;const nameEl=el.querySelector('.name');nameEl.textContent=SEATS[seat]+(isBanker?' · 庄':'');nameEl.classList.toggle('host',isBanker);const hb=el.querySelector('.hand-back');const hm=el.querySelector('.hand-me');hb.innerHTML='';hm.innerHTML='';if(isMe){const h=p.hand||[];h.forEach((t,idx)=>{const w=game.wanTile&&tileKey(t)===tileKey(game.wanTile);const te=renderTile(t,w,true);if(game.phase==='discard'&&game.currentSeat===seat&&!p.isGongzhu){te.onclick=()=>selectTile(idx);te.style.cursor='pointer'}if(idx===selIdx)te.style.boxShadow='0 0 0 2px #e9c46a';hm.appendChild(te)});hm.style.display='flex';hb.style.display='none'}else{const pc=p.handCount!==undefined?p.handCount:(p.hand?p.hand.length:0);for(let k=0;k<pc;k++)hb.appendChild(renderTile(null,false,false));hm.style.display='none';hb.style.display='flex'}const mEl=el.querySelector('.meld-row');mEl.innerHTML='';(p.melds||[]).forEach(m=>{const g=document.createElement('div');g.className='meld-group';m.tiles.forEach(t=>{const showBack=m.isAnGang&&(m.tiles.indexOf(t)===0||m.tiles.indexOf(t)===3);g.appendChild(renderTile(t,false,!showBack))});mEl.appendChild(g)})}
 function renderCenter(){const info=document.getElementById('center-info');const g=game;let pt='';switch(g.phase){case'waiting':pt='等待开始';break;case'dealing':pt='发牌中...';break;case'draw':pt=SEATS[g.currentSeat]+'家摸牌';break;case'discard':pt=SEATS[g.currentSeat]+'家出牌';break;case'action':pt='碰杠判定中...';break;case'gameover':pt='本局结束';break}let wh='';if(g.wanTile){const d=td(g.wanTile);wh='混儿：'+d.text+'（1张） | 杠数：'+g.gangCount}info.innerHTML='<div class="phase">'+pt+'</div>'+(wh?'<div class="wan-info">'+wh+'</div>':'')}
-function selectTile(idx){const p=game.players[game.currentSeat];if(p.isGongzhu)return;const me=mode==='single'||net.isHost;if(!me){net.broadcast({type:'action',action:{type:'discard',seat:game.currentSeat,tileIndex:idx}});return}game.discard(game.currentSeat,idx);selIdx=-1;renderAll();afterDiscard()}
-function afterDiscard(){const ds=game.lastDiscard.fromSeat;const act=game.resolveActionPriority(ds);if(act){setTimeout(()=>{if(act.action==='pong'){logMsg(SEATS[act.seat]+'家碰！');game.executePong(act.seat)}else{logMsg(SEATS[act.seat]+'家明杠！');game.executeMingGang(act.seat)}renderAll();afterPongGang();broadcastFull()},400)}else{setTimeout(()=>nextSeatDraw(),300)}}
-function afterPongGang(){renderAll()}
-function nextSeatDraw(){if(!game.canDraw()){const r=game.settleLiuJu();logMsg('🚫 流局！');showResult(r);broadcastFull();return}const ns=game.currentSeat;const r=game.drawTile(ns);renderAll();if(r&&r.hu){handleZiMoHu(ns,r.hu);broadcastFull()}else{renderAll();broadcastFull()}}
+function selectTile(idx){const p=game.players[game.currentSeat];if(p.isGongzhu)return;const me=mode==='single'||(net&&net.isHost);if(!me){if(!net)return;net.broadcast({type:'action',action:{type:'discard',seat:game.currentSeat,tileIndex:idx}});return}game.discard(game.currentSeat,idx);selIdx=-1;renderAll();afterDiscard()}
+function afterDiscard(){const ds=game.lastDiscard.fromSeat;const act=game.resolveActionPriority(ds);if(act){setTimeout(()=>{if(act.action==='pong'){logMsg(SEATS[act.seat]+'家碰！');game.executePong(act.seat)}else{logMsg(SEATS[act.seat]+'家明杠！');game.executeMingGang(act.seat)}renderAll();afterPongGang();broadcastFull()},400)}else{setTimeout(()=>{game.passAction();nextSeatDraw()},300)}}
+function afterPongGang(){renderAll();broadcastFull();if(mode==='single'&&game.currentSeat!==mySeat){setTimeout(()=>aiDiscard(game.currentSeat),650)}}
+function nextSeatDraw(){if(!game.canDraw()){const r=game.settleLiuJu();logMsg('🚫 流局！');showResult(r);broadcastFull();return}const ns=game.currentSeat;const r=game.drawTile(ns);renderAll();if(r&&r.hu){handleZiMoHu(ns,r.hu);broadcastFull()}else{renderAll();broadcastFull();if(mode==='single'&&ns!==mySeat){setTimeout(()=>aiDiscard(ns),650)}}}
+function aiDiscard(seat){if(game.phase!=='discard'||game.currentSeat!==seat)return;const p=game.players[seat];if(!p.hand||p.hand.length===0)return;let idx=Math.floor(Math.random()*p.hand.length);game.discard(seat,idx);renderAll();afterDiscard()}
 function handleZiMoHu(s,hi){logMsg('🎉 '+SEATS[s]+'家自摸胡！');const r=game.settle(s,hi);showResult(r)}
 function showResult(r){renderAll();const o=document.getElementById('result-overlay');const t=document.getElementById('result-title');const tot=document.getElementById('result-total');const d=document.getElementById('result-detail');if(r.liuju){t.textContent='🚫 流局';tot.textContent='无人得分';d.textContent=''}else{t.textContent='🎉 自摸胡！';tot.textContent=r.totalMultiplier+' 倍';const fl=r.fenpai.fans.map(f=>f.name+'('+f.m+')').join(' × ');d.innerHTML='番型：'+fl+'<br>赢家：'+SEATS[r.winnerSeat]+'<br>'+r.payments.map(p=>SEATS[p.from]+' → '+SEATS[p.to]+'：'+p.amount+'分').join('<br>')}o.style.display='flex'}
 function closeResult(){document.getElementById('result-overlay').style.display='none';if(game.phase==='gameover'){if(mode==='single')startGame();else{logMsg('等待主机下一局...');game.phase='waiting';renderAll();broadcastFull()}}}
@@ -236,7 +245,7 @@ function hostStartGame(){game=new QHDMahjongGame();const ws=Math.floor(Math.rand
 let hostPeers=[]; // [{peerId,seat,name,joined}] 主机维护
 async function createRoom(){const lb=document.getElementById('lobby-status');lb.textContent='连接 MQTT 服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{const code=MahjongNet.genRoomCode();await net.createRoom(code);curCode=code;hostPeers=[{peerId:net.myId,seat:0,name:'你(主机)',joined:true}];document.getElementById('create-info').innerHTML='房间号：<b>'+code+'</b><br>已加入：1/4';lb.textContent='✅ 房间已创建，把房间号发给朋友！';document.getElementById('start-bar').style.display='flex'}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
 async function joinRoom(){const code=document.getElementById('join-code').value.trim();if(!code){document.getElementById('lobby-status').textContent='请输入6位房间号';return}const lb=document.getElementById('lobby-status');lb.textContent='连接服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{await net.joinRoom(code,'玩家');curCode=code;lb.textContent='✅ 已连接，等待主机开始...'}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
-function netMsg(t,d){console.log('[NET]',t,d);const lb=document.getElementById('lobby-status');switch(t){case'peer-join':if(!net.isHost)break;if(!hostPeers.find(p=>p.peerId===d.peerId)){const nextSeat=hostPeers.length;if(nextSeat<4){hostPeers.push({peerId:d.peerId,seat:nextSeat,name:d.name||('玩家'+(nextSeat+1)),joined:true});logMsg('👥 '+d.name+' 加入（座位'+(nextSeat+1)+'）');lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}}break;case'peer-leave':if(!net.isHost)break;const i=hostPeers.findIndex(p=>p.peerId===d.peerId);if(i>=0){logMsg('👋 '+hostPeers[i].name+' 离开');hostPeers.splice(i,1);lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}break;case'start-game':enterTable();mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';// 客户端等主机推完整 statefor(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 主机开始游戏...');break;case'state':applyRemoteState(d);break;case'disconnected':logMsg('❌ 连接断开');break;case'action':handlePeerAction(d);break}}
+function netMsg(t,d){console.log('[NET]',t,d);const lb=document.getElementById('lobby-status');switch(t){case'peer-join':if(!net.isHost)break;if(!hostPeers.find(p=>p.peerId===d.peerId)){const nextSeat=hostPeers.length;if(nextSeat<4){hostPeers.push({peerId:d.peerId,seat:nextSeat,name:d.name||('玩家'+(nextSeat+1)),joined:true});logMsg('👥 '+d.name+' 加入（座位'+(nextSeat+1)+'）');lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}}break;case'peer-leave':if(!net.isHost)break;const i=hostPeers.findIndex(p=>p.peerId===d.peerId);if(i>=0){logMsg('👋 '+hostPeers[i].name+' 离开');hostPeers.splice(i,1);lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}break;case'start-game':enterTable();mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';for(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 主机开始游戏...');break;case'state':applyRemoteState(d);break;case'disconnected':logMsg('❌ 连接断开');break;case'action':handlePeerAction(d);break}}
 function applyRemoteState(s){// 客户端/主机收到完整 state，重建 game 对象
 if(!game)game=new QHDMahjongGame();Object.assign(game,s.state);game.players=s.state.players;// 客户端只看别人背面，自己的手牌用 sendMyHand 还原
 renderAll();}
