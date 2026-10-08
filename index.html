@@ -23,47 +23,77 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .lobby-status{text-align:center;margin-top:14px;font-size:13px;color:#e9c46a;min-height:18px}
 #lobby .hint{margin-top:20px;font-size:11px;color:#415a77;text-align:center;line-height:1.6}
 #table{display:none;position:fixed;inset:0;background:radial-gradient(ellipse at center,#1b263b,#0d1b2a);max-width:480px;margin:0 auto;overflow:hidden}
-.tile{display:inline-flex;align-items:center;justify-content:center;font-weight:700;user-select:none;border-radius:4px}
-.tile-face{background:#f8f9fa;border:1px solid #adb5bd;color:#1b263b;box-shadow:0 1px 2px rgba(0,0,0,.3)}
-.tile-face.wan{color:#d00000}.tile-face.bing{color:#0077b6}.tile-face.tiao{color:#2d6a4f}
-.tile-face.feng,.tile-face.jian{color:#1b263b}
-.tile.wan-tile{border:2px solid #e9c46a}
-.tile-back{background:linear-gradient(135deg,#1b263b,#415a77);border:1px solid #778da9}
+.tile{display:inline-flex;align-items:center;justify-content:center;font-weight:700;user-select:none;border-radius:6px;position:relative;font-style:normal;font-family:'STKaiti','KaiTi','STSong','SimSun',serif}
+.tile-face{background:linear-gradient(160deg,#fffef8 0%,#f6efe1 55%,#e9dcc3 100%);border:1px solid #c3b38f;border-bottom-width:3px;border-radius:7px;box-shadow:0 2px 3px rgba(0,0,0,.4),inset 0 1px 0 #fff,inset 0 -3px 5px rgba(120,90,40,.12);color:#1c1c1c;overflow:hidden}
+.tile-face .tk-num{position:absolute;top:1px;left:0;right:0;text-align:center;font-size:.62em;color:#173a5e;line-height:1}
+.tile-face .tk-suit{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.72em;color:#c1121f;line-height:1.05}
+.tile-face .tk-zi{font-size:.95em;line-height:1;color:#172a45}
+.tile-face.j-zhong .tk-zi{color:#d83030}
+.tile-face.j-fa .tk-zi{color:#1e7d46}
+.tile-face .bai-frame{width:62%;height:68%;border:1.5px solid #3b7a68;border-radius:3px}
+.tile.wan-tile{box-shadow:0 0 0 2px #e9c46a,0 2px 3px rgba(0,0,0,.4)}
+.dots{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:88%;height:88%}
+.dots i{width:.46em;height:.46em;border-radius:50%;place-self:center;background:#1f4e9e;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.dots i.r{background:#d83030}
+.dots i.e,.bars i.e{background:transparent;box-shadow:none}
+.bars{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:86%;height:90%}
+.bars i{width:.3em;height:.74em;border-radius:.15em;place-self:center;background:#2e8b57;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.bars i.r{background:#d83030;width:.38em;height:.96em}
+.tile-back{background:linear-gradient(135deg,#3aa17d,#146149 60%,#0d4a38);border:2px solid #f4ecd8;border-radius:7px;box-shadow:0 2px 3px rgba(0,0,0,.4),inset 0 0 0 2px rgba(255,255,255,.28),inset 0 0 8px rgba(0,0,0,.3)}
 /* 座位布局 */
 .seat{position:absolute;display:flex;flex-direction:column;align-items:center;gap:3px}
 .seat .name{font-size:11px;color:#e0e1dd;background:#415a77;padding:1px 8px;border-radius:8px}
 .seat .name.host{background:linear-gradient(135deg,#e9c46a,#f4a261);color:#1b263b;font-weight:700}
-.seat-me{left:50%;bottom:6px;transform:translateX(-50%);width:96%}
+.seat .name.cur{outline:2px solid #e9c46a;box-shadow:0 0 8px rgba(233,196,106,.8)}
+.seat-me{left:50%;bottom:6px;transform:translateX(-50%);width:98%}
 .seat-top{left:50%;top:6px;transform:translateX(-50%)}
-.seat-left{left:6px;top:50%;transform:translateY(-50%)}
-.seat-right{right:6px;top:50%;transform:translateY(-50%)}
+.seat-left{left:4px;top:50%;transform:translateY(-50%)}
+.seat-right{right:4px;top:50%;transform:translateY(-50%)}
 /* 手牌区 */
-.hand-me{display:flex;gap:2px;padding:6px;background:#2d4a6b;border-radius:8px;min-height:52px;justify-content:center;flex-wrap:wrap}
-.hand-me .tile{width:32px;height:44px;font-size:17px;cursor:pointer;transition:transform .1s}
-.hand-me .tile:active{transform:translateY(-4px)}
+.hand-me{display:flex;gap:2px;padding:5px 4px;background:rgba(45,74,107,.9);border-radius:8px;min-height:50px;justify-content:center;flex-wrap:nowrap}
+.hand-me .tile{width:30px;height:42px;font-size:17px;cursor:pointer;transition:transform .1s,box-shadow .1s;flex:0 0 auto}
+.hand-me .tile:active,.hand-me .tile.sel{transform:translateY(-7px)}
+.hand-me .tile.sel{box-shadow:0 0 0 2px #e9c46a,0 3px 4px rgba(0,0,0,.4)}
 /* 背面手牌 */
-.hand-back{display:flex;gap:1px;flex-wrap:wrap;justify-content:center;max-width:120px}
-.hand-back.top .tile{width:18px;height:26px}
-.hand-back.side .tile{width:22px;height:30px}
+.hand-back{display:flex;gap:1px;flex-wrap:wrap;justify-content:center;max-width:96px}
+.hand-back.top{flex-wrap:nowrap;max-width:none}
+.hand-back.top .tile{width:17px;height:25px}
+.hand-back.side .tile{width:19px;height:27px}
 /* 副露 */
-.meld-row{display:flex;gap:4px;min-height:28px;justify-content:center;flex-wrap:wrap}
+.meld-row{display:flex;gap:4px;min-height:28px;justify-content:center;flex-wrap:wrap;max-width:150px}
 .meld-group{display:flex;gap:1px;padding:1px;background:#1b263b;border-radius:3px}
-.meld-group .tile{width:20px;height:28px;font-size:12px}
+.meld-group .tile{width:21px;height:29px;font-size:13px}
 /* 弃牌 */
-.discard-row{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;max-width:120px;min-height:26px}
-.discard-row .tile{width:22px;height:30px;font-size:13px}
-.discard-row .tile.last{box-shadow:0 0 0 2px #e9c46a}
+.discard-row{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;max-width:118px;min-height:26px}
+.discard-row .tile{width:21px;height:29px;font-size:13px}
 /* 中央信息 */
 .center-info{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);text-align:center}
 .center-info .phase{font-size:20px;color:#e9c46a;margin-bottom:6px}
 .center-info .wan-info{font-size:12px;color:#778da9}
 .center-info .wan-info .tile{width:22px;height:32px;font-size:14px;display:inline-flex;vertical-align:middle}
 /* 按钮 */
-.start-bar{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);display:flex;gap:10px;z-index:20}
-.action-bar{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);display:flex;gap:8px;z-index:10}
-.action-bar button{padding:8px 18px;font-size:14px;font-weight:700}
+.start-bar{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);display:none;gap:10px;z-index:20}
+.action-bar{position:absolute;left:50%;bottom:60px;transform:translateX(-50%);display:flex;gap:8px;z-index:10;width:94%;justify-content:center;align-items:center;flex-wrap:wrap}
+.action-bar button{padding:10px 20px;font-size:15px;font-weight:700;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.action-bar .b-hu{background:linear-gradient(135deg,#e63946,#c1121f);color:#fff}
+.action-bar .b-gang{background:linear-gradient(135deg,#f4a261,#e76f51);color:#1b263b}
+.action-bar .b-peng{background:linear-gradient(135deg,#e9c46a,#d4a017);color:#1b263b}
+.action-bar .b-pass{background:#415a77;color:#fff}
+.action-bar .action-hint{width:100%;text-align:center;font-size:11px;color:#a9d6e5}
 .btn-primary{background:linear-gradient(135deg,#e9c46a,#f4a261);color:#1b263b}
 .btn-ghost{background:#415a77;color:#fff}
+/* 等待房间 */
+#room-wait{position:fixed;inset:0;z-index:40;background:rgba(13,27,42,.97);display:none;align-items:center;justify-content:center;padding:20px;max-width:480px;margin:0 auto}
+.rw-card{background:#1b263b;border:1px solid #415a77;border-radius:16px;padding:24px 20px;width:100%;max-width:340px;text-align:center}
+.rw-title{font-size:18px;color:#e9c46a;font-weight:700;margin-bottom:6px}
+.rw-code{color:#a9d6e5;font-size:13px;margin-bottom:18px}
+.rw-code b{font-size:30px;color:#e9c46a;letter-spacing:4px;display:block;margin-top:4px}
+.rw-seats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.rw-seat{background:#0d1b2a;border:1px dashed #415a77;border-radius:10px;padding:12px 8px;font-size:14px;color:#778da9;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;word-break:break-all}
+.rw-seat.on{border:1px solid #e9c46a;color:#e0e1dd;background:#22304a}
+.rw-seat .rw-who{font-size:11px;color:#e9c46a}
+.rw-status{font-size:14px;color:#e9c46a;margin-bottom:4px;min-height:20px}
+.rw-tip{font-size:11px;color:#778da9}
 /* 结算弹窗 */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:100}
 .overlay .panel{background:#1b263b;border:1px solid #415a77;border-radius:16px;padding:24px;min-width:280px;text-align:center}
@@ -139,6 +169,17 @@ button:disabled{opacity:.4;cursor:not-allowed}
   <div class="msg-log" id="msg-log"></div>
 </div>
 
+<!-- 房间等待 -->
+<div id="room-wait">
+  <div class="rw-card">
+    <div class="rw-title">🀄 房间等待中</div>
+    <div class="rw-code">房间号<b id="rw-code">------</b></div>
+    <div class="rw-seats" id="rw-seats"></div>
+    <div class="rw-status" id="rw-status"></div>
+    <div class="rw-tip">把房间号发给朋友，4 人到齐后自动开局</div>
+  </div>
+</div>
+
 <!-- 结算 -->
 <div id="result-overlay" class="overlay" style="display:none">
   <div class="panel">
@@ -153,7 +194,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
 window.__errs=[];
 window.onerror=function(msg,src,line,col,err){window.__errs.push({msg:String(msg),line:line,col:col});var d=document.getElementById('__errbox');if(!d){d=document.createElement('div');d.id='__errbox';d.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#e63946;color:#fff;padding:8px;font-size:12px;white-space:pre-wrap;font-family:monospace';document.body&&document.body.appendChild(d)}d.textContent='JS错误 line '+line+':'+col+'  '+msg;return false};
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mqtt@5.3.4/dist/mqtt.min.js" onerror="alert('MQTT.js 加载失败，联机功能不可用，但单机模式正常')"></script>
+<script>
+(function(){var urls=['https://registry.npmmirror.com/mqtt/5.3.4/files/dist/mqtt.min.js','https://cdn.bootcdn.net/ajax/libs/mqtt/5.3.4/mqtt.min.js','https://cdn.staticfile.org/mqtt/5.3.4/mqtt.min.js','https://fastly.jsdelivr.net/npm/mqtt@5.3.4/dist/mqtt.min.js'];var i=0;function go(){if(i>=urls.length){alert('网络异常：MQTT库加载失败，联机不可用，单机练习正常');return}var s=document.createElement('script');s.src=urls[i];s.onerror=function(){i++;go()};document.head.appendChild(s)}go()})();
+</script>
 <script>
 /* ===== mahjong.js ===== */
 const SUITS = ['w', 'b', 't'];
@@ -171,7 +214,7 @@ function sortHand(h){const o={w:0,b:1,t:2,f:3,j:4};return h.slice().sort((a,b)=>
 function checkHu(hand,melds,wanTile){const q=checkQiDui(hand,wanTile);if(q)return{type:'qidui',details:q};const n=checkNormalHu(hand,melds,wanTile);if(n)return{type:'normal',details:n};return null}
 function checkQiDui(hand,wanTile){const cnt=countTiles(hand);const wKey=wanTile?tileKey(wanTile):null;let wCnt=wKey?(cnt.get(wKey)||0):0;let npc=0,nsc=0;for(const[k,c]of cnt){if(k===wKey)continue;npc+=Math.floor(c/2);nsc+=c%2}if(wCnt<nsc)return null;const rw=wCnt-nsc;if(rw%2!==0)return null;const tp=npc+nsc+rw/2;if(tp!==7)return null;let rf=0;for(const[k,c]of cnt){if(k===wKey)continue;if(c>=4)rf++}const lv=rf>=3?3:rf>=2?2:rf>=1?1:0;const mp=[4,8,16,32][lv];return{level:lv,realFours:rf,multiplier:mp}}
 function checkNormalHu(hand,melds,wanTile){const wKey=wanTile?tileKey(wanTile):null;const rc=countTiles(hand);let wCnt=wKey?(rc.get(wKey)||0):0;const cm=new Map();for(const[k,c]of rc){if(k!==wKey)cm.set(k,c)}const nk=[...cm.keys()];for(const key of nk){const cnt=cm.get(key);if(cnt>=2){cm.set(key,cnt-2);const ok=canFormAllSets(cm,wCnt);cm.set(key,cnt);if(ok)return{jiang:key}}}if(wCnt>=1){for(const key of nk){const cnt=cm.get(key);if(cnt>=1){cm.set(key,cnt-1);const ok=canFormAllSets(cm,wCnt-1);cm.set(key,cnt);if(ok)return{jiang:key+'+wan'}}}}if(wCnt>=2){if(canFormAllSets(cm,wCnt-2))return{jiang:'wan'}}return null}
-function canFormAllSets(cm,wL){let fk=null;for(const[k,c]of cm){if(c>0){fk=k;break}}if(!fk)return wL>0&&wL%3===0;const cnt=cm.get(fk);const suit=fk[0];const val=parseInt(fk.slice(1),10);if(cnt>=3){cm.set(fk,cnt-3);if(canFormAllSets(cm,wL)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(cnt>=2&&wL>=1){cm.set(fk,cnt-2);if(canFormAllSets(cm,wL-1)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(cnt>=1&&wL>=2){cm.set(fk,cnt-1);if(canFormAllSets(cm,wL-2)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(['w','b','t'].includes(suit)&&val<=7){const k2=suit+(val+1),k3=suit+(val+2);const c2=cm.get(k2)||0,c3=cm.get(k3)||0;for(let m=0;m<4;m++){const wn=(m&1?1:0)+(m&2?1:0);if(wn>wL)continue;const nrK2=(m&1)?0:1,nrK3=(m&2)?0:1;if(c2<nrK2||c3<nrK3)continue;cm.set(fk,cnt-1);if(!(m&1))cm.set(k2,c2-1);if(!(m&2))cm.set(k3,c3-1);if(canFormAllSets(cm,wL-wn)){cm.set(fk,cnt);cm.set(k2,c2);cm.set(k3,c3);return true}cm.set(fk,cnt);cm.set(k2,c2);cm.set(k3,c3)}}return false}
+function canFormAllSets(cm,wL){let fk=null;for(const[k,c]of cm){if(c>0){fk=k;break}}if(!fk)return wL%3===0;const cnt=cm.get(fk);const suit=fk[0];const val=parseInt(fk.slice(1),10);if(cnt>=3){cm.set(fk,cnt-3);if(canFormAllSets(cm,wL)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(cnt>=2&&wL>=1){cm.set(fk,cnt-2);if(canFormAllSets(cm,wL-1)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(cnt>=1&&wL>=2){cm.set(fk,cnt-1);if(canFormAllSets(cm,wL-2)){cm.set(fk,cnt);return true}cm.set(fk,cnt)}if(['w','b','t'].includes(suit)&&val<=7){const k2=suit+(val+1),k3=suit+(val+2);const c2=cm.get(k2)||0,c3=cm.get(k3)||0;for(let m=0;m<4;m++){const wn=(m&1?1:0)+(m&2?1:0);if(wn>wL)continue;const nrK2=(m&1)?0:1,nrK3=(m&2)?0:1;if(c2<nrK2||c3<nrK3)continue;cm.set(fk,cnt-1);if(!(m&1))cm.set(k2,c2-1);if(!(m&2))cm.set(k3,c3-1);if(canFormAllSets(cm,wL-wn)){cm.set(fk,cnt);cm.set(k2,c2);cm.set(k3,c3);return true}cm.set(fk,cnt);cm.set(k2,c2);cm.set(k3,c3)}}return false}
 function calcFenpai(huResult,hand,melds,wanTile,opts={}){const fans=[];let total=1;fans.push({name:'平胡',m:1});if(opts.isZiMo){fans.push({name:'自摸',m:2});total*=2}if(opts.isTian){fans.push({name:'天胡',m:10});total*=10}else if(opts.isDi){fans.push({name:'地胡',m:10});total*=10}if(huResult.type==='qidui'){const m=huResult.details.multiplier;const n=huResult.details.level===0?'七对':huResult.details.level===1?'豪华七对':huResult.details.level===2?'双豪华七对':'三豪华七对';fans.push({name:n,m});total*=m}const hp=melds.some(x=>x.type==='pong'||x.type==='kong'||x.type==='buKong');if(hp){fans.push({name:'碰碰胡',m:3});total*=3}if(opts.isDaDiaoChe){fans.push({name:'大吊车',m:4});total*=4}if(opts.isGangShangHua){fans.push({name:'杠上花',m:2});total*=2}if(opts.isHaiDiLaoYue){fans.push({name:'海底捞月',m:2});total*=2}const om=melds.some(x=>x.type==='pong'||x.type==='kong'||x.type==='buKong');if(!om&&!opts.isTian&&!opts.isDi){fans.push({name:'门清',m:2});total*=2}if(wanTile){const wk=tileKey(wanTile);const wh=hand.some(t=>tileKey(t)===wk);if(!wh){fans.push({name:'素胡',m:2});total*=2}}else{fans.push({name:'素胡',m:2});total*=2}if(opts.isHuangDiao){fans.push({name:'混吊',m:2});total*=2}return{fans,totalMultiplier:total,desc:fans.map(f=>f.name).join(' × ')}}
 function liuJuDun(g){const t={0:13,1:7,2:8,3:13};return g>=4?0:(t[g]!=null?t[g]:13)}
 function findDarkGangFeng(hand){const cnt=countTiles(hand);const r=[];for(const[k,c]of cnt)if(c===4&&k[0]==='f')r.push(k);return r}
@@ -179,21 +222,25 @@ function canPongOrKong(tile,wanTile){if(!wanTile)return true;return!isSameTile(t
 
 /* ===== game.js ===== */
 const SEATS=['北','东','南','西'];
-class QHDMahjongGame{constructor(){this.players=[0,1,2,3].map(i=>({seat:i,name:'玩家'+(i+1),hand:[],melds:[],isGongzhu:false,scores:0}));this.deck=[];this.drawCursor=0;this.wanTile=null;this.wanKey=null;this.bankerSeat=1;this.currentSeat=1;this.phase='waiting';this.lastDiscard=null;this.gangCount=0;this.handStartSeat=1;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false}
-newRound(banker){if(banker!=null)this.bankerSeat=banker;this.handStartSeat=this.bankerSeat;for(const p of this.players){p.hand=[];p.melds=[];p.isGongzhu=false}this.gangCount=0;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false;this.lastDiscard=null;const full=shuffle(buildFullDeck());this.deck=full;this.drawCursor=0;this.phase='dealing'}
+class QHDMahjongGame{constructor(){this.players=[0,1,2,3].map(i=>({seat:i,name:'玩家'+(i+1),hand:[],melds:[],discards:[],isGongzhu:false,scores:0}));this.deck=[];this.drawCursor=0;this.wanTile=null;this.wanKey=null;this.bankerSeat=1;this.currentSeat=1;this.phase='waiting';this.lastDiscard=null;this.gangCount=0;this.handStartSeat=1;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false;this.result=null}
+newRound(banker){if(banker!=null)this.bankerSeat=banker;this.handStartSeat=this.bankerSeat;for(const p of this.players){p.hand=[];p.melds=[];p.discards=[];p.isGongzhu=false}this.gangCount=0;this.isFirstDraw=[true,true,true,true];this.gangAfterDraw=false;this.lastDiscard=null;this.result=null;const full=shuffle(buildFullDeck());this.deck=full;this.drawCursor=0;this.phase='dealing'}
 dealTiles(wallStartIndex,wanTile){const start=wallStartIndex*2;const before=this.deck.slice(0,start);const after=this.deck.slice(start);this.deck=[...after,...before];this.wanTile=wanTile;this.wanKey=tileKey(wanTile);const order=[0,1,2,3].map(i=>(this.handStartSeat+i)%4);let cursor=0;for(let round=0;round<3;round++)for(const seat of order)for(let k=0;k<4;k++){this.players[seat].hand.push(this.deck[cursor++])}for(let i=0;i<4;i++){const seat=order[i];const extra=i===0?2:1;for(let k=0;k<extra;k++)this.players[seat].hand.push(this.deck[cursor++])}this.drawCursor=cursor;for(let i=0;i<4;i++)this.players[i].hand=sortHand(this.players[i].hand);this.currentSeat=this.handStartSeat;this.phase='draw'}
 findStartDarkGang(){const r=[];for(let i=0;i<4;i++){const fk=findDarkGangFeng(this.players[i].hand);if(fk.length>0)r.push({seat:i,fengKeys:fk})}return r}
 executeStartDarkGang(seat,fengKey){const p=this.players[seat];const removed=[],remaining=[];for(const t of p.hand){if(tileKey(t)===fengKey&&removed.length<4)removed.push(t);else remaining.push(t)}p.hand=remaining;p.melds.push({type:'darkKong',tiles:removed,isAnGang:true});this.gangCount++;this.drawCursor++;if(this.drawCursor<this.deck.length){p.hand.push(this.deck[this.drawCursor++]);p.hand=sortHand(p.hand)}}
 drawTile(seat){if(this.phase!=='draw'||seat!==this.currentSeat||!this.canDraw())return null;const tile=this.deck[this.drawCursor++];this.players[seat].hand.push(tile);this.players[seat].hand=sortHand(this.players[seat].hand);this.phase='discard';this.isFirstDraw[seat]=false;const hu=this.checkZiMoHu(seat);return{tile,hu}}
 canDraw(){const r=this.deck.length-this.drawCursor;const ld=liuJuDun(this.gangCount);if(ld===0)return false;return r>ld*2}
 checkZiMoHu(seat){const p=this.players[seat];if(p.isGongzhu)return null;const hr=checkHu(p.hand,p.melds,this.wanTile);if(!hr)return null;const opts={isZiMo:true};const isB=seat===this.handStartSeat;opts.isTian=isB&&p.melds.length===0;this.isFirstDraw[seat]=false;opts.isDi=!isB&&this.isFirstDraw[seat]===false&&p.melds.length===0;opts.isGangShangHua=this.gangAfterDraw;const rem=this.deck.length-this.drawCursor;const ld=liuJuDun(this.gangCount);opts.isHaiDiLaoYue=rem<=ld*2+1;const mc=p.melds.filter(m=>m.type==='pong'||m.type==='kong'||m.type==='buKong').length;opts.isDaDiaoChe=mc>=3&&p.hand.length<=2;if(this.wanTile){const wk=tileKey(this.wanTile);const wc=p.hand.filter(t=>tileKey(t)===wk).length;opts.isHuangDiao=mc>=3&&p.hand.length===2&&wc>=1}const fp=calcFenpai(hr,p.hand,p.melds,this.wanTile,opts);return{huResult:hr,opts,fenpai:fp}}
-discard(seat,idx){if(this.phase!=='discard'||seat!==this.currentSeat)return null;const p=this.players[seat];const[d]=p.hand.splice(idx,1);p.hand=sortHand(p.hand);this.lastDiscard={tile:d,fromSeat:seat};this.phase='action';if(this.wanTile&&tileKey(d)===this.wanKey)p.isGongzhu=true;this.gangAfterDraw=false;return d}
+discard(seat,idx){if(this.phase!=='discard'||seat!==this.currentSeat)return null;const p=this.players[seat];const[d]=p.hand.splice(idx,1);p.hand=sortHand(p.hand);p.discards=p.discards||[];p.discards.push(d);this.lastDiscard={tile:d,fromSeat:seat};this.phase='action';if(this.wanTile&&tileKey(d)===this.wanKey)p.isGongzhu=true;this.gangAfterDraw=false;return d}
 canPong(ds,ts){if(!this.lastDiscard||ts===ds)return false;const p=this.players[ts];if(p.isGongzhu)return false;const t=this.lastDiscard.tile;if(!canPongOrKong(t,this.wanTile))return false;const tk=tileKey(t),wk=this.wanKey;return p.hand.filter(x=>tileKey(x)===tk&&(!wk||tileKey(x)!==wk)).length>=2}
 executePong(ts){const p=this.players[ts];const t=this.lastDiscard.tile;const tk=tileKey(t),wk=this.wanKey;const removed=[],remaining=[];for(const x of p.hand){if(removed.length<2&&tileKey(x)===tk&&(!wk||tileKey(x)!==wk))removed.push(x);else remaining.push(x)}if(removed.length<2){const sr=remaining.slice();remaining.length=0;for(const x of sr){if(removed.length<2&&tileKey(x)===tk)removed.push(x);else remaining.push(x)}}p.hand=sortHand(remaining);p.melds.push({type:'pong',tiles:[t,...removed]});this.lastDiscard=null;this.currentSeat=ts;this.phase='discard'}
 canMingGang(ds,ts){if(!this.lastDiscard||ts===ds)return false;const p=this.players[ts];if(p.isGongzhu)return false;const t=this.lastDiscard.tile;if(!canPongOrKong(t,this.wanTile))return false;const tk=tileKey(t),wk=this.wanKey;return p.hand.filter(x=>tileKey(x)===tk&&(!wk||tileKey(x)!==wk)).length>=3}
 executeMingGang(ts){const p=this.players[ts];const t=this.lastDiscard.tile;const tk=tileKey(t),wk=this.wanKey;const removed=[],remaining=[];for(const x of p.hand){if(removed.length<3&&tileKey(x)===tk&&(!wk||tileKey(x)!==wk))removed.push(x);else remaining.push(x)}if(removed.length<3){const sr=remaining.slice();remaining.length=0;for(const x of sr){if(removed.length<3&&tileKey(x)===tk)removed.push(x);else remaining.push(x)}}p.hand=sortHand(remaining);p.melds.push({type:'kong',tiles:[t,...removed]});this.gangCount++;this.lastDiscard=null;if(this.drawCursor<this.deck.length){p.hand.push(this.deck[this.drawCursor++]);p.hand=sortHand(p.hand)}this.currentSeat=ts;this.phase='discard';this.gangAfterDraw=true}
 canBuKong(ts){const p=this.players[ts];if(p.isGongzhu)return false;const wk=this.wanKey;const pm=p.melds.filter(m=>m.type==='pong');for(const m of pm){const k=tileKey(m.tiles[0]);if(p.hand.filter(x=>tileKey(x)===k&&(!wk||tileKey(x)!==wk)).length>=1)return true}return false}
 executeBuKong(ts,mi){const p=this.players[ts];const m=p.melds[mi];if(m.type!=='pong')return false;const k=tileKey(m.tiles[0]),wk=this.wanKey;const removed=[],remaining=[];for(const x of p.hand){if(removed.length<1&&tileKey(x)===k&&(!wk||tileKey(x)!==wk))removed.push(x);else remaining.push(x)}if(removed.length<1){const sr=remaining.slice();remaining.length=0;for(const x of sr){if(removed.length<1&&tileKey(x)===k)removed.push(x);else remaining.push(x)}}p.hand=sortHand(remaining);m.type='buKong';m.tiles.push(...removed);this.gangCount++;if(this.drawCursor<this.deck.length){p.hand.push(this.deck[this.drawCursor++]);p.hand=sortHand(p.hand)}this.gangAfterDraw=true;return true}
+findAnGangKeys(ts){const p=this.players[ts];if(!p||p.isGongzhu)return[];const cnt=countTiles(p.hand);const r=[];for(const[k,c]of cnt){if(c===4&&k!==this.wanKey)r.push(k)}return r}
+canAnGang(ts){return this.findAnGangKeys(ts).length>0}
+executeAnGang(ts,key){const p=this.players[ts];const removed=[],remaining=[];for(const x of p.hand){if(tileKey(x)===key&&removed.length<4)removed.push(x);else remaining.push(x)}if(removed.length!==4)return false;p.hand=sortHand(remaining);p.melds.push({type:'darkKong',tiles:removed,isAnGang:true});this.gangCount++;if(this.drawCursor<this.deck.length){p.hand.push(this.deck[this.drawCursor++]);p.hand=sortHand(p.hand)}this.phase='discard';this.gangAfterDraw=true;return true}
+findBuKongMelds(ts){const p=this.players[ts];if(!p||p.isGongzhu)return[];const wk=this.wanKey;const r=[];p.melds.forEach((m,mi)=>{if(m.type!=='pong')return;const k=tileKey(m.tiles[0]);if(k!==wk&&p.hand.some(x=>tileKey(x)===k))r.push({mi:mi,key:k})});return r}
 resolveActionPriority(ds){const c=[];for(let i=1;i<=3;i++){const s=(ds+i)%4;if(this.canMingGang(ds,s))c.push({seat:s,action:'mingGang'});else if(this.canPong(ds,s))c.push({seat:s,action:'pong'})}if(c.length===0)return null;return c.reduce((a,b)=>((a.seat-ds+4)%4)<=((b.seat-ds+4)%4)?a:b)}
 passAction(){this.lastDiscard=null;this.currentSeat=(this.currentSeat+1)%4;this.phase='draw'}
 settle(ws,hi){const w=this.players[ws];const fp=hi.fenpai;const base=1;const pay=[];for(let i=0;i<4;i++){if(i===ws)continue;const amt=base*fp.totalMultiplier;w.scores+=amt;this.players[i].scores-=amt;pay.push({from:i,to:ws,amount:amt})}this.phase='gameover';return{winnerSeat:ws,fenpai:fp,payments:pay,totalMultiplier:fp.totalMultiplier}}
@@ -209,59 +256,90 @@ async createRoom(c){this.isHost=true;this.roomCode=c;this.topic='qhd-mj/'+c;this
 async joinRoom(c,name){this.isHost=false;this.roomCode=c;this.topic='qhd-mj/'+c;this.myId='g'+Math.random().toString(36).slice(2,8);await this._c();await this._s();await this._p({type:'join',from:this.myId,name:name||'玩家',isHost:false});return this.myId}
 broadcast(obj){this._p(obj)}
 async leave(){await this._p({type:'leave',from:this.myId});await this._u();if(this.client)this.client.end(true)}
-_c(){return new Promise((rs,rj)=>{if(typeof mqtt==='undefined'){rj(new Error('MQTT.js 未加载，请检查网络'));return}this.client=mqtt.connect(MahjongNet.MQTT_URL,{clientId:this.myId,clean:true,connectTimeout:10000,reconnectPeriod:0});this.client.on('connect',()=>{this._ok=true;while(this._buf.length){const t=this._buf.shift();this.client.publish(this.topic,JSON.stringify(t),{qos:1})}rs()});this.client.on('message',(tp,pld)=>{try{const m=JSON.parse(pld.toString());if(m.from===this.myId)return;this._h(m)}catch(e){}});this.client.on('error',(e)=>{if(!this._ok)rj(e)});this.client.on('close',()=>{if(this._ok)this.onMsg('disconnected',{});this._ok=false});setTimeout(()=>{if(!this._ok){try{this.client.end(true)}catch(e){}rj(new Error('连接超时(15s)，请检查网络或稍后重试'))}},15000)})}
+_c(){return new Promise((rs,rj)=>{if(typeof mqtt==='undefined'){rj(new Error('MQTT.js 未加载，请检查网络'));return}this.client=mqtt.connect(MahjongNet.MQTT_URL,{clientId:this.myId,clean:true,connectTimeout:10000,reconnectPeriod:0});this.client.on('connect',()=>{this._ok=true;while(this._buf.length){const t=this._buf.shift();this.client.publish(this.topic,JSON.stringify(t),{qos:1})}rs()});this.client.on('message',(tp,pld)=>{try{const m=JSON.parse(pld.toString());if(m.from===this.myId)return;if(m.to&&m.to!==this.myId)return;this._h(m)}catch(e){}});this.client.on('error',(e)=>{if(!this._ok)rj(e)});this.client.on('close',()=>{if(this._ok)this.onMsg('disconnected',{});this._ok=false});setTimeout(()=>{if(!this._ok){try{this.client.end(true)}catch(e){}rj(new Error('连接超时(15s)，请检查网络或稍后重试'))}},15000)})}
 _s(){return new Promise(rs=>this.client.subscribe(this.topic,{qos:1},()=>rs()))}
 _u(){return new Promise(rs=>{if(!this.client)return rs();this.client.unsubscribe(this.topic,()=>rs())})}
-_p(m){if(!this._seq)this._seq=0;m.seq=++this._seq;const p=JSON.stringify(m);if(!this._ok||!this.client){this._buf.push(m);return}this.client.publish(this.topic,p,{qos:1})}
-_h(m){switch(m.type){case'state':this.onMsg('state',m.data);break;case'action':this.onMsg('action',{fromPeerId:m.from,action:m.data});break;case'join':this.onMsg('peer-join',{peerId:m.from,name:m.name,isHost:m.isHost});break;case'leave':this.onMsg('peer-leave',{peerId:m.from});break;case'start-game':this.onMsg('start-game',{players:m.players,mySeat:m.mySeat});break}}
+_p(m){if(!this._seq)this._seq=0;if(!m.from)m.from=this.myId;m.seq=++this._seq;const p=JSON.stringify(m);if(!this._ok||!this.client){this._buf.push(m);return}this.client.publish(this.topic,p,{qos:1})}
+_h(m){switch(m.type){case'state':this.onMsg('state',m.data);break;case'action':this.onMsg('action',{fromPeerId:m.from,action:m.action});break;case'join':this.onMsg('peer-join',{peerId:m.from,name:m.name,isHost:m.isHost});break;case'leave':this.onMsg('peer-leave',{peerId:m.from});break;case'start-game':this.onMsg('start-game',{players:m.players,mySeat:m.mySeat});break;case'roster':this.onMsg('roster',m.data);break;case'notice':this.onMsg('notice',{text:m.text});break}}
 destroy(){try{this.client&&this.client.end(true)}catch(e){}this.client=null;this._ok=false}
 }
 
 /* ===== ui.js ===== */
 let game=null,net=null,mode='single',mySeat=0,selIdx=-1,curCode=null;
+let hostPeers=[],pending=null,promptSeq=1,onlineStarting=false,gameStarted=false,remotePrompt=null,shownResultId=null;
 function setMode(m){mode=m;document.getElementById('btn-single').classList.toggle('active',m==='single');document.getElementById('btn-online').classList.toggle('active',m==='online');document.getElementById('lobby-single').style.display=m==='single'?'block':'none';document.getElementById('lobby-online').style.display=m==='online'?'block':'none'}
 const SC={w:'万',b:'饼',t:'条'};
 const FC=['东','南','西','北'];const JC=['中','发','白'];
-function td(t){if(SUITS.includes(t.suit))return{text:t.value+SC[t.suit],cls:[t.suit]};if(t.suit==='f')return{text:FC[t.value-1],cls:['feng']};return{text:JC[t.value-1],cls:['jian']}}
-function renderTile(t,w=false,f=true){const el=document.createElement('span');el.className='tile';if(f){const d=td(t);el.classList.add('tile-face',...d.cls,d.cls[0]+'-zi');if(w)el.classList.add('wan-tile');el.textContent=d.text}else el.classList.add('tile-back');return el}
+const NUMCN=['','一','二','三','四','五','六','七','八','九'];
+const DOT_PAT={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8],7:[0,2,3,4,5,6,8],8:[0,1,2,3,5,6,7,8],9:[0,1,2,3,4,5,6,7,8]};
+function td(t){if(SUITS.includes(t.suit))return{text:t.value+SC[t.suit]};if(t.suit==='f')return{text:FC[t.value-1]};return{text:JC[t.value-1]}}
+function faceHTML(t){
+ if(t.suit==='w')return '<i class="tk-num">'+NUMCN[t.value]+'</i><i class="tk-suit">萬</i>';
+ if(t.suit==='b'){const on=DOT_PAT[t.value];let h='<span class="dots">';for(let i=0;i<9;i++){const has=on.indexOf(i)>=0;const red=i===4||t.value===1;h+='<i class="'+(has?(red?'dot r':'dot'):'dot e')+'"></i>'}return h+'</span>'}
+ if(t.suit==='t'){const on=DOT_PAT[t.value];let h='<span class="bars">';for(let i=0;i<9;i++){if(on.indexOf(i)>=0)h+='<i'+(t.value===1?' class="r"':'')+'></i>';else h+='<i class="e"></i>'}return h+'</span>'}
+ if(t.suit==='f')return '<i class="tk-zi">'+FC[t.value-1]+'</i>';
+ if(t.value===1)return '<i class="tk-zi">中</i>';if(t.value===2)return '<i class="tk-zi">發</i>';return '<i class="bai-frame"></i>';
+}
+function renderTile(t,w=false,f=true){const el=document.createElement('span');el.className='tile';if(!f){el.classList.add('tile-back');return el}el.classList.add('tile-face');if(!t||t.suit==='w')el.classList.add('w');else if(t.suit==='b')el.classList.add('b');else if(t.suit==='t')el.classList.add('t');else if(t.suit==='f')el.classList.add('feng');else el.classList.add(t.value===1?'j-zhong':t.value===2?'j-fa':'j-bai');el.innerHTML=faceHTML(t);if(w)el.classList.add('wan-tile');return el}
 function enterTable(){document.getElementById('lobby').style.display='none';document.getElementById('table').style.display='block'}
-function renderAll(){if(!game)return;for(let i=0;i<4;i++)renderSeat(i);renderCenter();renderActions()}
-function renderSeat(seat){const el=document.getElementById('seat-'+seat);const p=game.players[seat];const isMe=mode==='single'||seat===mySeat;const isBanker=game.bankerSeat===seat;const nameEl=el.querySelector('.name');nameEl.textContent=SEATS[seat]+(isBanker?' · 庄':'');nameEl.classList.toggle('host',isBanker);const hb=el.querySelector('.hand-back');const hm=el.querySelector('.hand-me');hb.innerHTML='';hm.innerHTML='';if(isMe){const h=p.hand||[];h.forEach((t,idx)=>{const w=game.wanTile&&tileKey(t)===tileKey(game.wanTile);const te=renderTile(t,w,true);if(game.phase==='discard'&&game.currentSeat===seat&&!p.isGongzhu){te.onclick=()=>selectTile(idx);te.style.cursor='pointer'}if(idx===selIdx)te.style.boxShadow='0 0 0 2px #e9c46a';hm.appendChild(te)});hm.style.display='flex';hb.style.display='none'}else{const pc=p.handCount!==undefined?p.handCount:(p.hand?p.hand.length:0);for(let k=0;k<pc;k++)hb.appendChild(renderTile(null,false,false));hm.style.display='none';hb.style.display='flex'}const mEl=el.querySelector('.meld-row');mEl.innerHTML='';(p.melds||[]).forEach(m=>{const g=document.createElement('div');g.className='meld-group';m.tiles.forEach(t=>{const showBack=m.isAnGang&&(m.tiles.indexOf(t)===0||m.tiles.indexOf(t)===3);g.appendChild(renderTile(t,false,!showBack))});mEl.appendChild(g)})}
-function renderCenter(){const info=document.getElementById('center-info');const g=game;let pt='';switch(g.phase){case'waiting':pt='等待开始';break;case'dealing':pt='发牌中...';break;case'draw':pt=SEATS[g.currentSeat]+'家摸牌';break;case'discard':pt=SEATS[g.currentSeat]+'家出牌';break;case'action':pt='碰杠判定中...';break;case'gameover':pt='本局结束';break}let wh='';if(g.wanTile){const d=td(g.wanTile);wh='混儿：'+d.text+'（1张） | 杠数：'+g.gangCount}info.innerHTML='<div class="phase">'+pt+'</div>'+(wh?'<div class="wan-info">'+wh+'</div>':'')}
-function selectTile(idx){const p=game.players[game.currentSeat];if(p.isGongzhu)return;const me=mode==='single'||(net&&net.isHost);if(!me){if(!net)return;net.broadcast({type:'action',action:{type:'discard',seat:game.currentSeat,tileIndex:idx}});return}game.discard(game.currentSeat,idx);selIdx=-1;renderAll();afterDiscard()}
-function afterDiscard(){const ds=game.lastDiscard.fromSeat;const act=game.resolveActionPriority(ds);if(act){setTimeout(()=>{if(act.action==='pong'){logMsg(SEATS[act.seat]+'家碰！');game.executePong(act.seat)}else{logMsg(SEATS[act.seat]+'家明杠！');game.executeMingGang(act.seat)}renderAll();afterPongGang();broadcastFull()},400)}else{setTimeout(()=>{game.passAction();nextSeatDraw()},300)}}
-function afterPongGang(){renderAll();broadcastFull();if(mode==='single'&&game.currentSeat!==mySeat){setTimeout(()=>aiDiscard(game.currentSeat),650)}}
-function nextSeatDraw(){if(!game.canDraw()){const r=game.settleLiuJu();logMsg('🚫 流局！');showResult(r);broadcastFull();return}const ns=game.currentSeat;const r=game.drawTile(ns);renderAll();if(r&&r.hu){handleZiMoHu(ns,r.hu);broadcastFull()}else{renderAll();broadcastFull();if(mode==='single'&&ns!==mySeat){setTimeout(()=>aiDiscard(ns),650)}}}
-function aiDiscard(seat){if(game.phase!=='discard'||game.currentSeat!==seat)return;const p=game.players[seat];if(!p.hand||p.hand.length===0)return;let idx=Math.floor(Math.random()*p.hand.length);game.discard(seat,idx);renderAll();afterDiscard()}
-function handleZiMoHu(s,hi){logMsg('🎉 '+SEATS[s]+'家自摸胡！');const r=game.settle(s,hi);showResult(r)}
+/* 以我为中心视角：dom位置 0底 1顶 2左 3右 → 逻辑座位 */
+function viewMap(){const m=mySeat||0;return[m,(m+2)%4,(m+3)%4,(m+1)%4]}
+function renderAll(){if(!game)return;const vm=viewMap();for(let dom=0;dom<4;dom++)renderSeat(dom,vm[dom]);renderCenter();renderActions()}
+function renderSeat(dom,seat){const el=document.getElementById('seat-'+dom);const p=game.players[seat];const isMe=seat===mySeat;const isBanker=game.bankerSeat===seat;const nameEl=el.querySelector('.name');nameEl.textContent=SEATS[seat]+(isBanker?' · 庄':'')+(isMe?'（我）':'');nameEl.classList.toggle('host',isBanker);nameEl.classList.toggle('cur',game.phase==='discard'&&game.currentSeat===seat);const hb=el.querySelector('.hand-back');const hm=el.querySelector('.hand-me');hb.innerHTML='';hm.innerHTML='';if(isMe){const h=p.hand||[];h.forEach((t,idx)=>{const w=game.wanTile&&tileKey(t)===tileKey(game.wanTile);const te=renderTile(t,w,true);if(game.phase==='discard'&&game.currentSeat===seat&&!p.isGongzhu){te.onclick=()=>selectTile(idx);te.style.cursor='pointer'}if(idx===selIdx)te.classList.add('sel');hm.appendChild(te)});hm.style.display='flex';hb.style.display='none'}else{const pc=p.handCount!==undefined?p.handCount:(p.hand?p.hand.length:0);for(let k=0;k<pc;k++)hb.appendChild(renderTile(null,false,false));hm.style.display='none';hb.style.display='flex'}const mEl=el.querySelector('.meld-row');mEl.innerHTML='';(p.melds||[]).forEach(m=>{const g=document.createElement('div');g.className='meld-group';m.tiles.forEach(t=>{const showBack=m.isAnGang&&(m.tiles.indexOf(t)===0||m.tiles.indexOf(t)===3);g.appendChild(renderTile(t,false,!showBack))});mEl.appendChild(g)});const dr=el.querySelector('.discard-row');dr.innerHTML='';(p.discards||[]).slice(-15).forEach(t=>dr.appendChild(renderTile(t,false,true)))}
+function renderCenter(){const info=document.getElementById('center-info');const g=game;let pt='';switch(g.phase){case'waiting':pt='等待开始';break;case'dealing':pt='发牌中...';break;case'draw':pt=SEATS[g.currentSeat]+'家摸牌';break;case'discard':pt='轮到 '+SEATS[g.currentSeat]+'家 出牌';break;case'action':pt='等待 碰/杠 选择...';break;case'gameover':pt='本局结束';break}let wh='';if(g.wanTile){wh='混儿：'+td(g.wanTile).text+'（1张） | 杠数：'+g.gangCount}let ld='';if(g.lastDiscard)ld='<div style="margin-top:6px;font-size:12px;color:#a9d6e5">刚打出：'+td(g.lastDiscard.tile).text+'</div>';info.innerHTML='<div class="phase">'+pt+'</div>'+(wh?'<div class="wan-info">'+wh+'</div>':'')+ld}
+function selectTile(idx){const seat=game.currentSeat;const p=game.players[seat];if(p.isGongzhu)return;if(mode==='single'||(net&&net.isHost)){doDiscard(seat,idx)}else{if(!net)return;net.broadcast({type:'action',action:{type:'discard',seat:seat,tileIndex:idx}})}}
+function mkId(){return Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36)}
+function isAI(s){return mode==='single'&&s!==mySeat}
+/* ===== 主机仲裁：出牌后的碰/杠请求 ===== */
+function doDiscard(seat,idx){const p=game.players[seat];if(!p||idx<0||idx>=p.hand.length)return;if(pending&&pending.kind==='self'&&pending.seat===seat){clearTimeout(pending.timer);pending=null}const d=game.discard(seat,idx);if(!d)return;selIdx=-1;renderAll();broadcastFull();afterDiscard()}
+function afterDiscard(){const ds=game.lastDiscard.fromSeat;const offers={};for(let i=1;i<=3;i++){const s=(ds+i)%4;const ch=[];if(game.canMingGang(ds,s))ch.push('gang');if(game.canPong(ds,s))ch.push('pong');if(ch.length)offers[s]=ch}const seats=Object.keys(offers).map(Number);if(!seats.length){game.passAction();renderAll();broadcastFull();nextSeatDraw();return}const id=promptSeq++;pending={id:id,kind:'claim',ds:ds,offers:offers,responses:{},timer:null};seats.forEach(s=>{if(isAI(s))setTimeout(()=>claimAnswer(s,aiClaimChoice(offers[s]),id),400+Math.random()*500)});pending.timer=setTimeout(()=>{if(!pending||pending.id!==id)return;seats.forEach(s=>{if(!pending.responses[s])pending.responses[s]='pass'});resolveClaim(id)},18000);renderAll();broadcastFull()}
+function aiClaimChoice(ch){if(ch.indexOf('gang')>=0&&Math.random()<0.5)return 'gang';if(ch.indexOf('pong')>=0&&Math.random()<0.5)return 'pong';return 'pass'}
+function claimAnswer(seat,choice,id){if(!pending||pending.kind!=='claim'||pending.id!==id)return;if(pending.responses[seat])return;if(pending.offers[seat].indexOf(choice)<0&&choice!=='pass')return;pending.responses[seat]=choice;const seats=Object.keys(pending.offers).map(Number);renderAll();broadcastFull();if(seats.every(s=>pending.responses[s])){clearTimeout(pending.timer);resolveClaim(id)}}
+function resolveClaim(id){if(!pending||pending.id!==id)return;const pp=pending;pending=null;let winner=-1,choice=null;for(let i=1;i<=3;i++){const s=(pp.ds+i)%4;const c=pp.responses[s];if(c==='gang'){winner=s;choice='gang';break}if(c==='pong'&&winner<0){winner=s;choice='pong'}}if(winner<0){game.passAction();renderAll();broadcastFull();nextSeatDraw();return}if(choice==='gang'){game.executeMingGang(winner);sendNotice('▶ '+SEATS[winner]+'家 明杠')}else{game.executePong(winner);sendNotice('▶ '+SEATS[winner]+'家 碰')}renderAll();broadcastFull();beginSelfTurn(winner,choice==='gang')}
+/* ===== 摸牌后的自摸/暗杠/补杠/出牌 ===== */
+function nextSeatDraw(){if(!game.canDraw()){const r=game.settleLiuJu();r._id=mkId();game.result=r;sendNotice('🚫 流局');shownResultId=r._id;renderAll();showResult(r);flushBroadcast();return}const ns=game.currentSeat;game.drawTile(ns);renderAll();broadcastFull();beginSelfTurn(ns)}
+function beginSelfTurn(seat,drawn){if(drawn===undefined)drawn=true;const hu=drawn?game.checkZiMoHu(seat):null;const ak=drawn?game.findAnGangKeys(seat):[];const bk=drawn?game.findBuKongMelds(seat):[];const id=promptSeq++;pending={id:id,kind:'self',seat:seat,huInfo:hu,angangKeys:ak,bukong:bk,timer:null};if(isAI(seat)){setTimeout(aiSelfAction,550+Math.random()*450)}else{pending.timer=setTimeout(()=>{if(!pending||pending.id!==id)return;const h=game.players[seat].hand;if(h.length)doDiscard(seat,Math.floor(Math.random()*h.length))},30000)}renderAll();broadcastFull()}
+function aiSelfAction(){if(!pending||pending.kind!=='self')return;const s=pending.seat;if(pending.huInfo&&Math.random()<0.92){selfAnswer(s,'hu',null,pending.id);return}if(pending.angangKeys.length&&Math.random()<0.35){selfAnswer(s,'angang',pending.angangKeys[0],pending.id);return}if(pending.bukong.length&&Math.random()<0.3){selfAnswer(s,'bukong',pending.bukong[0].mi,pending.id);return}const h=game.players[s].hand;doDiscard(s,Math.floor(Math.random()*h.length))}
+function selfAnswer(seat,choice,payload,id){if(!pending||pending.kind!=='self'||pending.id!==id||pending.seat!==seat)return;const rearm=()=>{pending.timer=setTimeout(()=>{if(pending&&pending.id===id){const h=game.players[seat].hand;if(h.length)doDiscard(seat,Math.floor(Math.random()*h.length))}},30000)};if(choice==='hu'){if(!pending.huInfo){rearm();return}const hi=pending.huInfo;pending=null;handleZiMoHu(seat,hi);return}if(choice==='angang'){if(!game.executeAnGang(seat,payload)){rearm();return}sendNotice('▶ '+SEATS[seat]+'家 暗杠');pending=null;renderAll();broadcastFull();beginSelfTurn(seat);return}if(choice==='bukong'){if(!game.executeBuKong(seat,payload|0)){rearm();return}sendNotice('▶ '+SEATS[seat]+'家 补杠');pending=null;renderAll();broadcastFull();beginSelfTurn(seat);return}}
+function handleZiMoHu(s,hi){const r=game.settle(s,hi);r._id=mkId();game.result=r;shownResultId=r._id;sendNotice('🎉 '+SEATS[s]+'家自摸胡！'+r.totalMultiplier+'倍');renderAll();showResult(r);flushBroadcast()}
 function showResult(r){renderAll();const o=document.getElementById('result-overlay');const t=document.getElementById('result-title');const tot=document.getElementById('result-total');const d=document.getElementById('result-detail');if(r.liuju){t.textContent='🚫 流局';tot.textContent='无人得分';d.textContent=''}else{t.textContent='🎉 自摸胡！';tot.textContent=r.totalMultiplier+' 倍';const fl=r.fenpai.fans.map(f=>f.name+'('+f.m+')').join(' × ');d.innerHTML='番型：'+fl+'<br>赢家：'+SEATS[r.winnerSeat]+'<br>'+r.payments.map(p=>SEATS[p.from]+' → '+SEATS[p.to]+'：'+p.amount+'分').join('<br>')}o.style.display='flex'}
-function closeResult(){document.getElementById('result-overlay').style.display='none';if(game.phase==='gameover'){if(mode==='single')startGame();else{logMsg('等待主机下一局...');game.phase='waiting';renderAll();broadcastFull()}}}
+function closeResult(){document.getElementById('result-overlay').style.display='none';if(mode==='single'&&game.phase==='gameover')startGame();else if(mode==='online'&&net&&net.isHost&&game.phase==='gameover')sendNotice('本局结束，主机可退出重建房间开始下一局')}
 function logMsg(m){const l=document.getElementById('msg-log');const d=document.createElement('div');d.textContent=m;l.appendChild(d);l.scrollTop=l.scrollHeight}
-function renderActions(){const b=document.getElementById('action-bar');b.innerHTML='';b.style.display='none';if(!game)return}
+function sendNotice(t){logMsg(t);if(mode==='online'&&net&&net.isHost)net.broadcast({type:'notice',from:net.myId,text:t})}
+/* ===== 碰/杠/胡 选择按钮 ===== */
+function promptFor(seat){if(!pending)return null;if(pending.kind==='claim'){if(pending.offers[seat]&&!pending.responses[seat])return{id:pending.id,kind:'claim',choices:pending.offers[seat]};return null}if(pending.kind==='self'&&pending.seat===seat)return{id:pending.id,kind:'self',canHu:!!pending.huInfo,angangKeys:pending.angangKeys,bukong:pending.bukong};return null}
+function activePrompt(){if(mode==='online'&&net&&!net.isHost)return remotePrompt;return promptFor(mySeat)}
+function keyTile(k){return{suit:k[0],value:parseInt(k.slice(1),10)}}
+function renderActions(){const b=document.getElementById('action-bar');b.innerHTML='';const pr=game?activePrompt():null;if(!pr){b.style.display='none';return}b.style.display='flex';const mk=(txt,cls,fn)=>{const x=document.createElement('button');x.className=cls;x.textContent=txt;x.onclick=fn;b.appendChild(x)};if(pr.kind==='claim'){if(pr.choices.indexOf('gang')>=0)mk('杠','b-gang',()=>sendResp('gang'));if(pr.choices.indexOf('pong')>=0)mk('碰','b-peng',()=>sendResp('pong'));mk('过','b-pass',()=>sendResp('pass'))}else{if(pr.canHu)mk('胡！','b-hu',()=>sendResp('hu'));pr.angangKeys.forEach(k=>mk('暗杠·'+td(keyTile(k)).text,'b-gang',()=>sendResp('angang',k)));pr.bukong.forEach(o=>mk('补杠·'+td(keyTile(o.key)).text,'b-gang',()=>sendResp('bukong',o.mi)));const h=document.createElement('div');h.className='action-hint';h.textContent='也可以直接点击手牌打出';b.appendChild(h)}}
+function sendResp(choice,payload){const pr=activePrompt();if(!pr)return;if(mode==='single'||(net&&net.isHost)){if(pr.kind==='claim')claimAnswer(mySeat,choice,pr.id);else selfAnswer(mySeat,choice,payload,pr.id)}else net.broadcast({type:'action',action:{type:'respond',kind:pr.kind,promptId:pr.id,choice:choice,payload:payload==null?null:payload}})}
 // ============ 单机模式 ============
-function startGame(){mode='single';mySeat=0;enterTable();hostStartGame()}
-function hostStartGame(){game=new QHDMahjongGame();const ws=Math.floor(Math.random()*34);const deck=shuffle(buildFullDeck());const wi=Math.floor(Math.random()*deck.length);const wt={suit:deck[wi].suit,value:deck[wi].value};const nw=nextTile(wt);const aw=findTile(deck,nw.suit,nw.value);game.newRound();game.dealTiles(ws,aw);logMsg('🎮 游戏开始');const dk=game.findStartDarkGang();for(const it of dk){logMsg(SEATS[it.seat]+'家起手风牌暗杠');game.executeStartDarkGang(it.seat,it.fengKeys[0])}renderAll();if(mode==='single'){setTimeout(()=>{nextSeatDraw()},600)}}
+function startGame(){mode='single';mySeat=0;pending=null;remotePrompt=null;shownResultId=null;gameStarted=false;hideWait();enterTable();hostStartGame()}
+function hostStartGame(){game=new QHDMahjongGame();const ws=Math.floor(Math.random()*34);const deck=shuffle(buildFullDeck());const wi=Math.floor(Math.random()*deck.length);const wt={suit:deck[wi].suit,value:deck[wi].value};const nw=nextTile(wt);const aw=findTile(deck,nw.suit,nw.value);game.newRound();game.dealTiles(ws,aw);sendNotice('🎮 游戏开始');const dk=game.findStartDarkGang();for(const it of dk){sendNotice(SEATS[it.seat]+'家起手风牌暗杠');game.executeStartDarkGang(it.seat,it.fengKeys[0])}game.phase='discard';renderAll();if(mode==='single'){setTimeout(()=>{beginSelfTurn(game.currentSeat)},600)}}
 // ============ 联机模式（主机仲裁） ============
-let hostPeers=[]; // [{peerId,seat,name,joined}] 主机维护
-async function createRoom(){const lb=document.getElementById('lobby-status');lb.textContent='连接 MQTT 服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{const code=MahjongNet.genRoomCode();await net.createRoom(code);curCode=code;hostPeers=[{peerId:net.myId,seat:0,name:'你(主机)',joined:true}];document.getElementById('create-info').innerHTML='房间号：<b>'+code+'</b><br>已加入：1/4';lb.textContent='✅ 房间已创建，把房间号发给朋友！';document.getElementById('start-bar').style.display='flex'}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
-async function joinRoom(){const code=document.getElementById('join-code').value.trim();if(!code){document.getElementById('lobby-status').textContent='请输入6位房间号';return}const lb=document.getElementById('lobby-status');lb.textContent='连接服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{await net.joinRoom(code,'玩家');curCode=code;lb.textContent='✅ 已连接，等待主机开始...'}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
-function netMsg(t,d){console.log('[NET]',t,d);const lb=document.getElementById('lobby-status');switch(t){case'peer-join':if(!net.isHost)break;if(!hostPeers.find(p=>p.peerId===d.peerId)){const nextSeat=hostPeers.length;if(nextSeat<4){hostPeers.push({peerId:d.peerId,seat:nextSeat,name:d.name||('玩家'+(nextSeat+1)),joined:true});logMsg('👥 '+d.name+' 加入（座位'+(nextSeat+1)+'）');lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}}break;case'peer-leave':if(!net.isHost)break;const i=hostPeers.findIndex(p=>p.peerId===d.peerId);if(i>=0){logMsg('👋 '+hostPeers[i].name+' 离开');hostPeers.splice(i,1);lb.textContent='✅ 已加入 '+hostPeers.length+'/4 人'}break;case'start-game':enterTable();mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';for(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 主机开始游戏...');break;case'state':applyRemoteState(d);break;case'disconnected':logMsg('❌ 连接断开');break;case'action':handlePeerAction(d);break}}
-function applyRemoteState(s){// 客户端/主机收到完整 state，重建 game 对象
-if(!game)game=new QHDMahjongGame();Object.assign(game,s.state);game.players=s.state.players;// 客户端只看别人背面，自己的手牌用 sendMyHand 还原
-renderAll();}
-function handlePeerAction(d){// 主机处理客户端发来的操作
-if(!game||game.phase==='gameover')return;switch(d.action.type){case'discard':game.discard(d.action.seat,d.action.tileIndex);selIdx=-1;renderAll();afterDiscard();break}}
-function serializeForClient(forPeerId){// 主机广播 state 给指定客户端，只脱敏给该客户端自己看真实手牌
-const peerSeat=hostPeers.find(p=>p.peerId===forPeerId)?.seat;
-const players=game.players.map((p,i)=>{const sendReal=(i===peerSeat);return{seat:p.seat,name:p.name,hand:sendReal?p.hand:[],handCount:p.hand.length,melds:p.melds,isGongzhu:p.isGongzhu}});
-return{state:{players,deck:game.deck,drawCursor:game.drawCursor,wanTile:game.wanTile,wanKey:game.wanKey,bankerSeat:game.bankerSeat,currentSeat:game.currentSeat,phase:game.phase,lastDiscard:game.lastDiscard,gangCount:game.gangCount,handStartSeat:game.handStartSeat,isFirstDraw:game.isFirstDraw,gangAfterDraw:game.gangAfterDraw}};}
-function broadcastFull(){// 主机广播完整 state 给所有人
-if(!net||!net.isHost)return;hostPeers.forEach(p=>{net.broadcast({type:'state',from:net.myId,data:serializeForClient(p.peerId)})});}
-function onlineHostStart(){// 联机主机点"开始游戏"
-if(!net||!net.isHost)return;if(hostPeers.length<2){document.getElementById('lobby-status').textContent='至少需要2人才能开始（你+朋友）';return}hostStartGame();// 单机和联机共用发牌逻辑
-// 广播 start-game 给所有客户端，让他们进入牌桌
-hostPeers.forEach(p=>{net.broadcast({type:'start-game',from:net.myId,players:hostPeers.map(h=>({seat:h.seat,name:h.name})),mySeat:p.seat})});// 主机自己也进入牌桌
-enterTable();mySeat=0;setTimeout(()=>broadcastFull(),500);setTimeout(()=>{nextSeatDraw();broadcastFull()},1500)}
+function rosterPeople(){return hostPeers.slice().sort((a,b)=>a.seat-b.seat).map(p=>({name:p.name,me:p.peerId===net.myId}))}
+function broadcastRoster(started){net.broadcast({type:'roster',from:net.myId,data:{roomCode:curCode,peers:rosterPeople(),count:hostPeers.length,started:!!started}})}
+function showWait(people,code){const w=document.getElementById('room-wait');w.style.display='flex';document.getElementById('rw-code').textContent=code||curCode||'------';const box=document.getElementById('rw-seats');box.innerHTML='';for(let i=0;i<4;i++){const p=people&&people[i];const d=document.createElement('div');d.className='rw-seat'+(p?' on':'');const nm=document.createElement('div');nm.textContent=p?p.name:'虚位以待';d.appendChild(nm);if(p&&p.me){const who=document.createElement('div');who.className='rw-who';who.textContent='（我）';d.appendChild(who)}box.appendChild(d)}const st=document.getElementById('rw-status');const n=people?people.filter(x=>x).length:0;st.textContent=n>=4?'人齐，即将开局…':'已加入 '+n+'/4 人，等待队友…'}
+function hideWait(){document.getElementById('room-wait').style.display='none'}
+async function createRoom(){mode='online';const lb=document.getElementById('lobby-status');lb.textContent='连接 MQTT 服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{const code=MahjongNet.genRoomCode();await net.createRoom(code);curCode=code;onlineStarting=false;gameStarted=false;hostPeers=[{peerId:net.myId,seat:0,name:'你(主机)',joined:true}];lb.textContent='✅ 房间已创建，进入等待';enterTable();showWait(rosterPeople(),code);broadcastRoster()}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
+async function joinRoom(){mode='online';const code=document.getElementById('join-code').value.trim();if(!code){document.getElementById('lobby-status').textContent='请输入6位房间号';return}const lb=document.getElementById('lobby-status');lb.textContent='连接服务器...';net=new MahjongNet((t,d)=>netMsg(t,d));try{await net.joinRoom(code,'玩家'+Math.floor(Math.random()*90+10));curCode=code;onlineStarting=false;gameStarted=false;lb.textContent='✅ 已连接，进入房间';enterTable();showWait([{name:'你（玩家）',me:true}],code)}catch(e){lb.textContent='❌ 连接失败：'+e.message}}
+function beginOnlineGame(){const arr=hostPeers.slice();for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}arr.forEach((p,i)=>p.seat=i);const mine=hostPeers.find(p=>p.peerId===net.myId);gameStarted=true;hostStartGame();arr.forEach(p=>{game.players[p.seat].name=p.name});const players=arr.slice().sort((a,b)=>a.seat-b.seat).map(p=>({seat:p.seat,name:p.name}));hostPeers.forEach(p=>{net.broadcast({type:'start-game',from:net.myId,to:p.peerId,players:players,mySeat:p.seat})});hideWait();mySeat=mine.seat;selIdx=-1;sendNotice('🎮 开局！混儿是「'+td(game.wanTile).text+'」');renderAll();setTimeout(broadcastFull,400);setTimeout(()=>{broadcastFull();beginSelfTurn(game.currentSeat)},1600)}
+function netMsg(t,d){console.log('[NET]',t,d);switch(t){
+case'peer-join':if(!net.isHost)break;if(!hostPeers.find(p=>p.peerId===d.peerId)){if(gameStarted){broadcastRoster(true);break}const ns=hostPeers.length;if(ns<4){hostPeers.push({peerId:d.peerId,seat:ns,name:d.name||('玩家'+(ns+1)),joined:true});sendNotice('👥 '+(d.name||'玩家')+' 加入房间');showWait(rosterPeople(),curCode);broadcastRoster();if(hostPeers.length>=4&&!onlineStarting){onlineStarting=true;showWait(rosterPeople(),curCode);setTimeout(beginOnlineGame,1400)}}}break;
+case'peer-leave':if(!net.isHost||gameStarted)break;const i=hostPeers.findIndex(p=>p.peerId===d.peerId);if(i>0){sendNotice('👋 '+hostPeers[i].name+' 离开');hostPeers.splice(i,1);showWait(rosterPeople(),curCode);broadcastRoster()}break;
+case'roster':if(gameStarted)break;if(d.started){document.getElementById('rw-status').textContent='牌局已开始，请等待下一局';break}showWait(d.peers,d.roomCode);break;
+case'start-game':enterTable();hideWait();gameStarted=true;remotePrompt=null;mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';for(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 游戏开始');break;
+case'state':applyRemoteState(d);break;
+case'notice':logMsg(d.text);break;
+case'disconnected':logMsg('❌ 网络连接断开，请刷新页面重进房间');break;
+case'action':if(net.isHost)handlePeerAction(d);break}}
+function applyRemoteState(s){if(!game)game=new QHDMahjongGame();const st=s.state;Object.assign(game,{deck:st.deck,drawCursor:st.drawCursor,wanTile:st.wanTile,wanKey:st.wanKey,bankerSeat:st.bankerSeat,currentSeat:st.currentSeat,phase:st.phase,lastDiscard:st.lastDiscard,gangCount:st.gangCount,handStartSeat:st.handStartSeat,isFirstDraw:st.isFirstDraw,gangAfterDraw:st.gangAfterDraw,result:st.result||null});game.players=st.players;remotePrompt=st.prompt||null;if(st.result&&st.result._id&&st.result._id!==shownResultId){shownResultId=st.result._id;showResult(st.result)}renderAll()}
+function handlePeerAction(d){if(!game||game.phase==='gameover')return;const a=d.action;const hp=hostPeers.find(p=>p.peerId===d.fromPeerId);const seat=hp?hp.seat:-1;if(a.type==='discard'){if(seat===a.seat)doDiscard(a.seat,a.tileIndex);return}if(a.type==='respond'){if(seat<0)return;if(a.kind==='claim')claimAnswer(seat,a.choice,a.promptId);else if(a.kind==='self')selfAnswer(seat,a.choice,a.payload,a.promptId)}}
+function serializeForClient(forPeerId){const hp=hostPeers.find(p=>p.peerId===forPeerId);const peerSeat=hp?hp.seat:-1;const players=game.players.map(p=>({seat:p.seat,name:p.name,hand:peerSeat===p.seat?p.hand:[],handCount:p.hand.length,melds:p.melds,discards:p.discards||[],isGongzhu:p.isGongzhu}));return{state:{players:players,deck:[],drawCursor:game.drawCursor,wanTile:game.wanTile,wanKey:game.wanKey,bankerSeat:game.bankerSeat,currentSeat:game.currentSeat,phase:game.phase,lastDiscard:game.lastDiscard,gangCount:game.gangCount,handStartSeat:game.handStartSeat,isFirstDraw:game.isFirstDraw,gangAfterDraw:game.gangAfterDraw,result:game.result||null,prompt:peerSeat>=0?promptFor(peerSeat):null}}}
+let bcTimer=null;
+function doBroadcast(){if(!net||!net.isHost||!game)return;hostPeers.forEach(p=>{net.broadcast({type:'state',from:net.myId,to:p.peerId,data:serializeForClient(p.peerId)})})}
+function broadcastFull(){if(!net||!net.isHost||!game)return;if(bcTimer)return;bcTimer=setTimeout(()=>{bcTimer=null;doBroadcast()},150)}
+function flushBroadcast(){if(bcTimer){clearTimeout(bcTimer);bcTimer=null}doBroadcast()}
+function onlineHostStart(){}
 setMode('single');
 </script>
 </body>
