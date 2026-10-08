@@ -24,8 +24,9 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .room-info b{color:#e9c46a;font-size:22px}
 .lobby-status{text-align:center;margin-top:14px;font-size:13px;color:#e9c46a;min-height:18px}
 #lobby .hint{margin-top:20px;font-size:11px;color:#5a7d6f;text-align:center;line-height:1.6}
-/* 横屏舞台：竖屏手机整体旋转90度，进入牌桌即横屏 */
-#stage{position:fixed;inset:0;overflow:hidden;touch-action:none}
+/* 横屏舞台：竖屏手机整体旋转90度，进入牌桌即横屏。容器本身不拦截点击，避免透明层盖住大厅按钮 */
+#stage{position:fixed;inset:0;overflow:hidden;touch-action:none;pointer-events:none}
+#table,#room-wait,#result-overlay{pointer-events:auto}
 @media (orientation:portrait) and ((pointer:coarse) or (max-width:620px)){
  #stage{top:0;left:0;right:auto;bottom:auto;width:100vh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg)}
 }
