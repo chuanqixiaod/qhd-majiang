@@ -30,25 +30,36 @@ button:disabled{opacity:.4;cursor:not-allowed}
 @media (orientation:portrait) and ((pointer:coarse) or (max-width:620px)){
  #stage{top:0;left:0;right:auto;bottom:auto;width:100vh;height:100vw;transform-origin:0 0;transform:translateX(100vw) rotate(90deg)}
 }
-/* 呢绒台布：竖向绒线 + 横向织线 + 中心光晕，双层叠加模拟布纹 */
+/* 呢绒台布：边缘暗角 + 顶部暖光 + 竖向绒线 + 横向织线 + 斜纹，多层叠加模拟布纹 */
 #table{display:none;position:absolute;inset:0;overflow:hidden;background:
- repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px),
+ radial-gradient(ellipse 120% 90% at 50% 50%,transparent 52%,rgba(0,0,0,.28) 82%,rgba(0,0,0,.5) 100%),
+ radial-gradient(ellipse 70% 42% at 50% 12%,rgba(233,196,106,.07),transparent 70%),
+ repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px),
  repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 1px,transparent 1px 3px),
- repeating-linear-gradient(45deg,rgba(255,255,255,.012) 0 2px,transparent 2px 5px),
- radial-gradient(ellipse at 50% 42%,#1b9678 0%,#117c63 42%,#0b5f4d 72%,#074235 100%);box-shadow:inset 0 0 0 1.8vh #241710,inset 0 0 0 2.05vh rgba(201,162,79,.92),inset 0 0 8vh rgba(0,0,0,.55)}
+ repeating-linear-gradient(45deg,rgba(255,255,255,.01) 0 2px,transparent 2px 5px),
+ radial-gradient(ellipse at 50% 44%,#1c9a7b 0%,#127f65 40%,#0b614e 70%,#073f33 100%);box-shadow:inset 0 0 0 1.8vh #241710,inset 0 0 0 2.05vh rgba(201,162,79,.92),inset 0 0 8vh rgba(0,0,0,.55)}
 /* 秦字暗纹（本地特色压花） */
 #table::before{content:'秦';position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-family:'STKaiti','KaiTi','STSong',serif;font-weight:700;font-size:36vh;line-height:1;color:transparent;text-shadow:0 -.25vh .15vh rgba(255,255,255,.06),0 .3vh .35vh rgba(0,0,0,.22);pointer-events:none;z-index:0}
 /* 金色缝线边框 */
 #table::after{content:'';position:absolute;inset:4.6vh;border:1.5px dashed rgba(216,184,108,.35);border-radius:3.4vh;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),0 0 0 1px rgba(0,0,0,.18);pointer-events:none;z-index:0}
 .tile{display:inline-flex;align-items:center;justify-content:center;font-weight:700;user-select:none;border-radius:5px;position:relative;font-style:normal;font-family:'STKaiti','KaiTi','STSong','SimSun',serif;flex:0 0 auto}
 .tile-face{background:linear-gradient(165deg,#fffef9 0%,#f8f1e3 48%,#ecdfc4 78%,#e2d2b2 100%);border:1px solid #b3a178;border-bottom-width:3px;border-radius:5px;box-shadow:0 2px 2px rgba(0,0,0,.35),0 4px 7px rgba(0,0,0,.3),inset 0 1px 0 #fff,inset 0 -4px 6px rgba(120,90,40,.18);color:#1c1c1c;overflow:hidden}
-.tile-face .tk-num{position:absolute;top:7%;left:0;right:0;text-align:center;font-size:.55em;color:#1a1a1a;line-height:1}
-.tile-face .tk-suit{position:absolute;bottom:3%;left:0;right:0;text-align:center;font-size:.64em;color:#c1121f;line-height:1}
-.tile-face .tk-zi{font-size:.92em;line-height:1;color:#17304a}
+.tile-face::before{content:'';position:absolute;top:0;left:6%;right:6%;height:40%;border-radius:0 0 50% 50%;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));pointer-events:none}
+.tile-face .tk-num{position:absolute;top:7%;left:0;right:0;text-align:center;font-size:.6em;color:#161616;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.65)}
+.tile-face .tk-suit{position:absolute;bottom:3%;left:0;right:0;text-align:center;font-size:.66em;color:#c1121f;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+.tile-face .tk-zi{font-size:.92em;line-height:1;color:#17304a;text-shadow:0 1px 0 rgba(255,255,255,.6)}
 .tile-face.j-zhong .tk-zi{color:#d83030}
 .tile-face.j-fa .tk-zi{color:#1e7d46}
-.tile-face .bai-frame{width:62%;height:68%;border:1.5px solid #3b7a68;border-radius:3px}
-.tile.wan-tile{box-shadow:0 0 0 2px #e9c46a,0 0 12px rgba(233,196,106,.7),0 4px 7px rgba(0,0,0,.35)}
+.tile-face .bai-frame{width:60%;height:66%;border:2px solid #2f6f86;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(47,111,134,.35),0 1px 0 rgba(255,255,255,.7)}
+/* 混儿牌：双层金边+呼吸金光，全场景醒目 */
+.tile.wan-tile{border-color:#d99a18;box-shadow:0 0 0 2px #ffd24a,0 0 0 3.4px rgba(176,112,8,.95),0 0 12px rgba(255,200,80,.8),0 4px 7px rgba(0,0,0,.35),inset 0 0 6px rgba(255,210,90,.55);animation:wanGlow 1.5s ease-in-out infinite}
+@keyframes wanGlow{0%,100%{box-shadow:0 0 0 2px #ffd24a,0 0 0 3.4px rgba(176,112,8,.95),0 0 9px rgba(255,200,80,.6),0 4px 7px rgba(0,0,0,.35),inset 0 0 5px rgba(255,210,90,.45)}50%{box-shadow:0 0 0 2px #ffe491,0 0 0 3.4px rgba(201,138,12,1),0 0 20px rgba(255,206,92,.98),0 4px 7px rgba(0,0,0,.35),inset 0 0 9px rgba(255,222,120,.8)}}
+.hand-me .tile.sel.wan-tile{box-shadow:0 0 0 2px #ffd24a,0 0 0 3.4px rgba(176,112,8,.95),0 0 20px rgba(255,206,92,.98),0 6px 10px rgba(0,0,0,.4)}
+/* 手牌混儿角标“混”字 */
+.hand-me .tile.wan-tile::after{content:'混';position:absolute;top:-.55vh;left:-.5vh;z-index:3;background:linear-gradient(135deg,#ffe7a0,#e6a317);color:#5c3800;font-size:1.05vh;line-height:1.35;font-weight:800;border-radius:3px;padding:0 .35vh;box-shadow:0 1px 3px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.7)}
+/* 混儿二次确认：红金急闪 */
+.hand-me .tile.wan-arm{border-color:#ff3b20;animation:wanArm .45s ease-in-out infinite!important}
+@keyframes wanArm{0%,100%{box-shadow:0 0 0 2px #ff8a66,0 0 0 4px rgba(214,40,40,.9),0 0 12px rgba(255,80,40,.8),0 4px 7px rgba(0,0,0,.35)}50%{box-shadow:0 0 0 2.5px #ffd24a,0 0 0 4.5px rgba(255,59,32,1),0 0 24px rgba(255,60,20,1),0 4px 7px rgba(0,0,0,.35)}}
 .dots{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:88%;height:88%}
 .dots i{width:.46em;height:.46em;border-radius:50%;place-self:center;background:radial-gradient(circle at 32% 28%,#56bd8f 0%,#2a9168 42%,#116247 74%,#0a4633 100%);box-shadow:0 1px 1px rgba(0,0,0,.35),inset 0 -1px 1px rgba(0,0,0,.3),inset 1px 1px 1px rgba(255,255,255,.45)}
 .dots i.r{background:radial-gradient(circle at 32% 28%,#ff9a8f 0%,#e63e3e 42%,#b3141f 74%,#8c0d17 100%);box-shadow:0 1px 1px rgba(0,0,0,.35),inset 0 -1px 1px rgba(90,0,5,.35),inset 1px 1px 1px rgba(255,255,255,.5)}
@@ -179,6 +190,18 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tag{font-size:10px;padding:0 6px;border-radius:6px;margin-left:4px}
 .tag.current{background:#e9c46a;color:#1b263b}
 .tag.gongzhu{background:#e63946;color:#fff}
+/* 音效/语音开关 */
+#snd-ctrl{position:absolute;left:.8vw;top:.8vh;display:flex;gap:.6vh;z-index:7}
+#snd-ctrl button{width:3.6vh;height:3.6vh;border-radius:50%;background:rgba(5,38,31,.82);border:1px solid rgba(201,162,79,.55);font-size:1.8vh;color:#ffe9b0;display:flex;align-items:center;justify-content:center;padding:0}
+#snd-ctrl button.off{opacity:.38;filter:grayscale(.8)}
+/* 剩余牌数 */
+.remain-chip{margin-top:.5vh;font-size:1.35vh;color:#ffe9b0;background:rgba(5,38,31,.82);border:1px solid rgba(201,162,79,.55);border-radius:2vh;padding:.25vh 1.1vh;white-space:nowrap;z-index:2;box-shadow:0 .4vh 1vh rgba(0,0,0,.35)}
+.remain-chip b{color:#9ff5d8;font-size:1.55vh;margin:0 .2em}
+.remain-chip.low{border-color:#ff8a5c;color:#ffc4ad;animation:lowBlink .9s ease-in-out infinite}
+.remain-chip.low b{color:#ff9f7a}
+@keyframes lowBlink{0%,100%{box-shadow:0 0 0 rgba(255,138,92,0)}50%{box-shadow:0 0 12px rgba(255,138,92,.8)}}
+/* 混儿防误打提示条 */
+#wan-warn{position:absolute;left:50%;bottom:15.4vh;transform:translateX(-50%);background:linear-gradient(135deg,#ff7a59,#d62828);color:#fff;font-size:1.7vh;font-weight:800;padding:.8vh 2.2vh;border-radius:3vh;box-shadow:0 .8vh 2vh rgba(0,0,0,.5),0 0 16px rgba(255,80,40,.6);display:none;z-index:31;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -248,10 +271,13 @@ button:disabled{opacity:.4;cursor:not-allowed}
       <div class="phase" id="phase-text">等待开始</div>
       <div class="wan-info" id="wan-info"></div>
     </div>
+    <div class="remain-chip" id="remain-chip"></div>
     <div class="dial-disc" id="dial-disc"></div>
   </div>
   <div class="start-bar" id="start-bar" style="display:none"><button class="btn-primary" onclick="onlineHostStart()">🎮 主机开始游戏</button></div>
   <div class="action-bar" id="action-bar" style="display:none"></div>
+  <div id="wan-warn">⚠ 混儿牌！再点一次确认打出</div>
+  <div id="snd-ctrl"><button id="btn-sfx" onclick="toggleSfx()" title="音效开关">🔊</button><button id="btn-voice" onclick="toggleVoice()" title="语音播报开关">🗣</button></div>
   <div class="msg-log" id="msg-log"></div>
 </div>
 
@@ -290,6 +316,38 @@ const SUITS = ['w', 'b', 't'];
 const SUIT_NAMES = { w: '万', b: '饼', t: '条' };
 const FENG_NAMES = ['东', '南', '西', '北'];
 const JIAN_NAMES = ['中', '发', '白'];
+/* ===== 音效（Web Audio 合成，零外部资源）与中文语音播报 ===== */
+let sfxOn=localStorage.getItem('qhd-sfx')!=='0';
+let voiceOn=localStorage.getItem('qhd-voice')!=='0';
+const Sound={ctx:null,
+ ensure(){try{if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)this.ctx=new AC()}if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume()}catch(e){}},
+ tone(freq,dur,type,vol,delay){try{this.ensure();if(!this.ctx)return;const t0=this.ctx.currentTime+(delay||0);const o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type||'sine';o.frequency.setValueAtTime(freq,t0);g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol||.15,t0+.008);g.gain.exponentialRampToValueAtTime(.001,t0+dur);o.connect(g);g.connect(this.ctx.destination);o.start(t0);o.stop(t0+dur+.02)}catch(e){}},
+ noise(dur,freq,q,vol,delay){try{this.ensure();if(!this.ctx)return;const t0=this.ctx.currentTime+(delay||0);const n=Math.floor(this.ctx.sampleRate*dur);const buf=this.ctx.createBuffer(1,n,this.ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=this.ctx.createBufferSource();s.buffer=buf;const f=this.ctx.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;f.Q.value=q||1;const g=this.ctx.createGain();g.gain.value=vol||.2;s.connect(f);f.connect(g);g.connect(this.ctx.destination);s.start(t0)}catch(e){}},
+ clack(){if(!sfxOn)return;const jitter=Math.random()*70;this.noise(.06,2100+jitter,1.2,.16);this.tone(180+Math.random()*50,.08,'triangle',.18);this.noise(.045,2600+jitter,1.4,.08,.018)},
+ draw(){if(!sfxOn)return;this.noise(.05,1500,1,.1);this.tone(130+Math.random()*40,.07,'sine',.1)},
+ peng(){if(!sfxOn)return;this.clack();setTimeout(()=>this.clack(),90);this.tone(660,.12,'sine',.08,.02);this.tone(990,.16,'sine',.07,.1)},
+ gang(){if(!sfxOn)return;this.noise(.09,900,.8,.22);this.tone(90,.22,'triangle',.22);setTimeout(()=>{this.noise(.09,900,.8,.22);this.tone(80,.22,'triangle',.2)},140);this.tone(520,.14,'sine',.07,.05);this.tone(780,.18,'sine',.07,.14)},
+ hu(){if(!sfxOn)return;[523,659,784,1047].forEach((f,i)=>this.tone(f,.22,'sine',.12,i*.09));this.tone(1319,.5,'sine',.1,.38)},
+ liuju(){if(!sfxOn)return;[392,330,262].forEach((f,i)=>this.tone(f,.3,'sine',.11,i*.14))},
+ tick(){if(!sfxOn)return;this.tone(880,.05,'square',.04)}};
+let zhVoice=null;
+function pickZhVoice(){try{if(!window.speechSynthesis)return;const vs=speechSynthesis.getVoices();zhVoice=vs.find(v=>/zh[\-_]?(CN|Hans)/i.test(v.lang+v.name))||vs.find(v=>/^zh/i.test(v.lang))||null}catch(e){}}
+if(window.speechSynthesis){try{pickZhVoice();speechSynthesis.onvoiceschanged=pickZhVoice}catch(e){}}
+function speak(text){if(!voiceOn||!window.speechSynthesis||!text)return;try{pickZhVoice();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=1.12;u.pitch=1.08;u.volume=1;if(zhVoice)u.voice=zhVoice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function sayTile(t){if(SUITS.includes(t.suit))return NUMCN[t.value]+SUIT_NAMES[t.suit];if(t.suit==='f')return FENG_NAMES[t.value-1]+'风';return['红中','发财','白板'][t.value-1]||''}
+function syncSndBtns(){const a=document.getElementById('btn-sfx'),b=document.getElementById('btn-voice');if(a){a.textContent=sfxOn?'🔊':'🔇';a.classList.toggle('off',!sfxOn)}if(b){b.textContent=voiceOn?'🗣':'🔈';b.classList.toggle('off',!voiceOn)}}
+function toggleSfx(){sfxOn=!sfxOn;localStorage.setItem('qhd-sfx',sfxOn?'1':'0');syncSndBtns();if(sfxOn){Sound.ensure();Sound.tick()}}
+function toggleVoice(){voiceOn=!voiceOn;localStorage.setItem('qhd-voice',voiceOn?'1':'0');syncSndBtns();if(voiceOn)speak('语音播报已开启')}
+/* 牌局事件声音/语音观察：renderAll 后做状态 diff，主机与远端统一走这里 */
+const voiceObs={init:false,discardKey:'',meldSig:[],cursor:-1};
+function resetVoiceObs(){voiceObs.init=false;voiceObs.discardKey='';voiceObs.meldSig=[];voiceObs.cursor=-1}
+function observeVoice(){if(!game)return;const meldSig=game.players.map(p=>(p.melds||[]).map(m=>m.type+m.tiles.length).join('|'));
+ if(!voiceObs.init){voiceObs.init=true;voiceObs.meldSig=meldSig;voiceObs.cursor=game.drawCursor;voiceObs.discardKey=game.lastDiscard?game.lastDiscard.fromSeat+'_'+game.lastDiscard.tile.id:'';return}
+ for(let s=0;s<4;s++){if(meldSig[s]!==voiceObs.meldSig[s]){const old=voiceObs.meldSig[s]?voiceObs.meldSig[s].split('|'):[];const now=meldSig[s].split('|');if(now.length>old.length){const ty=now[now.length-1];if(ty.indexOf('pong')===0){Sound.peng();speak('碰')}else{Sound.gang();speak(ty.indexOf('darkKong')===0?'暗杠':'杠')}}else{Sound.gang();speak('补杠')}}}
+ voiceObs.meldSig=meldSig;
+ if(game.drawCursor!==voiceObs.cursor){voiceObs.cursor=game.drawCursor;Sound.draw()}
+ const dk=game.lastDiscard?game.lastDiscard.fromSeat+'_'+game.lastDiscard.tile.id:'';
+ if(dk&&dk!==voiceObs.discardKey){voiceObs.discardKey=dk;Sound.clack();speak(sayTile(game.lastDiscard.tile))}}
 function buildFullDeck(){const d=[];let id=0;for(const s of SUITS)for(let v=1;v<=9;v++)for(let k=0;k<4;k++)d.push({id:id++,suit:s,value:v});for(let v=1;v<=4;v++)for(let k=0;k<4;k++)d.push({id:id++,suit:'f',value:v});for(let v=1;v<=3;v++)for(let k=0;k<4;k++)d.push({id:id++,suit:'j',value:v});return d}
 function shuffle(d){const a=d.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function tileKey(t){return t.suit+t.value}
@@ -383,6 +441,9 @@ destroy(){try{this.client&&this.client.end(true)}catch(e){}this.client=null;this
 let game=null,net=null,mode='single',mySeat=0,selIdx=-1,curCode=null;
 let hostPeers=[],pending=null,promptSeq=1,onlineStarting=false,gameStarted=false,remotePrompt=null,shownResultId=null;
 let animDiscardKey='',animMeldSig={},turnEndAt=0,turnMax=30000;
+let wanArmIdx=-1,wanArmTimer=null;
+function hideWanWarn(){const w=document.getElementById('wan-warn');if(w)w.style.display='none'}
+function disarmWan(){wanArmIdx=-1;if(wanArmTimer){clearTimeout(wanArmTimer);wanArmTimer=null}hideWanWarn()}
 function setTurnClock(ms){turnEndAt=Date.now()+ms;turnMax=ms}
 function clearTurnClock(){turnEndAt=0}
 setInterval(function(){const ring=document.getElementById('dial-ring');const clk=document.getElementById('turn-clock');if(!ring||!clk)return;if(!turnEndAt||!game||game.phase==='gameover'){ring.style.display='none';clk.textContent='';return}const remain=Math.max(0,turnEndAt-Date.now());if(remain<=0){ring.style.display='none';clk.textContent='';return}ring.style.display='block';clk.textContent=Math.ceil(remain/1000);ring.style.setProperty('--deg',Math.round(remain/turnMax*360)+'deg')},250);
@@ -405,16 +466,26 @@ function tryLandscape(){try{if(screen.orientation&&screen.orientation.lock){cons
 function enterTable(){document.getElementById('lobby').style.display='none';document.getElementById('table').style.display='block';tryLandscape()}
 /* 以我为中心视角：dom位置 0底 1顶 2左 3右 → 逻辑座位 */
 function viewMap(){const m=mySeat||0;return[m,(m+2)%4,(m+3)%4,(m+1)%4]}
-function renderAll(){if(!game)return;const vm=viewMap();for(let dom=0;dom<4;dom++)renderSeat(dom,vm[dom]);renderWalls();renderCenter();renderActions()}
-function renderSeat(dom,seat){const el=document.getElementById('seat-'+dom);const p=game.players[seat];const isMe=seat===mySeat;const isBanker=game.bankerSeat===seat;const isCur=game.phase==='discard'&&game.currentSeat===seat;el.classList.toggle('cur',isCur);el.querySelector('.avatar').textContent=SEATS[seat];const nameEl=el.querySelector('.name');nameEl.textContent=isMe?'我':isBanker?'庄':(p.name||'');nameEl.classList.toggle('host',isBanker);const hb=el.querySelector('.hand-back');const hm=el.querySelector('.hand-me');hb.innerHTML='';hm.innerHTML='';if(isMe){const h=p.hand||[];h.forEach((t,idx)=>{const w=game.wanTile&&tileKey(t)===tileKey(game.wanTile);const te=renderTile(t,w,true);if(isCur&&!p.isGongzhu){te.onclick=()=>selectTile(idx);te.style.cursor='pointer'}if(idx===selIdx)te.classList.add('sel');hm.appendChild(te)});hm.style.display='flex';hb.style.display='none'}else{const pc=p.handCount!==undefined?p.handCount:(p.hand?p.hand.length:0);for(let k=0;k<pc;k++)hb.appendChild(renderTile(null,false,false));hm.style.display='none';hb.style.display='flex'}const mEl=el.querySelector('.meld-row');mEl.innerHTML='';const groups=[];(p.melds||[]).forEach(m=>{const g=document.createElement('div');g.className='meld-group';m.tiles.forEach(t=>{const ti=m.tiles.indexOf(t);const showBack=m.isAnGang&&(ti===0||ti===3);g.appendChild(renderTile(t,false,!showBack))});mEl.appendChild(g);groups.push(g)});const sig=(p.melds||[]).map(m=>m.type+m.tiles.length).join('|');if(animMeldSig[seat]!==undefined&&sig!==animMeldSig[seat]&&groups.length){groups[groups.length-1].classList.add('pop')}animMeldSig[seat]=sig;const dr=el.querySelector('.discard-row');dr.innerHTML='';const arr=(p.discards||[]).slice(-12);arr.forEach((t,i)=>{const te=renderTile(t,false,true);if(game.lastDiscard&&game.lastDiscard.fromSeat===seat&&i===arr.length-1){const key=seat+'_'+t.id;if(key!==animDiscardKey){te.classList.add('just');animDiscardKey=key}}dr.appendChild(te)})}
+function isWanTile(t){return !!(game&&game.wanKey&&t&&tileKey(t)===game.wanKey)}
+function renderAll(){if(!game)return;const vm=viewMap();for(let dom=0;dom<4;dom++)renderSeat(dom,vm[dom]);renderWalls();renderCenter();renderActions();observeVoice()}
+function renderSeat(dom,seat){const el=document.getElementById('seat-'+dom);const p=game.players[seat];const isMe=seat===mySeat;const isBanker=game.bankerSeat===seat;const isCur=game.phase==='discard'&&game.currentSeat===seat;el.classList.toggle('cur',isCur);el.querySelector('.avatar').textContent=SEATS[seat];const nameEl=el.querySelector('.name');nameEl.textContent=isMe?'我':isBanker?'庄':(p.name||'');nameEl.classList.toggle('host',isBanker);const hb=el.querySelector('.hand-back');const hm=el.querySelector('.hand-me');hb.innerHTML='';hm.innerHTML='';if(isMe){const h=p.hand||[];h.forEach((t,idx)=>{const w=game.wanTile&&tileKey(t)===tileKey(game.wanTile);const te=renderTile(t,w,true);if(isCur&&!p.isGongzhu){te.onclick=()=>selectTile(idx);te.style.cursor='pointer'}if(idx===selIdx){te.classList.add('sel');if(idx===wanArmIdx&&w)te.classList.add('wan-arm')}hm.appendChild(te)});hm.style.display='flex';hb.style.display='none'}else{const pc=p.handCount!==undefined?p.handCount:(p.hand?p.hand.length:0);for(let k=0;k<pc;k++)hb.appendChild(renderTile(null,false,false));hm.style.display='none';hb.style.display='flex'}const mEl=el.querySelector('.meld-row');mEl.innerHTML='';const groups=[];(p.melds||[]).forEach(m=>{const g=document.createElement('div');g.className='meld-group';m.tiles.forEach(t=>{const ti=m.tiles.indexOf(t);const showBack=m.isAnGang&&(ti===0||ti===3);g.appendChild(renderTile(t,isWanTile(t)&&!showBack,!showBack))});mEl.appendChild(g);groups.push(g)});const sig=(p.melds||[]).map(m=>m.type+m.tiles.length).join('|');if(animMeldSig[seat]!==undefined&&sig!==animMeldSig[seat]&&groups.length){groups[groups.length-1].classList.add('pop')}animMeldSig[seat]=sig;const dr=el.querySelector('.discard-row');dr.innerHTML='';const arr=(p.discards||[]).slice(-12);arr.forEach((t,i)=>{const te=renderTile(t,isWanTile(t),true);if(game.lastDiscard&&game.lastDiscard.fromSeat===seat&&i===arr.length-1){const key=seat+'_'+t.id;if(key!==animDiscardKey){te.classList.add('just');animDiscardKey=key}}dr.appendChild(te)})}
 function renderWalls(){if(!game)return;const rem=Math.max(0,136-(game.drawCursor||0));const top=Math.min(18,Math.round(rem*0.22));const side=Math.min(46,Math.round((rem-top)/2));buildWall('wall-top',top,'h',true);buildWall('wall-left',side,'v',false);buildWall('wall-right',side,'v',false)}
 function buildWall(id,n,dir,two){const el=document.getElementById(id);if(!el)return;if(n<=0){el.style.display='none';return}el.style.display='';el.innerHTML='';const mk=(extra)=>{const r=document.createElement('div');r.className='wall-row '+dir+(extra?' '+extra:'');for(let i=0;i<n;i++){const s=document.createElement('span');s.className='mini-back';r.appendChild(s)}return r};el.appendChild(mk(''));if(two)el.appendChild(mk('back-row'))}
-function renderCenter(){const g=game;let pt='';switch(g.phase){case'waiting':pt='等待开始';break;case'dealing':pt='发牌中...';break;case'draw':pt=SEATS[g.currentSeat]+'家摸牌';break;case'discard':pt='轮到 '+SEATS[g.currentSeat]+'家 出牌';break;case'action':pt='等待 碰/杠 选择...';break;case'gameover':pt='本局结束';break}document.getElementById('phase-text').textContent=pt;const wi=document.getElementById('wan-info');wi.innerHTML='';if(g.wanTile){const tag=document.createElement('span');tag.className='wan-tag';tag.textContent='混儿';wi.appendChild(tag);wi.appendChild(renderTile(g.wanTile,false,true));const gg=document.createElement('span');gg.className='wan-gang';gg.textContent=' 杠×'+g.gangCount;wi.appendChild(gg)}const dd=document.getElementById('dial-disc');dd.innerHTML='';if(g.lastDiscard){const te=renderTile(g.lastDiscard.tile,false,true);const key=g.lastDiscard.fromSeat+'_'+g.lastDiscard.tile.id;te.classList.add('float-disc');if(key!==animDiscardKey){te.classList.add('just');animDiscardKey=key}dd.appendChild(te)}}
-function selectTile(idx){const seat=game.currentSeat;const p=game.players[seat];if(p.isGongzhu)return;if(mode==='single'||(net&&net.isHost)){doDiscard(seat,idx)}else{if(!net)return;net.broadcast({type:'action',action:{type:'discard',seat:seat,tileIndex:idx}})}}
+function renderCenter(){const g=game;let pt='';switch(g.phase){case'waiting':pt='等待开始';break;case'dealing':pt='发牌中...';break;case'draw':pt=SEATS[g.currentSeat]+'家摸牌';break;case'discard':pt='轮到 '+SEATS[g.currentSeat]+'家 出牌';break;case'action':pt='等待 碰/杠 选择...';break;case'gameover':pt='本局结束';break}document.getElementById('phase-text').textContent=pt;const wi=document.getElementById('wan-info');wi.innerHTML='';if(g.wanTile){const tag=document.createElement('span');tag.className='wan-tag';tag.textContent='混儿';wi.appendChild(tag);wi.appendChild(renderTile(g.wanTile,true,true));const gg=document.createElement('span');gg.className='wan-gang';gg.textContent=' 杠×'+g.gangCount;wi.appendChild(gg)}
+const rc=document.getElementById('remain-chip');if(rc){const ld=liuJuDun(g.gangCount);const left=Math.max(0,136-(g.drawCursor||0)-ld*2);rc.innerHTML='余牌<b>'+left+'</b>张';rc.classList.toggle('low',left>0&&left<=8)}
+const dd=document.getElementById('dial-disc');dd.innerHTML='';if(g.lastDiscard){const te=renderTile(g.lastDiscard.tile,isWanTile(g.lastDiscard.tile),true);const key=g.lastDiscard.fromSeat+'_'+g.lastDiscard.tile.id;te.classList.add('float-disc');if(key!==animDiscardKey){te.classList.add('just');animDiscardKey=key}dd.appendChild(te)}}
+function commitDiscard(seat,idx){disarmWan();if(mode==='single'||(net&&net.isHost)){doDiscard(seat,idx)}else{if(!net)return;net.broadcast({type:'action',action:{type:'discard',seat:seat,tileIndex:idx}})}}
+function selectTile(idx){const seat=game.currentSeat;const p=game.players[seat];if(!p||p.isGongzhu)return;const t=p.hand[idx];if(!t)return;const wild=isWanTile(t);
+ if(wild){if(wanArmIdx===idx){commitDiscard(seat,idx);return}
+  disarmWan();wanArmIdx=idx;selIdx=idx;Sound.tick();
+  document.getElementById('wan-warn').style.display='block';
+  wanArmTimer=setTimeout(function(){wanArmIdx=-1;selIdx=-1;hideWanWarn();renderAll()},2400);
+  renderAll();return}
+ disarmWan();commitDiscard(seat,idx)}
 function mkId(){return Date.now().toString(36)+Math.floor(Math.random()*1e4).toString(36)}
 function isAI(s){return mode==='single'&&s!==mySeat}
 /* ===== 主机仲裁：出牌后的碰/杠请求 ===== */
-function doDiscard(seat,idx){const p=game.players[seat];if(!p||idx<0||idx>=p.hand.length)return;if(pending&&pending.kind==='self'&&pending.seat===seat){clearTimeout(pending.timer);pending=null}const d=game.discard(seat,idx);if(!d)return;selIdx=-1;clearTurnClock();renderAll();broadcastFull();afterDiscard()}
+function doDiscard(seat,idx){const p=game.players[seat];if(!p||idx<0||idx>=p.hand.length)return;if(pending&&pending.kind==='self'&&pending.seat===seat){clearTimeout(pending.timer);pending=null}const d=game.discard(seat,idx);if(!d)return;selIdx=-1;disarmWan();clearTurnClock();renderAll();broadcastFull();afterDiscard()}
 function afterDiscard(){const ds=game.lastDiscard.fromSeat;const offers={};for(let i=1;i<=3;i++){const s=(ds+i)%4;const ch=[];if(game.canMingGang(ds,s))ch.push('gang');if(game.canPong(ds,s))ch.push('pong');if(ch.length)offers[s]=ch}const seats=Object.keys(offers).map(Number);if(!seats.length){game.passAction();renderAll();broadcastFull();nextSeatDraw();return}const id=promptSeq++;pending={id:id,kind:'claim',ds:ds,offers:offers,responses:{},timer:null};seats.forEach(s=>{if(isAI(s))setTimeout(()=>claimAnswer(s,aiClaimChoice(offers[s]),id),400+Math.random()*500)});pending.timer=setTimeout(()=>{if(!pending||pending.id!==id)return;seats.forEach(s=>{if(!pending.responses[s])pending.responses[s]='pass'});resolveClaim(id)},18000);setTurnClock(18000);renderAll();broadcastFull()}
 function aiClaimChoice(ch){if(ch.indexOf('gang')>=0&&Math.random()<0.5)return 'gang';if(ch.indexOf('pong')>=0&&Math.random()<0.5)return 'pong';return 'pass'}
 function claimAnswer(seat,choice,id){if(!pending||pending.kind!=='claim'||pending.id!==id)return;if(pending.responses[seat])return;if(pending.offers[seat].indexOf(choice)<0&&choice!=='pass')return;pending.responses[seat]=choice;const seats=Object.keys(pending.offers).map(Number);renderAll();broadcastFull();if(seats.every(s=>pending.responses[s])){clearTimeout(pending.timer);resolveClaim(id)}}
@@ -425,7 +496,7 @@ function beginSelfTurn(seat,drawn){if(drawn===undefined)drawn=true;const hu=draw
 function aiSelfAction(){if(!pending||pending.kind!=='self')return;const s=pending.seat;if(pending.huInfo&&Math.random()<0.92){selfAnswer(s,'hu',null,pending.id);return}if(pending.angangKeys.length&&Math.random()<0.35){selfAnswer(s,'angang',pending.angangKeys[0],pending.id);return}if(pending.bukong.length&&Math.random()<0.3){selfAnswer(s,'bukong',pending.bukong[0].mi,pending.id);return}const h=game.players[s].hand;doDiscard(s,Math.floor(Math.random()*h.length))}
 function selfAnswer(seat,choice,payload,id){if(!pending||pending.kind!=='self'||pending.id!==id||pending.seat!==seat)return;const rearm=()=>{pending.timer=setTimeout(()=>{if(pending&&pending.id===id){const h=game.players[seat].hand;if(h.length)doDiscard(seat,Math.floor(Math.random()*h.length))}},30000)};if(choice==='hu'){if(!pending.huInfo){rearm();return}const hi=pending.huInfo;pending=null;handleZiMoHu(seat,hi);return}if(choice==='angang'){if(!game.executeAnGang(seat,payload)){rearm();return}sendNotice('▶ '+SEATS[seat]+'家 暗杠');pending=null;renderAll();broadcastFull();beginSelfTurn(seat);return}if(choice==='bukong'){if(!game.executeBuKong(seat,payload|0)){rearm();return}sendNotice('▶ '+SEATS[seat]+'家 补杠');pending=null;renderAll();broadcastFull();beginSelfTurn(seat);return}}
 function handleZiMoHu(s,hi){const r=game.settle(s,hi);r._id=mkId();game.result=r;shownResultId=r._id;clearTurnClock();sendNotice('🎉 '+SEATS[s]+'家自摸胡！'+r.totalMultiplier+'倍');renderAll();showResult(r);flushBroadcast()}
-function showResult(r){renderAll();const o=document.getElementById('result-overlay');const t=document.getElementById('result-title');const tot=document.getElementById('result-total');const d=document.getElementById('result-detail');if(r.liuju){t.textContent='🚫 流局';tot.textContent='无人得分';d.textContent=''}else{t.textContent='🎉 自摸胡！';tot.textContent=r.totalMultiplier+' 倍';const fl=r.fenpai.fans.map(f=>f.name+'('+f.m+')').join(' × ');d.innerHTML='番型：'+fl+'<br>赢家：'+SEATS[r.winnerSeat]+'<br>'+r.payments.map(p=>SEATS[p.from]+' → '+SEATS[p.to]+'：'+p.amount+'分').join('<br>')}o.style.display='flex'}
+function showResult(r){renderAll();const o=document.getElementById('result-overlay');const t=document.getElementById('result-title');const tot=document.getElementById('result-total');const d=document.getElementById('result-detail');if(r.liuju){t.textContent='🚫 流局';tot.textContent='无人得分';d.textContent='';Sound.liuju();speak('流局')}else{t.textContent='🎉 自摸胡！';tot.textContent=r.totalMultiplier+' 倍';Sound.hu();speak(SEATS[r.winnerSeat]+'家自摸，'+r.totalMultiplier+'倍');const fl=r.fenpai.fans.map(f=>f.name+'('+f.m+')').join(' × ');d.innerHTML='番型：'+fl+'<br>赢家：'+SEATS[r.winnerSeat]+'<br>'+r.payments.map(p=>SEATS[p.from]+' → '+SEATS[p.to]+'：'+p.amount+'分').join('<br>')}o.style.display='flex'}
 function closeResult(){document.getElementById('result-overlay').style.display='none';if(mode==='single'&&game.phase==='gameover')startGame();else if(mode==='online'&&net&&net.isHost&&game.phase==='gameover')sendNotice('本局结束，主机可退出重建房间开始下一局')}
 function logMsg(m){const l=document.getElementById('msg-log');const d=document.createElement('div');d.textContent=m;l.appendChild(d);l.scrollTop=l.scrollHeight}
 function sendNotice(t){logMsg(t);if(mode==='online'&&net&&net.isHost)net.broadcast({type:'notice',from:net.myId,text:t})}
@@ -436,8 +507,8 @@ function keyTile(k){return{suit:k[0],value:parseInt(k.slice(1),10)}}
 function renderActions(){const b=document.getElementById('action-bar');b.innerHTML='';const pr=game?activePrompt():null;if(!pr){b.style.display='none';return}b.style.display='flex';const mk=(txt,cls,fn)=>{const x=document.createElement('button');x.className=cls+' pop-in';x.textContent=txt;x.onclick=fn;b.appendChild(x);setTimeout(()=>{x.classList.remove('pop-in')},420)};if(pr.kind==='claim'){if(pr.choices.indexOf('gang')>=0)mk('杠','b-gang',()=>sendResp('gang'));if(pr.choices.indexOf('pong')>=0)mk('碰','b-peng',()=>sendResp('pong'));mk('过','b-pass',()=>sendResp('pass'))}else{if(pr.canHu)mk('胡！','b-hu',()=>sendResp('hu'));pr.angangKeys.forEach(k=>mk('暗杠·'+td(keyTile(k)).text,'b-gang',()=>sendResp('angang',k)));pr.bukong.forEach(o=>mk('补杠·'+td(keyTile(o.key)).text,'b-gang',()=>sendResp('bukong',o.mi)));const h=document.createElement('div');h.className='action-hint';h.textContent='也可以直接点击手牌打出';b.appendChild(h)}}
 function sendResp(choice,payload){const pr=activePrompt();if(!pr)return;if(mode==='single'||(net&&net.isHost)){if(pr.kind==='claim')claimAnswer(mySeat,choice,pr.id);else selfAnswer(mySeat,choice,payload,pr.id)}else net.broadcast({type:'action',action:{type:'respond',kind:pr.kind,promptId:pr.id,choice:choice,payload:payload==null?null:payload}})}
 // ============ 单机模式 ============
-function startGame(){mode='single';mySeat=0;pending=null;remotePrompt=null;shownResultId=null;gameStarted=false;animDiscardKey='';animMeldSig={};clearTurnClock();hideWait();enterTable();hostStartGame()}
-function hostStartGame(){game=new QHDMahjongGame();const ws=Math.floor(Math.random()*34);const deck=shuffle(buildFullDeck());const wi=Math.floor(Math.random()*deck.length);const wt={suit:deck[wi].suit,value:deck[wi].value};const nw=nextTile(wt);const aw=findTile(deck,nw.suit,nw.value);game.newRound();game.dealTiles(ws,aw);sendNotice('🎮 游戏开始');const dk=game.findStartDarkGang();for(const it of dk){sendNotice(SEATS[it.seat]+'家起手风牌暗杠');game.executeStartDarkGang(it.seat,it.fengKeys[0])}game.phase='discard';renderAll();if(mode==='single'){setTimeout(()=>{beginSelfTurn(game.currentSeat)},600)}}
+function startGame(){mode='single';mySeat=0;pending=null;remotePrompt=null;shownResultId=null;gameStarted=false;animDiscardKey='';animMeldSig={};wanArmIdx=-1;clearTurnClock();Sound.ensure();syncSndBtns();hideWait();enterTable();hostStartGame();speak('游戏开始')}
+function hostStartGame(){game=new QHDMahjongGame();const ws=Math.floor(Math.random()*34);const deck=shuffle(buildFullDeck());const wi=Math.floor(Math.random()*deck.length);const wt={suit:deck[wi].suit,value:deck[wi].value};const nw=nextTile(wt);const aw=findTile(deck,nw.suit,nw.value);game.newRound();resetVoiceObs();game.dealTiles(ws,aw);sendNotice('🎮 游戏开始');speak('混儿是'+sayTile(aw));const dk=game.findStartDarkGang();for(const it of dk){sendNotice(SEATS[it.seat]+'家起手风牌暗杠');game.executeStartDarkGang(it.seat,it.fengKeys[0])}game.phase='discard';renderAll();if(mode==='single'){setTimeout(()=>{beginSelfTurn(game.currentSeat)},600)}}
 // ============ 联机模式（主机仲裁） ============
 function rosterPeople(){return hostPeers.slice().sort((a,b)=>a.seat-b.seat).map(p=>({name:p.name,me:p.peerId===net.myId}))}
 function broadcastRoster(started){net.broadcast({type:'roster',from:net.myId,data:{roomCode:curCode,peers:rosterPeople(),count:hostPeers.length,started:!!started}})}
@@ -450,7 +521,7 @@ function netMsg(t,d){console.log('[NET]',t,d);switch(t){
 case'peer-join':if(!net.isHost)break;if(!hostPeers.find(p=>p.peerId===d.peerId)){if(gameStarted){broadcastRoster(true);break}const ns=hostPeers.length;if(ns<4){hostPeers.push({peerId:d.peerId,seat:ns,name:d.name||('玩家'+(ns+1)),joined:true});sendNotice('👥 '+(d.name||'玩家')+' 加入房间');showWait(rosterPeople(),curCode);broadcastRoster();if(hostPeers.length>=4&&!onlineStarting){onlineStarting=true;showWait(rosterPeople(),curCode);setTimeout(beginOnlineGame,1400)}}}break;
 case'peer-leave':if(!net.isHost||gameStarted)break;const i=hostPeers.findIndex(p=>p.peerId===d.peerId);if(i>0){sendNotice('👋 '+hostPeers[i].name+' 离开');hostPeers.splice(i,1);showWait(rosterPeople(),curCode);broadcastRoster()}break;
 case'roster':if(gameStarted)break;if(d.started){document.getElementById('rw-status').textContent='牌局已开始，请等待下一局';break}showWait(d.peers,d.roomCode);break;
-case'start-game':enterTable();hideWait();gameStarted=true;remotePrompt=null;mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';for(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 游戏开始');break;
+case'start-game':enterTable();hideWait();gameStarted=true;remotePrompt=null;mySeat=d.mySeat;game=new QHDMahjongGame();game.phase='waiting';resetVoiceObs();Sound.ensure();syncSndBtns();wanArmIdx=-1;for(let i=0;i<4;i++){if(d.players[i])game.players[i].name=d.players[i].name}logMsg('🎮 游戏开始');speak('游戏开始');break;
 case'state':applyRemoteState(d);break;
 case'notice':logMsg(d.text);break;
 case'disconnected':logMsg('❌ 网络连接断开，请刷新页面重进房间');break;
@@ -464,6 +535,7 @@ function broadcastFull(){if(!net||!net.isHost||!game)return;if(bcTimer)return;bc
 function flushBroadcast(){if(bcTimer){clearTimeout(bcTimer);bcTimer=null}doBroadcast()}
 function onlineHostStart(){}
 setMode('single');
+syncSndBtns();
 </script>
 </body>
 </html>
