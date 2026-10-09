@@ -67,10 +67,43 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .tile-face.b1 .dots{display:block;position:relative;width:78%;height:78%}
 .tile-face.b1 .dots i.e{display:none}
 .tile-face.b1 .dots i{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 50% 47%,#f37263 0%,#df3a35 17%,#b31622 28%,#17835f 32%,#0f6a4e 46%,#f8f1de 49%,#e6d5ae 55%,#1c8f6c 59%,#0c5a41 80%,#f8f1de 84%,#0c5a41 91%);box-shadow:0 .12em .2em rgba(0,0,0,.4),inset 0 2px 3px rgba(255,255,255,.35),inset 0 -3px 5px rgba(0,0,0,.28)}
-.dots i.e,.bars i.e{background:transparent;box-shadow:none}
-.bars{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:84%;height:88%}
-.bars i{width:.26em;height:.7em;border-radius:40% 40% 2px 2px;place-self:center;background:repeating-linear-gradient(0deg,#3cb878 0 26%,#1f8a52 26% 37%,#37ae72 37% 72%,#1f8a52 72% 82%,#37ae72 82% 100%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.2),0 1px 0 rgba(255,255,255,.25)}
-.bars i.r{background:linear-gradient(180deg,#f0736a 0%,#d83030 55%,#a8121c 100%);width:.34em;height:.92em;border-radius:50% 50% 30% 30%}
+.dots i.e{background:transparent;box-shadow:none}
+/* 条牌：竹节棍——圆柱侧光+两道竹箍，圆头；五/七条见红，九条红绿蓝三色 */
+.bars{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:86%;height:88%}
+.bars i{position:relative;width:.3em;height:.74em;border-radius:.5em;place-self:center;background:linear-gradient(90deg,rgba(4,42,24,.55) 0%,rgba(18,104,64,.12) 22%,rgba(255,255,255,.55) 46%,rgba(255,255,255,.06) 60%,rgba(4,42,24,.5) 100%),linear-gradient(180deg,#3cbf82 0%,#21915c 30%,#33a96f 58%,#1a7447 100%);box-shadow:0 .04em .05em rgba(0,0,0,.42),inset 0 0 .02em .01em rgba(2,38,22,.55)}
+.bars i::before,.bars i::after{content:'';position:absolute;left:-.03em;right:-.03em;height:.075em;border-radius:.5em;background:linear-gradient(180deg,#0a4a2c,#1a7447 42%,#0a4a2c);box-shadow:0 .006em .012em rgba(255,255,255,.35)}
+.bars i::before{top:29%}
+.bars i::after{top:61%}
+.bars i.r{background:linear-gradient(90deg,rgba(110,12,12,.55) 0%,rgba(160,30,30,.12) 22%,rgba(255,255,255,.55) 46%,rgba(255,255,255,.06) 60%,rgba(110,12,12,.5) 100%),linear-gradient(180deg,#ef6b5e 0%,#d12f2f 30%,#e0493d 58%,#a81c1c 100%);box-shadow:0 .04em .05em rgba(0,0,0,.42),inset 0 0 .02em .01em rgba(90,5,5,.55)}
+.bars i.r::before,.bars i.r::after{background:linear-gradient(180deg,#8a1414,#c22a2a 42%,#8a1414)}
+.bars i.b{background:linear-gradient(90deg,rgba(10,35,110,.55) 0%,rgba(25,60,150,.12) 22%,rgba(255,255,255,.55) 46%,rgba(255,255,255,.06) 60%,rgba(10,35,110,.5) 100%),linear-gradient(180deg,#5aa0ef 0%,#2770c4 30%,#4086d8 58%,#175a9e 100%);box-shadow:0 .04em .05em rgba(0,0,0,.42),inset 0 0 .02em .01em rgba(8,30,80,.55)}
+.bars i.b::before,.bars i.b::after{background:linear-gradient(180deg,#123f86,#2468b8 42%,#123f86)}
+.bars i.e{visibility:hidden}
+/* 一条·幺鸡：纯CSS手绘，全部em尺寸随牌缩放 */
+.bird{position:relative;width:1.02em;height:1.52em}
+.bd-tail{position:absolute;right:-.02em;bottom:.24em;width:.8em;height:1.1em;z-index:1}
+.bd-tail em{position:absolute;bottom:0;left:50%;width:.09em;border-radius:.5em .5em .12em .12em;transform-origin:50% 100%;box-shadow:0 .02em .03em rgba(0,0,0,.35),inset -.015em 0 .02em rgba(0,0,0,.25),inset .015em 0 .02em rgba(255,255,255,.28)}
+.bd-tail em:nth-child(1){height:.94em;background:linear-gradient(180deg,#2f9e67,#13603f);transform:translateX(-50%) rotate(30deg)}
+.bd-tail em:nth-child(2){height:1.04em;background:linear-gradient(180deg,#f0675b,#c1272d);transform:translateX(-50%) rotate(10deg)}
+.bd-tail em:nth-child(3){height:.94em;background:linear-gradient(180deg,#2f9e67,#13603f);transform:translateX(-50%) rotate(-12deg)}
+.bd-body{position:absolute;left:.03em;bottom:.14em;width:.64em;height:.88em;border-radius:50% 50% 48% 48%/56% 56% 44% 44%;background:radial-gradient(circle at 36% 28%,#36b37a 0%,#1d7d50 46%,#0c4c30 82%,#083a24 100%);box-shadow:0 .05em .07em rgba(0,0,0,.4),inset -.03em -.04em .06em rgba(0,0,0,.28),inset .03em .03em .05em rgba(255,255,255,.28);z-index:2}
+.bd-body::after{content:'';position:absolute;left:.1em;bottom:.06em;width:.2em;height:.4em;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,.02))}
+.bd-wing{position:absolute;left:.14em;bottom:.4em;width:.42em;height:.52em;border-radius:50%;background:radial-gradient(circle at 35% 28%,#ff8a7d 0%,#e0413a 45%,#a81414 100%);box-shadow:0 .02em .04em rgba(0,0,0,.4),inset 0 0 0 .015em rgba(120,10,10,.45);transform:rotate(-14deg);z-index:3}
+.bd-wing::after{content:'';position:absolute;left:.1em;top:.12em;width:.2em;height:.26em;border-radius:50%;border-left:.02em solid rgba(255,220,210,.75);border-bottom:.02em solid rgba(255,220,210,.35)}
+.bd-head{position:absolute;left:0;top:.05em;width:.46em;height:.46em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#36b37a 0%,#1d7d50 50%,#0a4229 100%);box-shadow:0 .03em .05em rgba(0,0,0,.4),inset -.02em -.02em .04em rgba(0,0,0,.3),inset .02em .02em .04em rgba(255,255,255,.3);z-index:4}
+.bd-eye{position:absolute;right:.08em;top:.1em;width:.11em;height:.11em;border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff 0 22%,#1d2430 26% 62%,#05080d 100%)}
+.bd-beak{position:absolute;left:-.13em;top:.23em;width:0;height:0;border-style:solid;border-width:.075em .13em .075em 0;border-color:transparent #f4b73a transparent transparent;filter:drop-shadow(0 .01em .01em rgba(0,0,0,.3));z-index:3}
+.bd-beak::after{content:'';position:absolute;left:.02em;top:.015em;width:0;height:0;border-style:solid;border-width:.05em .09em .05em 0;border-color:transparent #d99017 transparent transparent}
+.bd-crest{position:absolute;left:.07em;top:-.085em;width:.3em;height:.15em;z-index:5}
+.bd-crest em{position:absolute;bottom:0;width:.1em;height:.1em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7d,#d83030 60%,#a81414);box-shadow:0 .01em .02em rgba(0,0,0,.3)}
+.bd-crest em:nth-child(1){left:0;transform:rotate(-20deg)}
+.bd-crest em:nth-child(2){left:.1em;bottom:.03em}
+.bd-crest em:nth-child(3){left:.2em;transform:rotate(20deg)}
+.bd-legs{position:absolute;left:.26em;bottom:-.01em;width:.3em;height:.19em;z-index:1}
+.bd-legs em{position:absolute;bottom:0;width:.025em;height:.15em;background:linear-gradient(#5a3a1c,#2c1c0c)}
+.bd-legs em::before{content:'';position:absolute;left:-.06em;bottom:-.01em;width:.1em;height:.02em;background:#2c1c0c;border-radius:2px}
+.bd-legs em:nth-child(1){left:.05em}
+.bd-legs em:nth-child(2){left:.2em}
 .tile-back{background:linear-gradient(135deg,#3aa17d,#146149 55%,#0b4433);border:2px solid #f4ecd8;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.22),inset 0 0 10px rgba(0,0,0,.35)}
 .mini-back{flex:0 0 auto;width:2.3vh;height:3.3vh;border-radius:2px;background:linear-gradient(135deg,#3aa17d,#146149 55%,#0b4433);border:1px solid #f4ecd8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),1px 1px 2px rgba(0,0,0,.35)}
 /* 牌墙 */
@@ -194,6 +227,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
 #snd-ctrl{position:absolute;left:.8vw;top:.8vh;display:flex;gap:.6vh;z-index:7}
 #snd-ctrl button{width:3.6vh;height:3.6vh;border-radius:50%;background:rgba(5,38,31,.82);border:1px solid rgba(201,162,79,.55);font-size:1.8vh;color:#ffe9b0;display:flex;align-items:center;justify-content:center;padding:0}
 #snd-ctrl button.off{opacity:.38;filter:grayscale(.8)}
+#btn-voice-pick{font-size:1.45vh!important;font-weight:800;letter-spacing:0}
 /* 剩余牌数 */
 .remain-chip{margin-top:.5vh;font-size:1.35vh;color:#ffe9b0;background:rgba(5,38,31,.82);border:1px solid rgba(201,162,79,.55);border-radius:2vh;padding:.25vh 1.1vh;white-space:nowrap;z-index:2;box-shadow:0 .4vh 1vh rgba(0,0,0,.35)}
 .remain-chip b{color:#9ff5d8;font-size:1.55vh;margin:0 .2em}
@@ -277,7 +311,7 @@ button:disabled{opacity:.4;cursor:not-allowed}
   <div class="start-bar" id="start-bar" style="display:none"><button class="btn-primary" onclick="onlineHostStart()">🎮 主机开始游戏</button></div>
   <div class="action-bar" id="action-bar" style="display:none"></div>
   <div id="wan-warn">⚠ 混儿牌！再点一次确认打出</div>
-  <div id="snd-ctrl"><button id="btn-sfx" onclick="toggleSfx()" title="音效开关">🔊</button><button id="btn-voice" onclick="toggleVoice()" title="语音播报开关">🗣</button></div>
+  <div id="snd-ctrl"><button id="btn-sfx" onclick="toggleSfx()" title="音效开关">🔊</button><button id="btn-voice" onclick="toggleVoice()" title="语音播报开关">🗣</button><button id="btn-voice-pick" onclick="cycleVoice()" title="选择播报音色">默</button></div>
   <div class="msg-log" id="msg-log"></div>
 </div>
 
@@ -330,14 +364,41 @@ const Sound={ctx:null,
  hu(){if(!sfxOn)return;[523,659,784,1047].forEach((f,i)=>this.tone(f,.22,'sine',.12,i*.09));this.tone(1319,.5,'sine',.1,.38)},
  liuju(){if(!sfxOn)return;[392,330,262].forEach((f,i)=>this.tone(f,.3,'sine',.11,i*.14))},
  tick(){if(!sfxOn)return;this.tone(880,.05,'square',.04)}};
-let zhVoice=null;
-function pickZhVoice(){try{if(!window.speechSynthesis)return;const vs=speechSynthesis.getVoices();zhVoice=vs.find(v=>/zh[\-_]?(CN|Hans)/i.test(v.lang+v.name))||vs.find(v=>/^zh/i.test(v.lang))||null}catch(e){}}
+/* ===== 音色库：自动识别设备已安装的授权中文音色（Edge/Win 多为微软在线自然音，如晓晓/云希；iOS 为婷婷），按优先级成单循环 ===== */
+let voiceURI=localStorage.getItem('qhd-voice-uri')||'';
+const VOICE_PRESETS=[
+ {re:/yunxi|云希/i,short:'希',name:'云希·清亮男声',pitch:.98,rate:1.12},
+ {re:/yunyang|云扬/i,short:'扬',name:'云扬·磁性男声',pitch:.9,rate:1.1},
+ {re:/yunjian|云健/i,short:'健',name:'云健·浑厚男声',pitch:.92,rate:1.08},
+ {re:/yunfeng|云枫/i,short:'峰',name:'云枫男声',pitch:.95,rate:1.1},
+ {re:/xiaoxiao|晓晓/i,short:'晓',name:'晓晓·甜美女主播',pitch:1.12,rate:1.08},
+ {re:/xiaoyi|晓伊/i,short:'伊',name:'晓伊·温柔女声',pitch:1.06,rate:1.1},
+ {re:/xiaomeng|晓梦/i,short:'梦',name:'晓梦·知性女声',pitch:1.04,rate:1.1},
+ {re:/xiaoxuan|晓萱/i,short:'萱',name:'晓萱·活泼女声',pitch:1.15,rate:1.12},
+ {re:/xiaorui|晓睿/i,short:'睿',name:'晓睿·大方女声',pitch:1.0,rate:1.1},
+ {re:/xiaohan|晓涵/i,short:'涵',name:'晓涵女声',pitch:1.05,rate:1.1},
+ {re:/xiaoshuang|晓双/i,short:'双',name:'晓双女声',pitch:1.08,rate:1.1},
+ {re:/huihui|慧慧/i,short:'慧',name:'慧慧女声',pitch:1.05,rate:1.12},
+ {re:/kangkang|康康/i,short:'康',name:'康康男声',pitch:.95,rate:1.1},
+ {re:/yaoyao|瑶瑶/i,short:'瑶',name:'瑶瑶女声',pitch:1.1,rate:1.1},
+ {re:/tingting|婷婷/i,short:'婷',name:'婷婷女声',pitch:1.08,rate:1.1},
+ {re:/meijia|mei-jia|美嘉/i,short:'嘉',name:'美嘉女声（台湾）',pitch:1.05,rate:1.08},
+ {re:/sin-?ji|粤语/i,short:'粤',name:'Sinji粤语',pitch:1.0,rate:1.05},
+ {re:/zh|cmn|chinese|mandarin|中文|普通话/i,short:'中',name:'系统中文语音',pitch:1.08,rate:1.12}
+];
+function getZhVoices(){try{if(!window.speechSynthesis)return[];return speechSynthesis.getVoices().filter(v=>/zh|cmn|chinese|mandarin|中文|普通话/i.test(v.lang+'|'+v.name))}catch(e){return[]}}
+function presetOfVoice(v){for(let i=0;i<VOICE_PRESETS.length;i++)if(VOICE_PRESETS[i].re.test(v.name+'|'+v.lang))return VOICE_PRESETS[i];return null}
+/* 可用音色菜单：已安装音色匹配预设去重，末位始终为系统默认 */
+function voiceMenu(){const list=[];const seen={};getZhVoices().forEach(v=>{const p=presetOfVoice(v);if(!p)return;if(seen[p.short]){const ex=list.find(m=>m.short===p.short);if(v.localService&&!ex.local)ex.uri=v.voiceURI;return}seen[p.short]=1;list.push({uri:v.voiceURI,short:p.short,name:p.name,pitch:p.pitch,rate:p.rate,local:!!v.localService})});list.sort((a,b)=>VOICE_PRESETS.findIndex(p=>p.short===a.short)-VOICE_PRESETS.findIndex(p=>p.short===b.short));list.push({uri:'',short:'默',name:'系统默认语音',pitch:1.08,rate:1.12,local:true});if(voiceURI&&!list.some(m=>m.uri===voiceURI))voiceURI='';return list}
+let zhVoice=null,zhMeta=null;
+function pickZhVoice(){try{if(!window.speechSynthesis)return;const menu=voiceMenu();let m=menu.find(x=>x.uri===voiceURI);if(!m)m=menu[0];zhMeta=m||null;zhVoice=null;if(m&&m.uri){const v=speechSynthesis.getVoices().find(x=>x.voiceURI===m.uri);if(v)zhVoice=v}}catch(e){}}
 if(window.speechSynthesis){try{pickZhVoice();speechSynthesis.onvoiceschanged=pickZhVoice}catch(e){}}
-function speak(text){if(!voiceOn||!window.speechSynthesis||!text)return;try{pickZhVoice();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=1.12;u.pitch=1.08;u.volume=1;if(zhVoice)u.voice=zhVoice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function speak(text){if(!voiceOn||!window.speechSynthesis||!text)return;try{pickZhVoice();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=zhMeta?zhMeta.rate:1.12;u.pitch=zhMeta?zhMeta.pitch:1.08;u.volume=1;if(zhVoice)u.voice=zhVoice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 function sayTile(t){if(SUITS.includes(t.suit))return NUMCN[t.value]+SUIT_NAMES[t.suit];if(t.suit==='f')return FENG_NAMES[t.value-1]+'风';return['红中','发财','白板'][t.value-1]||''}
-function syncSndBtns(){const a=document.getElementById('btn-sfx'),b=document.getElementById('btn-voice');if(a){a.textContent=sfxOn?'🔊':'🔇';a.classList.toggle('off',!sfxOn)}if(b){b.textContent=voiceOn?'🗣':'🔈';b.classList.toggle('off',!voiceOn)}}
+function syncSndBtns(){const a=document.getElementById('btn-sfx'),b=document.getElementById('btn-voice');if(a){a.textContent=sfxOn?'🔊':'🔇';a.classList.toggle('off',!sfxOn)}if(b){b.textContent=voiceOn?'🗣':'🔈';b.classList.toggle('off',!voiceOn)}const c=document.getElementById('btn-voice-pick');if(c){let label='默',title='选择播报音色';try{const menu=voiceMenu();const m=menu.find(x=>x.uri===voiceURI)||menu[0];if(m){label=m.short;title=m.name}}catch(e){}c.textContent=label;c.title=title;c.classList.toggle('off',!voiceOn)}}
 function toggleSfx(){sfxOn=!sfxOn;localStorage.setItem('qhd-sfx',sfxOn?'1':'0');syncSndBtns();if(sfxOn){Sound.ensure();Sound.tick()}}
 function toggleVoice(){voiceOn=!voiceOn;localStorage.setItem('qhd-voice',voiceOn?'1':'0');syncSndBtns();if(voiceOn)speak('语音播报已开启')}
+function cycleVoice(){try{Sound.ensure();const menu=voiceMenu();const i=menu.findIndex(m=>m.uri===voiceURI);const m=menu[(i+1)%menu.length];voiceURI=m.uri;localStorage.setItem('qhd-voice-uri',m.uri);if(!voiceOn){voiceOn=true;localStorage.setItem('qhd-voice','1')}syncSndBtns();speak('已切换，'+m.name)}catch(e){}}
 /* 牌局事件声音/语音观察：renderAll 后做状态 diff，主机与远端统一走这里 */
 const voiceObs={init:false,discardKey:'',meldSig:[],cursor:-1};
 function resetVoiceObs(){voiceObs.init=false;voiceObs.discardKey='';voiceObs.meldSig=[];voiceObs.cursor=-1}
@@ -453,11 +514,20 @@ const FC=['东','南','西','北'];const JC=['中','发','白'];
 const NUMCN=['','一','二','三','四','五','六','七','八','九'];
 const DOT_PAT={1:[4],2:[1,7],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8],7:[1,3,4,5,6,7,8],8:[0,1,2,3,5,6,7,8],9:[0,1,2,3,4,5,6,7,8]};
 const DOT_RED={5:[4],6:[0,2],7:[1],9:[1,4,7]};
+/* 条牌配色位：五条中红、七条顶红、九条中列红右列蓝 */
+const BAR_RED={5:[4],7:[1],9:[1,4,7]};
+const BAR_BLUE={9:[2,5,8]};
+function birdHTML(){return '<span class="bird"><i class="bd-tail"><em></em><em></em><em></em></i><i class="bd-body"></i><i class="bd-wing"></i><i class="bd-legs"><em></em><em></em></i><i class="bd-head"><em class="bd-eye"></em></i><i class="bd-beak"></i><i class="bd-crest"><em></em><em></em><em></em></i></span>'}
 function td(t){if(SUITS.includes(t.suit))return{text:t.value+SC[t.suit]};if(t.suit==='f')return{text:FC[t.value-1]};return{text:JC[t.value-1]}}
 function faceHTML(t){
  if(t.suit==='w')return '<i class="tk-num">'+NUMCN[t.value]+'</i><i class="tk-suit">萬</i>';
  if(t.suit==='b'){const on=DOT_PAT[t.value];const v=t.value;const reds=DOT_RED[v]||[];let h='<span class="dots">';for(let i=0;i<9;i++){const has=on.indexOf(i)>=0;const red=reds.indexOf(i)>=0;h+='<i class="'+(has?(red?'dot r':'dot'):'dot e')+'"></i>'}return h+'</span>'}
- if(t.suit==='t'){const on=DOT_PAT[t.value];let h='<span class="bars">';for(let i=0;i<9;i++){if(on.indexOf(i)>=0)h+='<i'+(t.value===1?' class="r"':'')+'></i>';else h+='<i class="e"></i>'}return h+'</span>'}
+ if(t.suit==='t'){
+  if(t.value===1)return birdHTML();
+  const on=DOT_PAT[t.value],reds=BAR_RED[t.value]||[],blues=BAR_BLUE[t.value]||[];
+  let h='<span class="bars">';
+  for(let i=0;i<9;i++){if(on.indexOf(i)<0)h+='<i class="e"></i>';else if(reds.indexOf(i)>=0)h+='<i class="r"></i>';else if(blues.indexOf(i)>=0)h+='<i class="b"></i>';else h+='<i></i>'}
+  return h+'</span>'}
  if(t.suit==='f')return '<i class="tk-zi">'+FC[t.value-1]+'</i>';
  if(t.value===1)return '<i class="tk-zi">中</i>';if(t.value===2)return '<i class="tk-zi">發</i>';return '<i class="bai-frame"></i>';
 }
