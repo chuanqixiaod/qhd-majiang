@@ -46,12 +46,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* 几何·莫兰迪：暖纸牌底，柔和大圆角 */
 .tile-face{background:linear-gradient(165deg,#f6efe1 0%,#ece3d1 48%,#e3d8c2 78%,#d8ccb4 100%);border:1px solid #c9bda3;border-bottom-width:3px;border-radius:7px;box-shadow:0 2px 2px rgba(90,80,60,.3),0 4px 7px rgba(90,80,60,.28),inset 0 1px 0 rgba(255,255,255,.85),inset 0 -4px 6px rgba(120,105,75,.14);color:#474039;overflow:hidden}
 .tile-face::before{content:'';position:absolute;top:0;left:8%;right:8%;height:38%;border-radius:0 0 50% 50%;background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(255,255,255,0));pointer-events:none}
-.tile-face .tk-num{position:absolute;top:9%;left:0;right:0;text-align:center;font-size:.56em;color:#474039;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.7)}
-.tile-face .tk-num::after{content:'';position:absolute;left:30%;right:30%;bottom:-.16em;height:.035em;border-radius:.02em;background:#c2a36b}
-.tile-face .tk-suit{position:absolute;bottom:4%;left:0;right:0;text-align:center;font-size:.6em;color:#c2564a;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.tile-face .tk-num{position:absolute;top:7%;left:0;right:0;text-align:center;font-size:.68em;color:#474039;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.tile-face .tk-num::after{content:'';position:absolute;left:28%;right:28%;bottom:-.14em;height:.035em;border-radius:.02em;background:#c2a36b}
+.tile-face .tk-suit{position:absolute;bottom:3.5%;left:0;right:0;text-align:center;font-size:.68em;color:#c2564a;line-height:1;text-shadow:0 1px 0 rgba(255,255,255,.6)}
 .tile-face .tk-zi{font-size:.92em;line-height:1;color:#474039;text-shadow:0 1px 0 rgba(255,255,255,.6)}
-/* 三元：砖红圆中 / 灰绿菱發 / 墨线方框白，全部居中对称 */
-.tile-face .geo-zhong{width:.56em;height:.56em;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#cf8177,#c2564a 55%,#a8463c);color:#fbf4e8;font-size:.34em;font-weight:700;font-style:normal;line-height:1;box-shadow:0 .03em .05em rgba(90,80,60,.35),inset 0 1px 1px rgba(255,255,255,.35)}
+/* 三元：国旗红框金星中 / 灰绿菱發 / 墨线方框白，全部居中对称 */
+.tile-face .geo-zhong{width:.84em;height:.58em;display:block;filter:drop-shadow(0 .03em .04em rgba(90,80,60,.35))}
 .tile-face .geo-dia{width:.54em;height:.54em;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#87a18e,#6f8f7a 55%,#5d7c69);transform:rotate(45deg);border-radius:.07em;box-shadow:0 .03em .05em rgba(90,80,60,.35),inset 0 1px 1px rgba(255,255,255,.3)}
 .tile-face .geo-dia i{transform:rotate(-45deg);color:#f4f1e8;font-size:.32em;font-style:normal;font-weight:700;line-height:1}
 .tile-face .bai-frame{width:.48em;height:.48em;border:.035em solid #6b645a;border-radius:.07em;box-shadow:0 .02em .03em rgba(90,80,60,.25)}
@@ -88,6 +88,15 @@ button:disabled{opacity:.4;cursor:not-allowed}
 .bars i.b{background:linear-gradient(90deg,rgba(120,100,55,.5) 0%,rgba(194,163,107,.14) 22%,rgba(255,255,255,.6) 46%,rgba(255,255,255,.08) 60%,rgba(120,100,55,.45) 100%),linear-gradient(180deg,#d3b77f 0%,#c2a36b 45%,#a8884f 100%);box-shadow:0 .04em .05em rgba(90,80,60,.38),inset 0 0 .02em .01em rgba(120,100,55,.5)}
 .bars i.b::before,.bars i.b::after{background:rgba(245,236,218,.85)}
 .bars i.e{visibility:hidden}
+/* 七饼/七条：突出的一枚单独置顶，余六枚2×3成组 */
+.dots.d7,.bars.t7{display:flex;flex-direction:column;align-items:center;width:88%;height:92%}
+.dots.d7 .top7{width:.5em;height:.5em;flex:0 0 auto;margin-top:1%}
+.dots.d7 .g7{flex:1 1 0;width:94%;min-height:0;display:grid;grid-template:repeat(3,1fr)/repeat(2,1fr);justify-items:center;align-items:center;margin-top:5%}
+.bars.t7 .top7{height:.78em;flex:0 0 auto;margin-top:0}
+.bars.t7 .g7{flex:1 1 0;width:86%;min-height:0;display:grid;grid-template:repeat(3,1fr)/repeat(2,1fr);justify-items:center;align-items:center;margin-top:4%}
+.bars.t7 .g7 i{width:.28em;height:.6em}
+/* 八条：M/W 几何双折线 */
+.mw8{width:90%;height:94%;display:block}
 .tile-back{background:linear-gradient(135deg,#3aa17d,#146149 55%,#0b4433);border:2px solid #f4ecd8;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,.45),inset 0 0 0 2px rgba(255,255,255,.22),inset 0 0 10px rgba(0,0,0,.35)}
 .mini-back{flex:0 0 auto;width:2.3vh;height:3.3vh;border-radius:2px;background:linear-gradient(135deg,#3aa17d,#146149 55%,#0b4433);border:1px solid #f4ecd8;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),1px 1px 2px rgba(0,0,0,.35)}
 /* 牌墙 */
@@ -532,25 +541,33 @@ const BAR_RED={5:[4],7:[1],9:[1,4,7]};
 const BAR_BLUE={9:[2,5,8]};
 /* 莫兰迪几何·一条：抽象叶芽（茎+双叶+哑金芽心） */
 function birdHTML(){return '<svg class="sprout" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg"><path d="M50 96 C50 82 50 66 50 52" stroke="#6f8f7a" stroke-width="3.4" fill="none" stroke-linecap="round"/><path d="M50 64 C40 62 33 54 33 45 C43 46 50 53 50 64 Z" fill="#6f8f7a"/><path d="M50 53 C60 51 67 43 67 35 C57 36 50 43 50 53 Z" fill="#6f8f7a" opacity=".72"/><circle cx="50" cy="47" r="5" fill="#c2a36b"/><path d="M50 96 L45 103 M50 96 L55 103" stroke="#6f8f7a" stroke-width="2.4" stroke-linecap="round"/></svg>'}
+/* 八条：上 M 下 W 双折线（雾蓝竹杆色+圆柱高光） */
+function mwHTML(){return '<svg class="mw8" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg"><path d="M31 56 L31 14 L50 42 L69 14 L69 56" fill="none" stroke="#637a90" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 64 L31 106 L50 78 L69 106 L69 64" fill="none" stroke="#637a90" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 56 L31 14 L50 42 L69 14 L69 56" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 64 L31 106 L50 78 L69 106 L69 64" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'}
+/* 红中·国旗：长方红框+哑金五角星 */
+function flagHTML(){return '<svg class="geo-zhong" viewBox="0 0 100 68" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="92" height="60" rx="7" fill="#c2564a" stroke="#8f3b33" stroke-width="2.6"/><rect x="9" y="8.5" width="82" height="14" rx="5" fill="#ffffff" opacity=".16"/><path d="M0,-1 L0.2245,-0.309 L0.9511,-0.309 L0.3633,0.118 L0.5878,0.809 L0,0.382 L-0.5878,0.809 L-0.3633,0.118 L-0.9511,-0.309 L-0.2245,-0.309 Z" transform="translate(50,35) scale(17)" fill="#f0cf63" stroke="#d8b23f" stroke-width=".05"/></svg>'}
 function td(t){if(SUITS.includes(t.suit))return{text:t.value+SC[t.suit]};if(t.suit==='f')return{text:FC[t.value-1]};return{text:JC[t.value-1]}}
 /* 风牌·莫兰迪几何罗盘：刻度圈+哑金指针(东0°南90°西180°北270°)+方位字 */
 function fengHTML(v){
  const ch=FC[v-1],en=['E','S','W','N'][v-1],ang=[0,90,180,270][v-1];
  let ticks='';
- for(let a=0;a<360;a+=90){const rad=a*Math.PI/180;ticks+='<line x1="'+(50+29*Math.sin(rad))+'" y1="'+(60-29*Math.cos(rad))+'" x2="'+(50+24*Math.sin(rad))+'" y2="'+(60-24*Math.cos(rad))+'" stroke="#474039" stroke-width="1.6"/>';}
- return '<svg class="feng-pai" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="60" r="31" fill="none" stroke="#474039" stroke-width="1.6"/>'+ticks+'<g transform="rotate('+ang+' 50 60)"><polygon points="63,60 49,52.5 49,67.5" fill="#c2a36b"/><circle cx="50" cy="60" r="3.4" fill="#ece3d1" stroke="#474039" stroke-width="1.4"/></g><text x="50" y="44" text-anchor="middle" font-size="11" font-weight="700" fill="#7d93a8" font-family="Outfit,Arial,sans-serif">'+en+'</text><text x="50" y="110" text-anchor="middle" font-size="15" font-weight="700" fill="#474039" opacity=".72" font-family="STKaiti,KaiTi,serif">'+ch+'</text></svg>';
+ for(let a=0;a<360;a+=90){const rad=a*Math.PI/180;ticks+='<line x1="'+(50+30*Math.sin(rad))+'" y1="'+(60-30*Math.cos(rad))+'" x2="'+(50+24*Math.sin(rad))+'" y2="'+(60-24*Math.cos(rad))+'" stroke="#3d372f" stroke-width="2.8" stroke-linecap="round"/>';}
+ return '<svg class="feng-pai" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="60" r="31" fill="rgba(236,227,209,.22)" stroke="#3d372f" stroke-width="2.8"/>'+ticks+'<g transform="rotate('+ang+' 50 60)"><polygon points="64,60 48,51 48,69" fill="#c2a36b" stroke="#8a6f3e" stroke-width="1.4" stroke-linejoin="round"/><circle cx="50" cy="60" r="3.6" fill="#ece3d1" stroke="#3d372f" stroke-width="2"/></g><text x="50" y="43" text-anchor="middle" font-size="12" font-weight="800" fill="#5a7086" font-family="Outfit,Arial,sans-serif">'+en+'</text><text x="50" y="113" text-anchor="middle" font-size="23" font-weight="800" fill="#3d372f" font-family="STKaiti,KaiTi,serif">'+ch+'</text></svg>';
 }
 function faceHTML(t){
  if(t.suit==='w')return '<i class="tk-num">'+NUM_BIG[t.value]+'</i><i class="tk-suit">萬</i>';
- if(t.suit==='b'){const on=DOT_PAT[t.value];const v=t.value;const reds=DOT_RED[v]||[];let h='<span class="dots">';for(let i=0;i<9;i++){const has=on.indexOf(i)>=0;const red=reds.indexOf(i)>=0;h+='<i class="'+(has?(red?'dot r':'dot'):'dot e')+'"></i>'}return h+'</span>'}
+ if(t.suit==='b'){
+  if(t.value===7)return '<span class="dots d7"><i class="dot r top7"></i><span class="g7"><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></span>';
+  const on=DOT_PAT[t.value];const v=t.value;const reds=DOT_RED[v]||[];let h='<span class="dots">';for(let i=0;i<9;i++){const has=on.indexOf(i)>=0;const red=reds.indexOf(i)>=0;h+='<i class="'+(has?(red?'dot r':'dot'):'dot e')+'"></i>'}return h+'</span>'}
  if(t.suit==='t'){
   if(t.value===1)return birdHTML();
+  if(t.value===8)return mwHTML();
+  if(t.value===7)return '<span class="bars t7"><i class="r top7"></i><span class="g7"><i></i><i></i><i></i><i></i><i></i><i></i></span></span>';
   const on=BAR_PAT[t.value],reds=BAR_RED[t.value]||[],blues=BAR_BLUE[t.value]||[];
   let h='<span class="bars">';
   for(let i=0;i<9;i++){if(on.indexOf(i)<0)h+='<i class="e"></i>';else if(reds.indexOf(i)>=0)h+='<i class="r"></i>';else if(blues.indexOf(i)>=0)h+='<i class="b"></i>';else h+='<i></i>'}
   return h+'</span>'}
  if(t.suit==='f')return fengHTML(t.value);
- if(t.value===1)return '<i class="geo-zhong">中</i>';if(t.value===2)return '<span class="geo-dia"><i>發</i></span>';return '<i class="bai-frame"></i>';
+ if(t.value===1)return flagHTML();if(t.value===2)return '<span class="geo-dia"><i>發</i></span>';return '<i class="bai-frame"></i>';
 }
 function renderTile(t,w=false,f=true){const el=document.createElement('span');el.className='tile';if(!f){el.classList.add('tile-back');return el}el.classList.add('tile-face');if(!t||t.suit==='w')el.classList.add('w');else if(t.suit==='b')el.classList.add('b','b'+t.value);else if(t.suit==='t')el.classList.add('t');else if(t.suit==='f')el.classList.add('feng');else el.classList.add(t.value===1?'j-zhong':t.value===2?'j-fa':'j-bai');el.innerHTML=faceHTML(t);if(w)el.classList.add('wan-tile');return el}
 function tryLandscape(){try{if(screen.orientation&&screen.orientation.lock){const p=screen.orientation.lock('landscape');if(p&&p.catch)p.catch(function(){})}}catch(e){}try{if(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches&&document.documentElement.requestFullscreen){const pf=document.documentElement.requestFullscreen();if(pf&&pf.catch)pf.catch(function(){})}}catch(e){}}
