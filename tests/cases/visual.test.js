@@ -75,11 +75,21 @@ setTimeout(function(){
   var mw=T.t8.querySelector('svg.mw8');
   ok('t8 mw8 svg',!!mw);
   var paths=mw.querySelectorAll('path');
-  ok('t8 four strokes',paths.length===4,paths.length+'');
+  ok('t8 two strokes M+W',paths.length===2,paths.length+'');
   ok('t8 stroke width9',paths[0].getAttribute('stroke-width')==='9');
+  ok('t8 round caps',paths[0].getAttribute('stroke-linecap')==='round'&&paths[0].getAttribute('stroke-linejoin')==='round');
+  ok('t8 bamboo gradient ref',paths[0].getAttribute('stroke')==='url(#mwBamboo)'&&paths[1].getAttribute('stroke')==='url(#mwBamboo)');
+  var grad=document.getElementById('mwBamboo'),stops=grad?grad.querySelectorAll('stop'):[];
+  ok('t8 gradient defined',!!grad&&stops.length===5);
+  ok('t8 gradient bamboo colors',stops.length===5&&stops[4].getAttribute('stop-color')==='#556c82'&&stops[0].getAttribute('stop-color')==='#5d7084');
+  var rings=mw.querySelectorAll('line.ring'),ringSh=mw.querySelectorAll('line.ring-sh');
+  ok('t8 8 bamboo rings',rings.length===8&&ringSh.length===8,rings.length+'/'+ringSh.length);
+  var rr0=rings[0].getBoundingClientRect(),rr1=rings[1].getBoundingClientRect();
+  ok('t8 rings visible',(rr0.width+rr0.height)>=6&&rr1.width>0&&rr1.height>0,rr0.width.toFixed(2)+'x'+rr0.height.toFixed(2)+' / '+rr1.width.toFixed(2)+'x'+rr1.height.toFixed(2));
   var bbM=paths[0].getBoundingClientRect(),bbW=paths[1].getBoundingClientRect();
   ok('t8 M above W',bbM.bottom<=bbW.top+2,bbM.bottom+'/'+bbW.top);
-  ok('t8 color #637a90',paths[0].getAttribute('stroke')==='#637a90'&&paths[1].getAttribute('stroke')==='#637a90');
+  var mwr=mw.getBoundingClientRect(),barsr=T.t2.querySelector('.bars').getBoundingClientRect();
+  ok('t8 box matches bars size',Math.abs(mwr.width-barsr.width)<=1.5&&Math.abs(mwr.height-barsr.height)<=1.5,mwr.width.toFixed(1)+'x'+mwr.height.toFixed(1)+' vs '+barsr.width.toFixed(1)+'x'+barsr.height.toFixed(1));
   var bad=[];
   Object.keys(T).forEach(function(k){
    var f=T[k],fr=f.getBoundingClientRect();
