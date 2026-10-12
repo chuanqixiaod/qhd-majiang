@@ -8,10 +8,10 @@ drawTile(seat){if(this.phase!=='draw'||seat!==this.currentSeat||!this.canDraw())
 canDraw(){const r=this.deck.length-this.drawCursor;const ld=liuJuDun(this.gangCount);if(ld===0)return false;return r>ld*2}
 checkZiMoHu(seat){const p=this.players[seat];if(p.isGongzhu)return null;const hr=checkHu(p.hand,p.melds,this.wanTile);if(!hr)return null;const opts={isZiMo:true};const isB=seat===this.handStartSeat;opts.isTian=isB&&p.melds.length===0;opts.isDi=!isB&&this.isFirstDraw[seat]===true&&p.melds.length===0;opts.isGangShangHua=this.gangAfterDraw;const rem=this.deck.length-this.drawCursor;const ld=liuJuDun(this.gangCount);opts.isHaiDiLaoYue=rem<=ld*2+1;const mc=p.melds.filter(m=>m.type==='pong'||m.type==='kong'||m.type==='buKong').length;opts.isDaDiaoChe=mc>=3&&p.hand.length<=2;
 /* 混儿吊（仅自摸，按本巡新摸牌精确判定）：
-   混吊=4副+手里留1张混，摸任意真牌凑将；混钓混=混吊形且新摸的也是混；
-   手里留真牌摸混凑对不算任何混吊 */
+   单吊将中恰好1张混儿=混吊（无论手里留混摸真牌，还是留真牌摸到混儿）；
+   将牌两张都是混儿=混钓混（×4）。drawnTileId缺失时按手牌混儿张数兜底。 */
 if(this.wanTile&&hr.type==='normal'){const isW=t=>tileKey(t)===this.wanKey;let drawn=null,held=p.hand;if(this.drawnTileId!=null){drawn=p.hand.find(t=>t.id===this.drawnTileId)||null;held=p.hand.filter(t=>t.id!==this.drawnTileId)}
- if(p.melds.length===4&&p.hand.length===2){if(held.length===1&&isW(held[0])){if(drawn&&isW(drawn))opts.isHunDiaoHun=true;else opts.isHunDiao=true}else if(!drawn&&p.hand.filter(isW).length>=1){opts.isHunDiao=true}}}
+ if(p.melds.length===4&&p.hand.length===2){const heldWan=held.length===1&&isW(held[0]);const drawnWan=!!drawn&&isW(drawn);if(heldWan&&drawnWan)opts.isHunDiaoHun=true;else if(heldWan||drawnWan)opts.isHunDiao=true;else if(!drawn){const wc=p.hand.filter(isW).length;if(wc>=2)opts.isHunDiaoHun=true;else if(wc===1)opts.isHunDiao=true}}}
 opts.isPengPeng=hr.type==='normal'&&checkPengPengHu(p.hand,p.melds,this.wanTile);
 const fp=calcFenpai(hr,p.hand,p.melds,this.wanTile,opts);return{huResult:hr,opts,fenpai:fp}}
 discard(seat,idx){if(this.phase!=='discard'||seat!==this.currentSeat)return null;const p=this.players[seat];const[d]=p.hand.splice(idx,1);p.hand=sortHand(p.hand);p.discards=p.discards||[];p.discards.push(d);this.lastDiscard={tile:d,fromSeat:seat};this.phase='action';this.drawnTileId=null;this.isFirstDraw[seat]=false;if(this.wanTile&&tileKey(d)===this.wanKey)p.isGongzhu=true;this.gangAfterDraw=false;return d}

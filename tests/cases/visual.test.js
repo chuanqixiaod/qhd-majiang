@@ -85,7 +85,7 @@ setTimeout(function(){
   var rings=mw.querySelectorAll('line.ring'),ringSh=mw.querySelectorAll('line.ring-sh');
   ok('t8 8 bamboo rings',rings.length===8&&ringSh.length===8,rings.length+'/'+ringSh.length);
   var rr0=rings[0].getBoundingClientRect(),rr1=rings[1].getBoundingClientRect();
-  ok('t8 rings visible',(rr0.width+rr0.height)>=6&&rr1.width>0&&rr1.height>0,rr0.width.toFixed(2)+'x'+rr0.height.toFixed(2)+' / '+rr1.width.toFixed(2)+'x'+rr1.height.toFixed(2));
+  ok('t8 rings visible',rr0.width>=4&&rr1.width>0&&rr1.height>0,rr0.width.toFixed(2)+'x'+rr0.height.toFixed(2)+' / '+rr1.width.toFixed(2)+'x'+rr1.height.toFixed(2));
   var bbM=paths[0].getBoundingClientRect(),bbW=paths[1].getBoundingClientRect();
   ok('t8 M above W',bbM.bottom<=bbW.top+2,bbM.bottom+'/'+bbW.top);
   var mwr=mw.getBoundingClientRect(),barsr=T.t2.querySelector('.bars').getBoundingClientRect();

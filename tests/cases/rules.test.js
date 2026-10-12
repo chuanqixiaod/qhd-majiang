@@ -28,6 +28,14 @@ ok('混吊番名含混吊',rHD&&rHD.fenpai.fans.some(function(f){return f.name==
 var rHH=huOf(['w9','w9'],'w9',ms3,'w9');
 ok('混钓混仍判: 留混摸混',rHH&&rHH.opts.isHunDiaoHun===true);
 ok('混钓混倍率48(混钓混4×碰碰3×吊车4)',rHH&&rHH.fenpai.totalMultiplier===48,rHH&&rHH.fenpai.totalMultiplier+'');
+var rHM=huOf(['w5','w9'],'w9',ms3,'w9');
+ok('留真摸混也算混吊',rHM&&rHM.opts.isHunDiao===true&&!rHM.opts.isHunDiaoHun);
+ok('留真摸混倍率24(混吊2×碰碰3×吊车4)',rHM&&rHM.fenpai.totalMultiplier===24,rHM&&rHM.fenpai.totalMultiplier+'');
+ok('留真摸混番名含混吊',rHM&&rHM.fenpai.fans.some(function(f){return f.name==='混吊'}));
+var rHN=huOf(['w9','w9'],'w9',ms3);
+ok('drawnTileId缺失双混兜底混钓混',rHN&&rHN.opts.isHunDiaoHun===true);
+var rHS=huOf(['w5','w9'],'w9',ms3);
+ok('drawnTileId缺失单混兜底混吊',rHS&&rHS.opts.isHunDiao===true);
 /* 双混吊已移除 */
 var ms2=[meld('b2'),meld('b3'),meld('b4')];
 var rSH=huOf(['w1','w1','w9','w9','w2'],'w9',ms2,'w2');
