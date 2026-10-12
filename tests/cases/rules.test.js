@@ -51,6 +51,44 @@ ok('FAN_CONFIG存在',typeof FAN_CONFIG==='object');
 });
 ok('碰碰胡倍率配置=3',FAN_CONFIG.pengpeng.m===3);
 ok('七对名表4档',FAN_CONFIG.qiduiNames&&FAN_CONFIG.qiduiNames.length===4);
+/* P0/P1：逐番语音队列、口语番名、录音包接口 */
+ok('speakSeq顺播函数',typeof speakSeq==='function');
+ok('cancelSpeech函数',typeof cancelSpeech==='function');
+ok('huSpeakLines函数',typeof huSpeakLines==='function');
+ok('playCue录音回退函数',typeof playCue==='function');
+ok('DIALECT_FILES录音包表',typeof DIALECT_FILES==='object');
+ok('sayMul(2)口语=两倍',sayMul(2)==='两倍',sayMul(2));
+ok('calcFenpai每项fan携带say',rHD.fenpai.fans.every(function(f){return typeof f.say==='string'&&f.say.length>0}));
+ok('混吊口语番名=混儿吊',FAN_CONFIG.hundiao.say==='混儿吊');
+ok('杠上花口语番名=杠上开花',FAN_CONFIG.gangshanghua.say==='杠上开花');
+(function(){var fake={winnerSeat:0,fenpai:rHD.fenpai};
+ var lines=huSpeakLines(fake,false);
+ ok('普通话逐番词数>=4',lines.length>=4,lines.join(' / '));
+ ok('普通话逐念混儿吊两倍',lines.some(function(l){return l.indexOf('混儿吊')>=0&&l.indexOf('两倍')>=0}),lines.join(' / '));
+ ok('普通话尾句总倍数二十四倍',lines[lines.length-1].indexOf('二十四倍')>=0,lines[lines.length-1]);
+ var lo=huSpeakLines(fake,true);
+ ok('本地话开场含自摸嘞',lo[0].indexOf('自摸嘞')>=0,lo[0]);
+ ok('本地话尾句含每家掏',lo[lo.length-1].indexOf('每家掏')>=0,lo[lo.length-1]);
+})();
+/* P0/P1：UI层新能力节点（真实index.html注入） */
+ok('playHuFanfare函数',typeof playHuFanfare==='function');
+ok('setTalkMode函数',typeof setTalkMode==='function');
+ok('showQuickBubble函数',typeof showQuickBubble==='function');
+ok('QUICK_MSGS>=4条',typeof QUICK_MSGS!=='undefined'&&QUICK_MSGS.length>=4);
+ok('#hu-show全屏层',!!document.getElementById('hu-show'));
+ok('#chat-panel面板',!!document.getElementById('chat-panel'));
+ok('#set-talk口吻选择',!!document.getElementById('set-talk'));
+ok('#btn-chat快捷语按钮',!!document.getElementById('btn-chat'));
+showQuickBubble(0,'测试气泡',true);
+ok('气泡可挂载到座位',document.querySelectorAll('#seat-0 .chat-bubble').length===1);
+/* 动画速度=0：演出立即结束直接落结算面板（音效/语音仍触发，不抛错） */
+var fxNext=false,fxErr=null;
+try{localStorage.setItem('qhd-anim-speed','0');
+ playHuFanfare({winnerSeat:0,totalMultiplier:8,fenpai:{fans:[{name:'平胡',say:'平胡',m:1}],totalMultiplier:8}},function(){fxNext=true});
+}catch(e){fxErr=e.message}
+ok('动画关闭立即落面板',fxNext===true&&!fxErr,fxErr||'');
+ok('动画关闭演出层不留on',document.getElementById('hu-show').className.indexOf('on')<0,document.getElementById('hu-show').className);
+localStorage.removeItem('qhd-anim-speed');
 /* 胡牌提示卡 UI */
 setTimeout(function(){
  try{

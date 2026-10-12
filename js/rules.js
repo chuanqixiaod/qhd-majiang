@@ -48,7 +48,27 @@ function voiceMenu(){const list=[];const seen={};getZhVoices().forEach(v=>{const
 let zhVoice=null,zhMeta=null;
 function pickZhVoice(){try{if(!window.speechSynthesis)return;const menu=voiceMenu();let m=menu.find(x=>x.uri===voiceURI);if(!m)m=menu[0];zhMeta=m||null;zhVoice=null;if(m&&m.uri){const v=speechSynthesis.getVoices().find(x=>x.voiceURI===m.uri);if(v)zhVoice=v}}catch(e){}}
 if(window.speechSynthesis){try{pickZhVoice();speechSynthesis.onvoiceschanged=pickZhVoice}catch(e){}}
-function speak(text){if(!voiceOn||!window.speechSynthesis||!text)return;try{pickZhVoice();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=Math.min(2,(zhMeta?zhMeta.rate:1.12)*voiceRateMul);u.pitch=zhMeta?zhMeta.pitch:1.08;u.volume=Math.max(0,Math.min(1,sfxVol));if(zhVoice)u.voice=zhVoice;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+/* 报牌口吻：0=普通话 1=本地话（秦皇岛口风；同为TTS，口语用词不同）。
+   方言真人录音包接口：把 mp3 放入 audio/dialect/ 并在 DIALECT_FILES 登记文件名，
+   playCue 即优先播录音；未登记或加载失败自动回退 TTS。 */
+let localTalk=localStorage.getItem('qhd-local-talk')==='1';
+const DIALECT_FILES={
+ /* peng:'peng.mp3',gang:'gang.mp3',angang:'angang.mp3',bukong:'bukong.mp3',hu:'hu.mp3',liuju:'liuju.mp3' */
+};
+const cueAudioCache={};
+function playCue(cue,text){try{if(localTalk&&DIALECT_FILES[cue]){const f=DIALECT_FILES[cue];if(!cueAudioCache[cue]){const a=new Audio('audio/dialect/'+f);a.preload='none';cueAudioCache[cue]=a}const a=cueAudioCache[cue];a.onerror=function(){speak(text)};a.play().catch(function(){speak(text)});return}}catch(e){}speak(text)}
+/* 中文数字口语读法（倍数最大到32；2倍口语说“两倍”） */
+function cnNum(n){if(n<=0)return'';if(n<10)return NUMCN[n];if(n===10)return'十';if(n<20)return'十'+NUMCN[n-10];const t=Math.floor(n/10),u=n%10;return NUMCN[t]+'十'+(u?NUMCN[u]:'')}
+function sayMul(m){return m===2?'两倍':cnNum(m)+'倍'}
+/* 胡牌逐番解说词（普通话/本地话两版）；r={winnerSeat,fenpai:{fans,totalMultiplier}} */
+function huSpeakLines(r,local){const s=(typeof SEATS!=='undefined'?SEATS:['北','东','南','西'])[r.winnerSeat];const fs=r.fenpai.fans;const lines=[local?(s+'家，自摸嘞'):(s+'家，自摸')];fs.forEach(f=>{if(f.m>1)lines.push((f.say||f.name)+'，'+sayMul(f.m))});const tot=r.fenpai.totalMultiplier;if(local)lines.push('整了'+sayMul(tot)+'，每家掏'+cnNum(tot)+'分');else lines.push('一共'+sayMul(tot)+'倍');return lines}
+/* 顺播：把多句语音排队依次念完（胡牌报番用）；单事件仍用 speak() 打断式 */
+let _sqBusy=false,_sqQueue=[];
+function makeUtt(text){pickZhVoice();const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=Math.min(2,(zhMeta?zhMeta.rate:1.12)*voiceRateMul);u.pitch=zhMeta?zhMeta.pitch:1.08;u.volume=Math.max(0,Math.min(1,sfxVol));if(zhVoice)u.voice=zhVoice;return u}
+function speakSeq(texts){if(!voiceOn||!window.speechSynthesis||!texts||!texts.length)return;try{speechSynthesis.cancel();_sqQueue=texts.slice();_sqNext()}catch(e){}}
+function _sqNext(){if(!_sqQueue.length){_sqBusy=false;return}const t=_sqQueue.shift();try{const u=makeUtt(t);u.onend=u.onerror=function(){_sqBusy=false;_sqNext()};_sqBusy=true;speechSynthesis.speak(u)}catch(e){_sqBusy=false}}
+function cancelSpeech(){try{_sqQueue=[];_sqBusy=false;if(window.speechSynthesis)speechSynthesis.cancel()}catch(e){}}
+function speak(text){if(!voiceOn||!window.speechSynthesis||!text)return;try{const u=makeUtt(text);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
 function sayTile(t){if(SUITS.includes(t.suit))return NUMCN[t.value]+SUIT_NAMES[t.suit];if(t.suit==='f')return FENG_NAMES[t.value-1]+'风';return['红中','发财','白板'][t.value-1]||''}
 function syncSndBtns(){const a=document.getElementById('btn-sfx'),b=document.getElementById('btn-voice');if(a){a.textContent=sfxOn?'🔊':'🔇';a.classList.toggle('off',!sfxOn)}if(b){b.textContent=voiceOn?'🗣':'🔈';b.classList.toggle('off',!voiceOn)}const c=document.getElementById('btn-voice-pick');if(c){let label='默',title='选择播报音色';try{const menu=voiceMenu();const m=menu.find(x=>x.uri===voiceURI)||menu[0];if(m){label=m.short;title=m.name}}catch(e){}c.textContent=label;c.title=title;c.classList.toggle('off',!voiceOn)}}
 function toggleSfx(){sfxOn=!sfxOn;localStorage.setItem('qhd-sfx',sfxOn?'1':'0');syncSndBtns();if(sfxOn){Sound.ensure();Sound.tick()}}
@@ -59,7 +79,7 @@ const voiceObs={init:false,discardKey:'',meldSig:[],cursor:-1};
 function resetVoiceObs(){voiceObs.init=false;voiceObs.discardKey='';voiceObs.meldSig=[];voiceObs.cursor=-1}
 function observeVoice(){if(!game)return;const meldSig=game.players.map(p=>(p.melds||[]).map(m=>m.type+m.tiles.length).join('|'));
  if(!voiceObs.init){voiceObs.init=true;voiceObs.meldSig=meldSig;voiceObs.cursor=game.drawCursor;voiceObs.discardKey=game.lastDiscard?game.lastDiscard.fromSeat+'_'+game.lastDiscard.tile.id:'';return}
- for(let s=0;s<4;s++){if(meldSig[s]!==voiceObs.meldSig[s]){const old=voiceObs.meldSig[s]?voiceObs.meldSig[s].split('|'):[];const now=meldSig[s].split('|');if(now.length>old.length){const ty=now[now.length-1];if(ty.indexOf('pong')===0){Sound.peng();speak('碰')}else{Sound.gang();speak(ty.indexOf('darkKong')===0?'暗杠':'杠')}}else{Sound.gang();speak('补杠')}}}
+ for(let s=0;s<4;s++){if(meldSig[s]!==voiceObs.meldSig[s]){const old=voiceObs.meldSig[s]?voiceObs.meldSig[s].split('|'):[];const now=meldSig[s].split('|');if(now.length>old.length){const ty=now[now.length-1];if(ty.indexOf('pong')===0){Sound.peng();playCue('peng',localTalk?'碰一个':'碰')}else{Sound.gang();playCue('gang',localTalk?(ty.indexOf('darkKong')===0?'暗杠一个':'杠一个'):(ty.indexOf('darkKong')===0?'暗杠':'杠'))}}else{Sound.gang();playCue('bukong',localTalk?'补个杠':'补杠')}}}
  voiceObs.meldSig=meldSig;
  if(game.drawCursor!==voiceObs.cursor){voiceObs.cursor=game.drawCursor;Sound.draw()}
  const dk=game.lastDiscard?game.lastDiscard.fromSeat+'_'+game.lastDiscard.tile.id:'';
@@ -109,11 +129,11 @@ const FAN_CONFIG={
  tianhu:{name:'天胡',m:10},dihu:{name:'地胡',m:10},
  qiduiNames:['七对','豪华七对','双豪华七对','三豪华七对'],
  pengpeng:{name:'碰碰胡',m:3},dadiaoche:{name:'大吊车',m:4},
- gangshanghua:{name:'杠上花',m:2},haidilaoyue:{name:'海底捞月',m:2},
+ gangshanghua:{name:'杠上花',say:'杠上开花',m:2},haidilaoyue:{name:'海底捞月',m:2},
  menqing:{name:'门清',m:2},suhu:{name:'素胡',m:2},
- hundiao:{name:'混吊',m:2},hundiaohun:{name:'混钓混',m:4}
+ hundiao:{name:'混吊',say:'混儿吊',m:2},hundiaohun:{name:'混钓混',say:'混钓混',m:4}
 };
-function calcFenpai(huResult,hand,melds,wanTile,opts={}){const fans=[];let total=1;const add=k=>{const f=FAN_CONFIG[k];fans.push({name:f.name,m:f.m});total*=f.m};add('pinghu');if(opts.isTian){add('tianhu')}else if(opts.isDi){add('dihu')}if(huResult.type==='qidui'){const m=huResult.details.multiplier;fans.push({name:FAN_CONFIG.qiduiNames[huResult.details.level]||FAN_CONFIG.qiduiNames[0],m});total*=m}if(opts.isPengPeng)add('pengpeng');if(opts.isDaDiaoChe)add('dadiaoche');if(opts.isGangShangHua)add('gangshanghua');if(opts.isHaiDiLaoYue)add('haidilaoyue');const om=melds.some(x=>x.type==='pong'||x.type==='kong'||x.type==='buKong');if(!om&&!opts.isTian&&!opts.isDi)add('menqing');if(wanTile){const wk=tileKey(wanTile);if(!hand.some(t=>tileKey(t)===wk))add('suhu')}else{add('suhu')}if(opts.isHunDiaoHun){add('hundiaohun')}else if(opts.isHunDiao){add('hundiao')}return{fans,totalMultiplier:total,desc:fans.map(f=>f.name).join(' × ')}}
+function calcFenpai(huResult,hand,melds,wanTile,opts={}){const fans=[];let total=1;const add=k=>{const f=FAN_CONFIG[k];fans.push({name:f.name,say:f.say||f.name,m:f.m});total*=f.m};add('pinghu');if(opts.isTian){add('tianhu')}else if(opts.isDi){add('dihu')}if(huResult.type==='qidui'){const m=huResult.details.multiplier;const qn=FAN_CONFIG.qiduiNames[huResult.details.level]||FAN_CONFIG.qiduiNames[0];fans.push({name:qn,say:qn,m});total*=m}if(opts.isPengPeng)add('pengpeng');if(opts.isDaDiaoChe)add('dadiaoche');if(opts.isGangShangHua)add('gangshanghua');if(opts.isHaiDiLaoYue)add('haidilaoyue');const om=melds.some(x=>x.type==='pong'||x.type==='kong'||x.type==='buKong');if(!om&&!opts.isTian&&!opts.isDi)add('menqing');if(wanTile){const wk=tileKey(wanTile);if(!hand.some(t=>tileKey(t)===wk))add('suhu')}else{add('suhu')}if(opts.isHunDiaoHun){add('hundiaohun')}else if(opts.isHunDiao){add('hundiao')}return{fans,totalMultiplier:total,desc:fans.map(f=>f.name).join(' × ')}}
 function liuJuDun(g){const t={0:13,1:7,2:8,3:13};return g>=4?0:(t[g]!=null?t[g]:13)}
 function findDarkGangFeng(hand){const cnt=countTiles(hand);const r=[];for(const[k,c]of cnt)if(c===4&&k[0]==='f')r.push(k);return r}
 function canPongOrKong(tile,wanTile){if(!wanTile)return true;return!isSameTile(tile,wanTile)}
