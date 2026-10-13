@@ -1,6 +1,6 @@
 class MahjongNet{constructor(om){this.onMsg=om;this.client=null;this.roomCode=null;this.myId=null;this.isHost=false;this.topic='';this._buf=[];this._ok=false;this._seq=0;this._pingT=null;this._closed=false}
 static MQTT_URL='wss://broker.emqx.io:8084/mqtt';
-static genRoomCode(){return Math.floor(100000+Math.random()*900000).toString()}
+static genRoomCode(){const C='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<10;i++)s+=C[Math.floor(Math.random()*C.length)];return s}
 async createRoom(c){this.isHost=true;this.roomCode=c;this.topic='qhd-mj/'+c;this.myId='h'+Math.random().toString(36).slice(2,8);await this._c();await this._s();await this._p({type:'join',from:this.myId,name:'主机',isHost:true});this._startPing();return this.myId}
 async joinRoom(c,name,keepId){this.isHost=false;this.roomCode=c;this.topic='qhd-mj/'+c;this.myId=keepId||('g'+Math.random().toString(36).slice(2,8));await this._c();await this._s();await this._p({type:'join',from:this.myId,name:name||'玩家',isHost:false});this._startPing();return this.myId}
 broadcast(obj){this._p(obj)}

@@ -17,6 +17,8 @@ const Sound={ctx:null,master:null,
  peng(){if(!sfxOn)return;this.clack();setTimeout(()=>this.clack(),90);this.tone(660,.12,'sine',.08,.02);this.tone(990,.16,'sine',.07,.1)},
  gang(){if(!sfxOn)return;this.noise(.09,900,.8,.22);this.tone(90,.22,'triangle',.22);setTimeout(()=>{this.noise(.09,900,.8,.22);this.tone(80,.22,'triangle',.2)},140);this.tone(520,.14,'sine',.07,.05);this.tone(780,.18,'sine',.07,.14)},
  hu(){if(!sfxOn)return;[523,659,784,1047].forEach((f,i)=>this.tone(f,.22,'sine',.12,i*.09));this.tone(1319,.5,'sine',.1,.38)},
+ /* 大满贯(总倍率>=12)：上行琶音+高音延展+低锣，区别于普通胡牌 */
+ grand(){if(!sfxOn)return;[392,523,659,784,1047,1319].forEach((f,i)=>this.tone(f,.32,'sine',.1,i*.07));this.tone(1568,.8,'sine',.1,.42);this.tone(196,.7,'sine',.09);this.tone(131,.7,'triangle',.15);this.noise(.55,300,.7,.1,.4)},
  liuju(){if(!sfxOn)return;[392,330,262].forEach((f,i)=>this.tone(f,.3,'sine',.11,i*.14))},
  tick(){if(!sfxOn)return;this.tone(880,.05,'square',.04)}};
 /* ===== 音色库：自动识别设备已安装的授权中文音色（Edge/Win 多为微软在线自然音，如晓晓/云希；iOS 为婷婷），按优先级成单循环 ===== */

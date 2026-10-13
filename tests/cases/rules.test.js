@@ -89,6 +89,40 @@ try{localStorage.setItem('qhd-anim-speed','0');
 ok('动画关闭立即落面板',fxNext===true&&!fxErr,fxErr||'');
 ok('动画关闭演出层不留on',document.getElementById('hu-show').className.indexOf('on')<0,document.getElementById('hu-show').className);
 localStorage.removeItem('qhd-anim-speed');
+/* 第一档打磨：点击跳过立即落面板并清空定时器；大满贯走grand音效分支 */
+ok('Sound.grand大满贯音效存在',typeof Sound.grand==='function');
+var skipNext=false,skipErr=null;
+try{
+ playHuFanfare({winnerSeat:0,totalMultiplier:8,fenpai:{fans:[{name:'平胡',say:'平胡',m:1},{name:'门清',say:'门清',m:2}],totalMultiplier:8}},function(){skipNext=true});
+ var shown=document.getElementById('hu-show').className.indexOf('on')>=0;
+ var earlyChips=[].map.call(document.querySelectorAll('#hu-show .hs-fan'),function(c){return getComputedStyle(c).opacity});
+ var earlyTotal=getComputedStyle(document.querySelector('#hu-show .hs-total')).opacity;
+ document.getElementById('hu-show').click();
+}catch(e){skipErr=e.message}
+ok('演出默认显示',shown===true);
+ok('未到揭示时刻番条全部隐藏',earlyChips.length===2&&earlyChips.every(function(o){return o==='0'}),earlyChips.join(','));
+ok('未到揭示时刻总倍率隐藏',earlyTotal==='0',earlyTotal);
+ok('点击跳过立即落面板',skipNext===true&&!skipErr,skipErr||'');
+ok('点击跳过后演出层关闭',document.getElementById('hu-show').className.indexOf('on')<0);
+ok('点击跳过后无残留定时器',huFxTimers.length===0,String(huFxTimers.length));
+(function(){var grandHit=0,huHit=0;var og=Sound.grand,oh=Sound.hu;Sound.grand=function(){grandHit++};Sound.hu=function(){huHit++};
+ playHuFanfare({winnerSeat:0,totalMultiplier:48,fenpai:{fans:[{name:'平胡',say:'平胡',m:1}],totalMultiplier:48}},function(){});
+ document.getElementById('hu-show').click();
+ Sound.grand=og;Sound.hu=oh;
+ ok('48倍大满贯播grand音效',grandHit===1&&huHit===0,'grand='+grandHit+' hu='+huHit);})();
+/* 快捷语：每条非空；同座位气泡最多挂3条 */
+ok('QUICK_MSGS共6条且均非空',QUICK_MSGS.length===6&&QUICK_MSGS.every(function(m){return typeof m==='string'&&m.length>0}));
+for(var qi=0;qi<5;qi++)showQuickBubble(0,'压栈气泡'+qi,false);
+ok('气泡上限3条',document.querySelectorAll('#seat-0 .chat-bubble').length===3);
+/* MQTT quickmsg 分发：不依赖连接，直接驱动 _h */
+(function(){var got=[];var fc=Object.create(MahjongNet.prototype);
+ fc.onMsg=function(t,d){got.push([t,d])};
+ fc._h({type:'quickmsg',from:'p1',seat:3,i:2});
+ fc._h({type:'quickmsg',from:'p1',seat:1,text:'你好',sys:true});
+ fc._h({type:'unknown-xyz',from:'p1'});
+ ok('quickmsg分发2条且未知类型忽略',got.length===2&&got[0][0]==='quickmsg'&&got[1][0]==='quickmsg');
+ ok('quickmsg载荷seat/i/sys',got[0][1].seat===3&&got[0][1].i===2&&got[0][1].sys===false&&got[1][1].sys===true&&got[1][1].text==='你好');
+})();
 /* 胡牌提示卡 UI */
 setTimeout(function(){
  try{
@@ -119,6 +153,19 @@ setTimeout(function(){
   ok('叠加积分[每家付48分·共赢144分]',gn2==='每家付 48 分 · 共赢 144 分',gn2);
   var ft2=tip2?tip2.querySelector('.ht-fans').textContent:'';
   ok('叠加番名含杠上花',ft2.indexOf('杠上花')>=0,ft2);
+  /* settle 新契约（v20 移除 payments）：结算面板直接渲染不抛错 */
+  var sr=null,setErr=null,detailTxt='';
+  try{
+   localStorage.setItem('qhd-anim-speed','0');
+   var hi2=game.checkZiMoHu(0);
+   sr=game.settle(0,hi2);game.result=sr;
+   showResult(sr);
+   detailTxt=document.getElementById('result-detail').textContent;
+  }catch(e){setErr=e.message}
+  ok('settle不再返回payments',sr&&sr.payments===undefined&&sr.totalMultiplier===48,setErr||(sr&&String(sr.totalMultiplier))||'');
+  ok('结算面板按新契约渲染',!setErr&&detailTxt.indexOf('赢家 +144')>=0&&detailTxt.indexOf('各 -48')>=0,setErr||detailTxt);
+  localStorage.removeItem('qhd-anim-speed');
+  document.getElementById('result-overlay').style.display='none';
   pending=null;
  }catch(e){ok('UI断言异常:'+e.message,false)}
  finish();

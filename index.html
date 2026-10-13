@@ -302,12 +302,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
 #hu-show.big .hs-grade,#hu-show.grand .hs-grade{opacity:1;animation:hsFan .45s cubic-bezier(.2,1.5,.4,1) both}
 #hu-show.grand .hs-who{color:#ffe7b0;text-shadow:0 0 3vh rgba(255,170,80,.9),0 0 6vh rgba(255,90,40,.6)}
 .hs-fans{display:flex;flex-wrap:wrap;gap:.9vh 1.2vh;justify-content:center;max-width:72vw;min-height:3vh}
-.hs-fan{display:inline-flex;align-items:center;gap:.6vh;font-size:2.3vh;font-weight:800;color:#f3e3c0;background:rgba(8,42,33,.9);border:1px solid rgba(233,196,106,.65);border-radius:3vh;padding:.7vh 1.8vh;box-shadow:0 .5vh 1.4vh rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12)}
+.hs-fan{display:inline-flex;align-items:center;gap:.6vh;font-size:2.3vh;font-weight:800;color:#f3e3c0;background:rgba(8,42,33,.9);border:1px solid rgba(233,196,106,.65);border-radius:3vh;padding:.7vh 1.8vh;box-shadow:0 .5vh 1.4vh rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.12);opacity:0}
 .hs-fan b{color:#ffd76a;font-size:1.25em}
 .hs-fan.show{animation:hsFan .45s cubic-bezier(.2,1.5,.4,1) both}
 .hs-fan.f1{border-color:#9fcab4;color:#cfe8dd}
 @keyframes hsFan{0%{opacity:0;transform:translateY(2vh) scale(.45)}60%{transform:scale(1.12)}100%{opacity:1;transform:none}}
-.hs-total{margin-top:.6vh;font-family:'STKaiti','KaiTi',serif;font-size:7.4vh;line-height:1;font-weight:900;color:#ffd76a;text-shadow:0 0 3vh rgba(255,200,80,.75),0 .6vh 1vh rgba(0,0,0,.5)}
+.hs-total{margin-top:.6vh;font-family:'STKaiti','KaiTi',serif;font-size:7.4vh;line-height:1;font-weight:900;color:#ffd76a;text-shadow:0 0 3vh rgba(255,200,80,.75),0 .6vh 1vh rgba(0,0,0,.5);opacity:0}
 .hs-total small{font-size:.36em;color:#f3e3c0;letter-spacing:.2em;margin-right:.4vh}
 .hs-total.show{animation:hsTotal .55s cubic-bezier(.2,1.7,.4,1) both}
 @keyframes hsTotal{0%{opacity:0;transform:scale(.2)}55%{transform:scale(1.18)}100%{opacity:1;transform:scale(1)}}
@@ -316,8 +316,6 @@ button:disabled{opacity:.4;cursor:not-allowed}
 /* ===== 混儿指示牌翻牌揭晓 ===== */
 .wan-flip-back{animation:wanFlip .82s cubic-bezier(.35,.7,.3,1) both}
 @keyframes wanFlip{0%{transform:rotateY(180deg) scale(.35);opacity:0}60%{transform:rotateY(95deg) scale(1.1);opacity:1}100%{transform:rotateY(0) scale(1);opacity:1}}
-.wan-just{animation:wanPop .5s cubic-bezier(.2,1.6,.4,1)}
-@keyframes wanPop{0%{transform:scale(.2);opacity:0}100%{transform:none;opacity:1}}
 /* ===== 快捷语气泡 ===== */
 #chat-panel{position:absolute;left:.8vw;bottom:6.4vh;z-index:8;display:none;grid-template-columns:repeat(2,minmax(12vh,1fr));gap:.7vh 1vw;padding:1vh 1.1vw;background:rgba(4,30,24,.88);border:1px solid rgba(201,162,79,.5);border-radius:1.2vh;box-shadow:0 1vh 2.4vh rgba(0,0,0,.5);backdrop-filter:blur(2px)}
 #chat-panel.on{display:grid}
@@ -349,12 +347,12 @@ button:disabled{opacity:.4;cursor:not-allowed}
       <button class="lobby-btn" onclick="createRoom()">🎲 创建房间</button>
       <div class="room-info" id="create-info"></div>
       <div style="height:12px"></div>
-      <input id="join-code" placeholder="输入6位房间号" maxlength="6">
+      <input id="join-code" placeholder="输入10位邀请码" maxlength="10">
       <button class="lobby-btn" onclick="joinRoom()">🚪 加入房间</button>
     </div>
     <div class="lobby-status" id="lobby-status"></div>
   </div>
-  <div class="hint">💡 联机需4人都打开此页面。创建房间后把6位房间号发给朋友，朋友输入即可加入<br>✅ 联机走 EMQX 公共 MQTT，国内直连，无需科学上网</div>
+  <div class="hint">💡 联机需4人都打开此页面。创建房间后创建房间后复制浏览器地址栏链接发给朋友，朋友点开即进（也可手动输邀请码）<br>✅ 联机走 EMQX 公共 MQTT，国内直连，无需科学上网</div>
 </div>
 
 <div id="stage">
@@ -467,9 +465,9 @@ window.onerror=function(msg,src,line,col,err){window.__errs.push({msg:String(msg
 <script>
 (function(){var urls=['https://registry.npmmirror.com/mqtt/5.3.4/files/dist/mqtt.min.js','https://cdn.bootcdn.net/ajax/libs/mqtt/5.3.4/mqtt.min.js','https://cdn.staticfile.org/mqtt/5.3.4/mqtt.min.js','https://fastly.jsdelivr.net/npm/mqtt@5.3.4/dist/mqtt.min.js'];var i=0;function go(){if(i>=urls.length){alert('网络异常：MQTT库加载失败，联机不可用，单机练习正常');return}var s=document.createElement('script');s.src=urls[i];s.onerror=function(){i++;go()};document.head.appendChild(s)}go()})();
 </script>
-<script src="js/rules.js?v=19"></script>
-<script src="js/game.js?v=19"></script>
-<script src="js/net.js?v=19"></script>
-<script src="js/ui.js?v=19"></script>
+<script src="js/rules.js?v=20"></script>
+<script src="js/game.js?v=20"></script>
+<script src="js/net.js?v=20"></script>
+<script src="js/ui.js?v=20"></script>
 </body>
 </html>
