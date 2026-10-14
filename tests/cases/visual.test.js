@@ -74,22 +74,64 @@ setTimeout(function(){
   });
   var mw=T.t8.querySelector('svg.mw8');
   ok('t8 mw8 svg',!!mw);
-  var paths=mw.querySelectorAll('path');
-  ok('t8 two strokes M+W',paths.length===2,paths.length+'');
-  ok('t8 stroke width9',paths[0].getAttribute('stroke-width')==='9');
-  ok('t8 round caps',paths[0].getAttribute('stroke-linecap')==='round'&&paths[0].getAttribute('stroke-linejoin')==='round');
-  ok('t8 bamboo gradient ref',paths[0].getAttribute('stroke')==='url(#mwBamboo)'&&paths[1].getAttribute('stroke')==='url(#mwBamboo)');
-  var grad=document.getElementById('mwBamboo'),stops=grad?grad.querySelectorAll('stop'):[];
-  ok('t8 gradient defined',!!grad&&stops.length===5);
-  ok('t8 gradient bamboo colors',stops.length===5&&stops[4].getAttribute('stop-color')==='#556c82'&&stops[0].getAttribute('stop-color')==='#5d7084');
-  var rings=mw.querySelectorAll('line.ring'),ringSh=mw.querySelectorAll('line.ring-sh');
-  ok('t8 8 bamboo rings',rings.length===8&&ringSh.length===8,rings.length+'/'+ringSh.length);
-  var rr0=rings[0].getBoundingClientRect(),rr1=rings[1].getBoundingClientRect();
-  ok('t8 rings visible',rr0.width>=4&&rr1.width>0&&rr1.height>0,rr0.width.toFixed(2)+'x'+rr0.height.toFixed(2)+' / '+rr1.width.toFixed(2)+'x'+rr1.height.toFixed(2));
-  var bbM=paths[0].getBoundingClientRect(),bbW=paths[1].getBoundingClientRect();
+  var rods=mw.querySelectorAll('g.rod');
+  ok('t8 8 bamboo rods',rods.length===8,rods.length+'');
+  var rects=mw.querySelectorAll('rect');
+  ok('t8 32 rects(2 rod+2 bands x8)',rects.length===32,rects.length+'');
+  ok('t8 rod rounded caps r7.77',rects[0].getAttribute('rx')==='7.77'&&rects[0].getAttribute('height')==='15.54');
+  ok('t8 rod fills len/cyl',rects[0].getAttribute('fill')==='url(#mwLen)'&&rects[1].getAttribute('fill')==='url(#mwCyl)');
+  /* 中间4根斜杆砖红（M/W 各2根），4根竖杆雾蓝 */
+  var redRods=mw.querySelectorAll('g.rod-r');
+  ok('t8 4 red center rods',redRods.length===4,redRods.length+'');
+  ok('t8 red rods are the 4 diagonals',rods[1].classList.contains('rod-r')&&rods[2].classList.contains('rod-r')&&rods[5].classList.contains('rod-r')&&rods[6].classList.contains('rod-r')&&!rods[0].classList.contains('rod-r')&&!rods[3].classList.contains('rod-r'));
+  ok('t8 red rod fills lenR/cylR',rects[4].getAttribute('fill')==='url(#mwLenR)'&&rects[5].getAttribute('fill')==='url(#mwCylR)');
+  var tr0=rods[0].getAttribute('transform'),tr1=rods[1].getAttribute('transform'),tr2=rods[2].getAttribute('transform');
+  ok('t8 rod rotate vert',tr0.indexOf('rotate(-90')>=0,tr0);
+  var mAng=parseFloat((tr1.match(/rotate\((-?[\d.]+)/)||[])[1]),mAng2=parseFloat((tr2.match(/rotate\((-?[\d.]+)/)||[])[1]);
+  ok('t8 M diag angles +/-42.5',Math.abs(mAng-42.50)<=.03&&Math.abs(mAng2+42.50)<=.03,mAng+'/'+mAng2);
+  var gradC=document.getElementById('mwCyl'),gradL=document.getElementById('mwLen'),cStops=gradC?gradC.querySelectorAll('stop'):[],lStops=gradL?gradL.querySelectorAll('stop'):[];
+  ok('t8 cyl gradient 6 stops',cStops.length===6,cStops.length+'');
+  ok('t8 cyl edge colors deepened',cStops.length===6&&cStops[0].getAttribute('stop-color')==='#384857'&&cStops[5].getAttribute('stop-color')==='#384857');
+  ok('t8 cyl 3D contrast(edge>=.66,hi>=.8)',parseFloat(cStops[0].getAttribute('stop-opacity'))>=.66&&parseFloat(cStops[2].getAttribute('stop-opacity'))>=.8,parseFloat(cStops[0].getAttribute('stop-opacity'))+'/'+parseFloat(cStops[2].getAttribute('stop-opacity')));
+  ok('t8 len gradient 3 stops',lStops.length===3&&lStops[2].getAttribute('stop-color')==='#566e84',lStops.length+'');
+  var gradCR=document.getElementById('mwCylR'),gradLR=document.getElementById('mwLenR'),crStops=gradCR?gradCR.querySelectorAll('stop'):[],lrStops=gradLR?gradLR.querySelectorAll('stop'):[];
+  ok('t8 red cyl gradient 6 stops',crStops.length===6&&crStops[0].getAttribute('stop-color')==='#6e3029'&&crStops[5].getAttribute('stop-color')==='#6e3029',crStops.length+'');
+  ok('t8 red len gradient',lrStops.length===3&&lrStops[0].getAttribute('stop-color')==='#dd9387'&&lrStops[2].getAttribute('stop-color')==='#973c33');
+  ok('t8 whole-figure drop shadow',!!document.getElementById('mwRodSh')&&mw.firstElementChild&&mw.firstElementChild.tagName.toLowerCase()==='g'&&mw.firstElementChild.getAttribute('filter')==='url(#mwRodSh)',mw.firstElementChild?mw.firstElementChild.getAttribute('filter'):'none');
+  ok('t8 no old ring lines',mw.querySelectorAll('line').length===0,mw.querySelectorAll('line').length+'');
+  var bands=mw.querySelectorAll('rect.band');
+  ok('t8 16 bamboo bands(2 per rod)',bands.length===16,bands.length+'');
+  ok('t8 band size 3.11x13.46 r2.03',Math.abs(parseFloat(bands[0].getAttribute('width'))-3.11)<.01&&Math.abs(parseFloat(bands[0].getAttribute('height'))-13.46)<.01&&bands[0].getAttribute('rx')==='2.03');
+  ok('t8 band positions 29/61%',Math.abs(parseFloat(bands[0].getAttribute('x'))+10.38)<=.02&&Math.abs(parseFloat(bands[1].getAttribute('x'))-3.07)<=.02,bands[0].getAttribute('x')+'/'+bands[1].getAttribute('x'));
+  ok('t8 band shadow filter ref',bands[0].getAttribute('filter')==='url(#mwBandSh)'&&!!document.getElementById('mwBandSh'));
+  var bandFill=getComputedStyle(bands[0]).fill;
+  ok('t8 band paper fill',bandFill.indexOf('236')>=0&&bandFill.indexOf('227')>=0&&bandFill.indexOf('209')>=0,bandFill);
+  var redBands=mw.querySelectorAll('rect.band-r'),redFill=redBands.length?getComputedStyle(redBands[0]).fill:'';
+  ok('t8 8 red bands warm paper',redBands.length===8&&redFill.indexOf('240')>=0&&redFill.indexOf('222')>=0&&redFill.indexOf('205')>=0,redBands.length+'/'+redFill);
+  var br0=bands[0].getBoundingClientRect(),br1=bands[2].getBoundingClientRect();
+  ok('t8 bands visible',br0.width>=8&&br0.height>=1.9&&br1.width>=7&&br1.height>=6,br0.width.toFixed(2)+'x'+br0.height.toFixed(2)+' / '+br1.width.toFixed(2)+'x'+br1.height.toFixed(2));
+  /* 竹箍渲染像素必须与普通条牌 CSS 竹箍（0.06em×0.26em）一致 */
+  var refBar=T.t2.querySelector('.bars i'),refBefore=getComputedStyle(refBar,'::before'),refR=refBar.getBoundingClientRect();
+  var mwW=mw.getBoundingClientRect().width;
+  var bandTh=3.11*(mwW/100),bandWd=13.46*(mwW/100);
+  ok('t8 band thickness ~0.06em',Math.abs(bandTh-parseFloat(refBefore.height))<=0.6,bandTh.toFixed(2)+' vs '+refBefore.height);
+  ok('t8 band width ~0.26em',Math.abs(bandWd-parseFloat(refBefore.width))<=1.2,bandWd.toFixed(2)+' vs '+refBefore.width);
+  var rodW=15.54*(mwW/100);
+  ok('t8 rod width ~0.3em',Math.abs(rodW-refR.width)<=1.2,rodW.toFixed(2)+' vs '+refR.width);
+  function unionBB(els){var l=1e9,t=1e9,r=-1e9,b=-1e9;[].forEach.call(els,function(e){var x=e.getBoundingClientRect();l=Math.min(l,x.left);t=Math.min(t,x.top);r=Math.max(r,x.right);b=Math.max(b,x.bottom)});return{left:l,right:r,top:t,bottom:b}}
+  var bbM=unionBB([].slice.call(rods,0,4)),bbW=unionBB([].slice.call(rods,4,8));
   ok('t8 M above W',bbM.bottom<=bbW.top+2,bbM.bottom+'/'+bbW.top);
   var mwr=mw.getBoundingClientRect(),barsr=T.t2.querySelector('.bars').getBoundingClientRect();
-  ok('t8 box matches bars size',Math.abs(mwr.width-barsr.width)<=1.5&&Math.abs(mwr.height-barsr.height)<=1.5,mwr.width.toFixed(1)+'x'+mwr.height.toFixed(1)+' vs '+barsr.width.toFixed(1)+'x'+barsr.height.toFixed(1));
+  ok('t8 box height matches bars',Math.abs(mwr.height-barsr.height)<=1.5,mwr.height.toFixed(1)+' vs '+barsr.height.toFixed(1));
+  /* M/W 整体占牌面比例对标九条竹杆列：viewBox meet 缩放后内容区 ≥80%宽/≥92%高（svg 盒瘦高时上下有留白，分母须用内容区而非盒高） */
+  var bbAll=unionBB([].slice.call(rods));
+  var mwScale=Math.min(mwr.width/100,mwr.height/120);
+  ok('t8 fills content width >=80%',(bbAll.right-bbAll.left)>=100*mwScale*0.80,((bbAll.right-bbAll.left)/(100*mwScale)).toFixed(2));
+  ok('t8 fills content height >=92%',(bbAll.bottom-bbAll.top)>=120*mwScale*0.92,((bbAll.bottom-bbAll.top)/(120*mwScale)).toFixed(2));
+  /* 与九条竹杆列外缘跨度一致（容差8%牌宽，八条横向略宽以补足纵向造型差异） */
+  var t9r0=T.t9.querySelectorAll('.bars i:not(.e)')[0].getBoundingClientRect(),t9r8=T.t9.querySelectorAll('.bars i:not(.e)')[8].getBoundingClientRect();
+  var t9span=(t9r8.right-t9r0.left)/T.t9.getBoundingClientRect().width,t8span=(bbAll.right-bbAll.left)/T.t8.getBoundingClientRect().width;
+  ok('t8 span ~t9 span',Math.abs(t8span-t9span)<=0.08,t8span.toFixed(2)+' vs '+t9span.toFixed(2));
   var bad=[];
   Object.keys(T).forEach(function(k){
    var f=T[k],fr=f.getBoundingClientRect();

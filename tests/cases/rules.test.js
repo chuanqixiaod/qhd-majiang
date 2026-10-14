@@ -166,6 +166,71 @@ setTimeout(function(){
   ok('结算面板按新契约渲染',!setErr&&detailTxt.indexOf('赢家 +144')>=0&&detailTxt.indexOf('各 -48')>=0,setErr||detailTxt);
   localStorage.removeItem('qhd-anim-speed');
   document.getElementById('result-overlay').style.display='none';
+  /* ===== v21 第一档5项 ===== */
+  /* 1.庄家轮换：胡牌者连庄、流局下家庄 */
+  ok('胡牌后pendingBanker=赢家(连庄)',pendingBanker===0,'pendingBanker='+pendingBanker);
+  game.bankerSeat=2;
+  showResult({liuju:true});
+  ok('流局后pendingBanker=下家庄',pendingBanker===3,'pendingBanker='+pendingBanker);
+  var eb=new QHDMahjongGame();
+  eb.newRound(2);
+  ok('引擎newRound接受庄家位',eb.bankerSeat===2);
+  ok('引擎nextBanker胡牌连庄',eb.nextBanker(2)===2);
+  ok('引擎nextBanker流局下庄',eb.nextBanker(null)===3);
+  document.getElementById('result-overlay').style.display='none';
+  huangWarned=true;
+  hostStartGame();
+  startGangKeys=[];pending=null;clearTurnClock();
+  ok('新一局庄家=流局下家(3)',game.bankerSeat===3,'banker='+game.bankerSeat);
+  ok('hostStartGame清空pendingBanker',pendingBanker===null);
+  ok('hostStartGame重置黄牌标记',huangWarned===false);
+  game.bankerSeat=0;renderAll();
+  ok('本人坐庄名称显示[我·庄]',document.querySelector('#seat-0 .name').textContent==='我·庄',document.querySelector('#seat-0 .name').textContent);
+  /* 3.牌墙/余牌同口径：liuJuDun(0)=13墩即26张流局墩，开局可摸110张 */
+  ok('remainTiles初始110(扣除26张流局墩)',remainTiles({drawCursor:0,gangCount:0})===110);
+  ok('remainTiles随摸牌减少',remainTiles({drawCursor:10,gangCount:0})===100);
+  ok('remainTiles每杠减2墩(gang1墩数7)',remainTiles({drawCursor:0,gangCount:1})===136-7*2);
+  /* 4.黄牌预警：余牌<=8语音一次，不重复 */
+  game.gangCount=0;game.drawCursor=102;
+  var said=[];var _speak=speak;speak=function(t){said.push(t)};
+  renderCenter();
+  var chipTxt=document.getElementById('remain-chip').textContent;
+  ok('余牌芯片显示8张且变红',chipTxt.indexOf('8')>=0&&document.getElementById('remain-chip').classList.contains('low'),chipTxt);
+  ok('黄牌语音播报一次',said.length===1&&said[0].indexOf('黄牌')>=0,JSON.stringify(said));
+  renderCenter();
+  ok('黄牌不重复播报',said.length===1);
+  speak=_speak;
+  /* 2.托管角标：主机视角+state序列化online+客人视角 */
+  mode='online';net={isHost:true,myId:'h1'};mySeat=0;
+  hostPeers=[
+   {peerId:'h1',seat:0,name:'你(主机)',online:true},
+   {peerId:'g1',seat:1,name:'甲',online:true},
+   {peerId:'g2',seat:2,name:'乙',online:false},
+   {peerId:'g3',seat:3,name:'丙',online:true}
+  ];
+  renderAll();
+  ok('主机端掉线座位显示托管角标',!!document.querySelector('#seat-'+viewMap().indexOf(2)+' .hosted-badge'));
+  ok('主机端在线座位无角标',!document.querySelector('#seat-'+viewMap().indexOf(1)+' .hosted-badge'));
+  var serOwn=serializeForClient('g2').state;
+  ok('序列化:掉线者本人收到online=true',serOwn.players.find(p=>p.seat===2).online===true);
+  var serOther=serializeForClient('g1').state;
+  ok('序列化:他人看到掉线者online=false',serOther.players.find(p=>p.seat===2).online===false);
+  ok('序列化:在线者online=true',serOther.players.find(p=>p.seat===1).online===true);
+  net={isHost:false,myId:'g1'};mySeat=1;game.players=serOther.players;
+  renderAll();
+  ok('客人端看到他人托管角标',!!document.querySelector('#seat-'+viewMap().indexOf(2)+' .hosted-badge'));
+  ok('客人端自己无托管角标',!document.querySelector('#seat-'+viewMap().indexOf(1)+' .hosted-badge'));
+  mode='single';net=null;hostPeers=[];mySeat=0;
+  /* 5.震动：仅触屏设备调用navigator.vibrate */
+  var vibs=[];var origMM=window.matchMedia;
+  Object.defineProperty(navigator,'vibrate',{configurable:true,writable:true,value:function(p){vibs.push(p)}});
+  window.matchMedia=function(q){return{matches:q.indexOf('coarse')>=0}};
+  buzz(10);
+  ok('触屏设备震动被调用',vibs.length===1&&vibs[0]===10,JSON.stringify(vibs));
+  window.matchMedia=function(q){return{matches:false}};
+  buzz(20);
+  ok('非触屏设备不震动',vibs.length===1);
+  window.matchMedia=origMM;delete navigator.vibrate;
   pending=null;
  }catch(e){ok('UI断言异常:'+e.message,false)}
  finish();
